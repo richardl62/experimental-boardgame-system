@@ -3,13 +3,23 @@ import { useGameDataAndMoves } from './game-lib/use-client-game-data';
 import { gameDefinition } from './games/tic-tac-toe/definition';
 import { Board } from './games/tic-tac-toe/board';
 import { ClientGameContext } from './game-lib/client-game-data-context';
+import { ClientGameData } from './game-lib/game-data';
 
-function App() {
-  const game = useGameDataAndMoves(gameDefinition, {nPlayers: 2});
+const nPlayers = 2; // KLUDGE: hard-coded for now
 
-  return <ClientGameContext.Provider value={game}>
+function BoardView({gameData} : {gameData: ClientGameData}) {
+  return <ClientGameContext.Provider value={gameData}>
     <Board />
   </ClientGameContext.Provider>;
+}
+
+function App() {
+  const gameAndMoves = useGameDataAndMoves(gameDefinition, {nPlayers});
+
+  return <>
+    <BoardView gameData={{...gameAndMoves, viewingPlayer: 0}} />
+    <BoardView gameData={{...gameAndMoves, viewingPlayer: 0}} />
+  </>;
 }
 
 export default App;

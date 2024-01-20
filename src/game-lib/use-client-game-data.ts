@@ -7,13 +7,12 @@ import { makePlayerData } from "./player-data";
 export function useGameDataAndMoves(
     gameDefinition: GameDefinition,
     {nPlayers}: {nPlayers: number}
-) : ClientGameData {
+) : Omit<ClientGameData, "viewingPlayer"> {
     const [gameData, setGameData] = useState<BasicGameData>({
         playerData: makePlayerData(nPlayers),
         currentPlayer: 0,
 
         state: gameDefinition.initialState(),
-
     });
 
     // Inefficient, but simple. (Functions are recreated on every call.)
