@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { GameState } from "./game-state";
-import { GameData } from "../../game-lib/game-data";
+import React from "react";
+import { GameContext, TGameContext } from "../../game-lib/game-context";
 
 const squareSize = "50px";
 
@@ -26,13 +27,15 @@ const Grid = styled.div`
 
     margin: calc(${squareSize} / 4);
 `
+function useGameContext() {
+    const game = React.useContext(GameContext);
+    if (!game) throw new Error("GameContext not found");
+    return game as TGameContext<GameState>;
+}
 
 // TicTacToe board
-export function Board({state, gameData: context, moves} : {
-    state: GameState,
-    gameData: GameData,
-    moves: (moveName: string, args: unknown) => void
-}) {
+export function Board() {
+    const {state, moves} = useGameContext();
     const squares : JSX.Element[] = [];
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++){

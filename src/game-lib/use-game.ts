@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { GameDefinition } from "./game-definition";
 import { GameData } from "./game-data";
-
+import { TGameContext } from "./game-context";
 
 export function useGame<TGameState>(
     gameDefinition: GameDefinition<TGameState>,
     nPlayers: number
-) {
+) : TGameContext {
     const [gameData, setGameData] = useState<GameData>(new GameData(nPlayers));
     const [state, setState] = useState<TGameState>(gameDefinition.initialState(gameData));
 
