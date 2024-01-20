@@ -18,7 +18,7 @@ function App() {
 
   return <>
     <BoardView gameData={{...gameAndMoves, viewingPlayer: 0}} />
-    <BoardView gameData={{...gameAndMoves, viewingPlayer: 0}} />
+    <BoardView gameData={{...gameAndMoves, viewingPlayer: 1}} />
   </>;
 }
 
