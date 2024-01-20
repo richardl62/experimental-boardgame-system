@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { GameDefinition } from "./game-definition";
 import { GameData } from "./game-data";
-import { TGameContext } from "./game-context";
+import { TGameContext, UntypedMoves } from "./game-context";
 
 export function useGame<TGameState>(
     gameDefinition: GameDefinition<TGameState>,
@@ -14,23 +14,23 @@ export function useGame<TGameState>(
         throw new Error(`Invalid number of players: ${nPlayers}`);
     }
     
-    const moves = (moveName: string, args: unknown) => {
+    const clientMoves: UntypedMoves = {};
+    for (const moveName in gameDefinition.moves) {
         const moveFn = gameDefinition.moves[moveName];
-        if (!moveFn) {
-            throw new Error(`Move ${moveName} not found`);
-        }
 
-        const newState = moveFn(state, gameData, args);
-        setState(newState);
-        setGameData({
-            players: gameData.players, 
-            currentPlayer: (gameData.currentPlayer + 1) % nPlayers,
-         });
-    };
+        clientMoves[moveName] = (arg: any) => {
+            const newState = moveFn(state, gameData, arg);
+            setState(newState);
+            setGameData({
+                players: gameData.players, 
+                currentPlayer: (gameData.currentPlayer + 1) % nPlayers,
+            });
+        };
+    }
 
     return {
         state,
         gameData,
-        moves,
+        moves: clientMoves,
     };
 }

@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { GameState } from "./game-state";
-import React from "react";
-import { GameContext, TGameContext } from "../../game-lib/game-context";
+import { useGameContext } from "./use-game-context";
 
 const squareSize = "50px";
 
@@ -34,12 +32,6 @@ const BoardDiv = styled.div`
     align-items: center;
 `;
 
-function useGameContext() {
-    const game = React.useContext(GameContext);
-    if (!game) throw new Error("GameContext not found");
-    return game as TGameContext<GameState>;
-}
-
 // TicTacToe board
 export function Board() {
     const {state, moves} = useGameContext();
@@ -47,7 +39,7 @@ export function Board() {
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++){
             const index = `${row}-${col}`;
-            const onClick= () => moves("setSquare", {row, col});
+            const onClick= () => moves.setSquare({row, col});
 
             squares.push(<Square 
                 key={index}
@@ -58,14 +50,10 @@ export function Board() {
         }
     } 
     
-    const handleReset = () => {
-        moves("reset", null);
-    };
-
     return (
         <BoardDiv>
             <Grid>{squares}</Grid>
-            <button onClick={handleReset}>Reset</button>
+            <button onClick={() => moves.reset()}>Reset</button>
         </BoardDiv>
     );
 }

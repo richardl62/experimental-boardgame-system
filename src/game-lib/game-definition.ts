@@ -7,6 +7,6 @@ export interface GameDefinition<TGameState> {
 
     initialState: (context: GameData) => TGameState;
     moves: {
-        [moveName: string]: (state: TGameState, context: GameData, args: any) => TGameState;
+        [moveName: string]: (state: TGameState, context: GameData, arg: any) => TGameState;
     };
 }
