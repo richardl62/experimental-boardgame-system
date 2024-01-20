@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGameDataAndMoves } from './game-lib/use-client-game-data';
-import { gameDefinition } from './games/tic-tac-toe/definition';
-import { Board } from './games/tic-tac-toe/board';
+import { gameDefinition } from './games/tic-tac-toe/actions/definition';
+import { Board } from './games/tic-tac-toe/board/board';
 import { ClientGameContext } from './game-lib/client-game-data-context';
 import { ClientGameData } from './game-lib/game-data';
 

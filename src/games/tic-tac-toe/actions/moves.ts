@@ -1,4 +1,4 @@
-import { BasicGameData } from "../../game-lib/game-data";
+import { BasicGameData } from "../../../game-lib/game-data";
 import { GameState, initialState } from "./game-state";
 
 function setSquare (

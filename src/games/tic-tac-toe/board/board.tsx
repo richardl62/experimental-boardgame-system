@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useGameContext } from "./use-game-context";
+import { useGameContext } from "../actions/use-game-context";
 
 const squareSize = "50px";
 
