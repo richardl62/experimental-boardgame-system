@@ -1,12 +1,12 @@
-import { GameContext } from "./game-context";
+import { GameData } from "./game-data";
 
 export interface GameDefinition<TGameState> {
     name: string;
     minPlayers: number;
     maxPlayers: number;
 
-    initialState: (context: GameContext) => TGameState;
+    initialState: (context: GameData) => TGameState;
     moves: {
-        [moveName: string]: (state: TGameState, context: GameContext, args: unknown) => TGameState;
+        [moveName: string]: (state: TGameState, context: GameData, args: any) => TGameState;
     };
 }

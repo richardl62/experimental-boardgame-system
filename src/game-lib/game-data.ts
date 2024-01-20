@@ -1,8 +1,9 @@
+// High-level game data, i.e. data that is not specific to a particular game.
 interface PlayerData {
     name: string;
 }
 
-export class GameContext {
+export class GameData {
     constructor(nPlayers: number) {
         this.players = [];
         for (let i = 0; i < nPlayers; i++) {

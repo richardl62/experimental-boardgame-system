@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { GameDefinition } from "./game-definition";
-import { GameContext } from "./game-context";
+import { GameData } from "./game-data";
 
 
-export function useGamePlay<TGameState>(
+export function useGame<TGameState>(
     gameDefinition: GameDefinition<TGameState>,
     nPlayers: number
 ) {
-    const [context, setContext] = useState<GameContext>(new GameContext(nPlayers));
-    const [state, setState] = useState<TGameState>(gameDefinition.initialState(context));
+    const [gameData, setGameData] = useState<GameData>(new GameData(nPlayers));
+    const [state, setState] = useState<TGameState>(gameDefinition.initialState(gameData));
 
     if(nPlayers < gameDefinition.minPlayers || nPlayers > gameDefinition.maxPlayers) {
         throw new Error(`Invalid number of players: ${nPlayers}`);
@@ -20,17 +20,17 @@ export function useGamePlay<TGameState>(
             throw new Error(`Move ${moveName} not found`);
         }
 
-        const newState = moveFn(state, context, args);
+        const newState = moveFn(state, gameData, args);
         setState(newState);
-        setContext({
-            players: context.players, 
-            currentPlayer: (context.currentPlayer + 1) % nPlayers,
+        setGameData({
+            players: gameData.players, 
+            currentPlayer: (gameData.currentPlayer + 1) % nPlayers,
          });
     };
 
     return {
         state,
-        context,
+        gameData,
         moves,
     };
 }

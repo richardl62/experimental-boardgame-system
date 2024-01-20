@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { GameState } from "./definition";
-import { GameContext } from "../../game-lib/game-context";
+import { GameState } from "./game-state";
+import { GameData } from "../../game-lib/game-data";
 
 const squareSize = "50px";
 
@@ -28,22 +28,16 @@ const Grid = styled.div`
 `
 
 // TicTacToe board
-export function Board({state, context, moves} : {
+export function Board({state, gameData: context, moves} : {
     state: GameState,
-    context: GameContext,
+    gameData: GameData,
     moves: (moveName: string, args: unknown) => void
 }) {
     const squares : JSX.Element[] = [];
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++){
             const index = `${row}-${col}`;
-            const onClick= () => moves("setSquare", 
-                {
-                    row, 
-                    col, 
-                    value: context.currentPlayer === 0 ? "0" : "X",
-                }
-            );
+            const onClick= () => moves("setSquare", {row, col});
 
             squares.push(<Square 
                 key={index}
