@@ -1,16 +1,16 @@
-import { GameData } from "../../game-lib/game-data";
+import { BasicGameData } from "../../game-lib/game-data";
 import { GameState, initialState } from "./game-state";
 
 function setSquare (
-    state: GameState, 
-    context: GameData, 
+    gameData: BasicGameData<GameState>, 
     arg: {row: number, col: number}
 ) : GameState {
     const { row, col } = arg;
+    const { state, currentPlayer } = gameData;
 
     const newBoard : GameState["board"] = [...state.board];
     newBoard[row] = [...newBoard[row]];
-    newBoard[row][col] = context.currentPlayer === 0 ? "X" : "O";        
+    newBoard[row][col] = currentPlayer === 0 ? "X" : "O";        
     
     return { 
         ...state, 
@@ -19,8 +19,7 @@ function setSquare (
 }
 
 function reset (
-    _state: GameState, 
-    _context: GameData, 
+    _gameData: BasicGameData<GameState>, 
     _arg: void
 ) : GameState {
     return initialState();
@@ -31,12 +30,7 @@ export const moves = {
     reset,
 } as const;
 
-// type of system moves, but without the first two arguments
-// export type SystemMoves = {
-//     [K in keyof typeof systemMoves]: (
-//         arg: Parameters<typeof systemMoves[K]>[2]
-//     ) => ReturnType<typeof systemMoves[K]>
-// };
+// To do: Add generic tool to derive this from moves.
 export interface ClientMoves {
     setSquare: (arg: {row: number, col: number}) => void;
     reset: () => void;

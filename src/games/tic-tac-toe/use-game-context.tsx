@@ -1,10 +1,10 @@
 import { GameState } from "./game-state";
 import React from "react";
-import { GameContext } from "../../game-lib/game-context";
+import { ClientGameContext } from "../../game-lib/client-game-data-context";
 import { ClientMoves } from "./moves";
 
 export function useGameContext() {
-    const game = React.useContext(GameContext);
+    const game = React.useContext(ClientGameContext);
     if (!game) throw new Error("GameContext not found");
     return {
         ...game,

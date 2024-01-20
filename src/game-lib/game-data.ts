@@ -1,17 +1,13 @@
-// High-level game data, i.e. data that is not specific to a particular game.
-interface PlayerData {
-    name: string;
+import { PlayerData } from "./player-data";
+
+// Data for a specific game, serialisation so it can be sent to a server.
+export interface BasicGameData<GameState = unknown> {
+    playerData: PlayerData[];
+    currentPlayer: number;
+    
+    state: GameState;
 }
 
-export class GameData {
-    constructor(nPlayers: number) {
-        this.players = [];
-        for (let i = 0; i < nPlayers; i++) {
-            this.players.push({ name: `Player ${i + 1}` });
-        }
-        
-        this.currentPlayer = 0;
-    }
-    players: PlayerData[];
-    currentPlayer: number;
+export interface ClientGameData extends BasicGameData {
+    moves: Record<string, (arg: unknown) => void>;
 }

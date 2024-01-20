@@ -1,12 +1,10 @@
-import { GameData } from "./game-data";
+import { BasicGameData } from "./game-data";
 
-export interface GameDefinition<TGameState> {
+export interface GameDefinition<GameState = any> {
     name: string;
     minPlayers: number;
     maxPlayers: number;
 
-    initialState: (context: GameData) => TGameState;
-    moves: {
-        [moveName: string]: (state: TGameState, context: GameData, arg: any) => TGameState;
-    };
+    initialState: () => GameState;
+    moves: Record<string, (gameData: BasicGameData<GameState>, arg: any) => GameState>;
 }

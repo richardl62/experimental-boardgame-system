@@ -1,16 +1,15 @@
 import React from 'react';
-import { useGame } from './game-lib/use-game';
+import { useGameDataAndMoves } from './game-lib/use-client-game-data';
 import { gameDefinition } from './games/tic-tac-toe/definition';
-import { GameState } from "./games/tic-tac-toe/game-state";
 import { Board } from './games/tic-tac-toe/board';
-import { GameContext } from './game-lib/game-context';
+import { ClientGameContext } from './game-lib/client-game-data-context';
 
 function App() {
-  const game = useGame<GameState>(gameDefinition, 2);
+  const game = useGameDataAndMoves(gameDefinition, {nPlayers: 2});
 
-  return <GameContext.Provider value={game}>
+  return <ClientGameContext.Provider value={game}>
     <Board />
-  </GameContext.Provider>;
+  </ClientGameContext.Provider>;
 }
 
 export default App;
