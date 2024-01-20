@@ -18,7 +18,7 @@ function setSquare (
     };   
 }
 
-function restart (
+function reset (
     _state: GameState, 
     _context: GameData, 
     _arg: void
@@ -28,7 +28,7 @@ function restart (
 
 export const moves = {
     setSquare,
-    restart,
+    reset,
 } as const;
 
 // type of system moves, but without the first two arguments
@@ -39,5 +39,5 @@ export const moves = {
 // };
 export interface ClientMoves {
     setSquare: (arg: {row: number, col: number}) => void;
-    restart: () => void;
+    reset: () => void;
 }

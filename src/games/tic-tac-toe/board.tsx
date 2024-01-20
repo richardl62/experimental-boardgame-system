@@ -27,6 +27,13 @@ const Grid = styled.div`
 
     margin: calc(${squareSize} / 4);
 `
+
+const BoardDiv = styled.div`
+    display: inline flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
 function useGameContext() {
     const game = React.useContext(GameContext);
     if (!game) throw new Error("GameContext not found");
@@ -51,5 +58,14 @@ export function Board() {
         }
     } 
     
-    return <Grid>{squares}</Grid>;
+    const handleReset = () => {
+        moves("reset", null);
+    };
+
+    return (
+        <BoardDiv>
+            <Grid>{squares}</Grid>
+            <button onClick={handleReset}>Reset</button>
+        </BoardDiv>
+    );
 }
