@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { GameDefinition } from "./game-definition";
-import { BasicGameData, ClientGameData } from "./game-data";
-import { makePlayerData } from "./player-data";
+import { makeSimplePlayerData } from "./player-data";
+import { GameData, GameInstance } from "./game-instance";
 
-
-export function useGameDataAndMoves(
+// Create and offilne game instance.
+export function useOfflineGameInstance(
     gameDefinition: GameDefinition,
     {nPlayers}: {nPlayers: number}
-) : Omit<ClientGameData, "viewingPlayer"> {
-    const [gameData, setGameData] = useState<BasicGameData>({
-        playerData: makePlayerData(nPlayers),
+) : GameInstance {
+    const [gameData, setGameData] = useState<Omit<GameData,"moves">>({
+        playerData: makeSimplePlayerData(nPlayers),
         currentPlayer: 0,
 
         state: gameDefinition.initialState(),

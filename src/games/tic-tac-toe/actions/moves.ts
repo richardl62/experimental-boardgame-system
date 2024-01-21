@@ -1,8 +1,8 @@
-import { BasicGameData } from "../../../game-lib/game-data";
+import { GameData } from "../../../game-lib/game-instance";
 import { GameState, initialState } from "./game-state";
 
 function setSquare (
-    gameData: BasicGameData<GameState>, 
+    gameData: GameData<GameState>, 
     arg: {row: number, col: number}
 ) : GameState {
     const { row, col } = arg;
@@ -19,7 +19,7 @@ function setSquare (
 }
 
 function reset (
-    _gameData: BasicGameData<GameState>, 
+    _gameData: GameData<GameState>, 
     _arg: void
 ) : GameState {
     return initialState();

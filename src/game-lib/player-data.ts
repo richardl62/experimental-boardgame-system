@@ -3,7 +3,8 @@ export interface PlayerData {
     name: string;
 }
 
-export function makePlayerData(nPlayers: number) {
+// Create player data for an offline game.
+export function makeSimplePlayerData(nPlayers: number) {
     const playerData = [];
     for (let i = 0; i < nPlayers; i++) {
         playerData.push({ name: `Player ${i + 1}` });

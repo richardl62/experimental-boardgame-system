@@ -1,20 +1,19 @@
 import React from 'react';
-import { useGameDataAndMoves } from './game-lib/use-client-game-data';
 import { gameDefinition } from './games/tic-tac-toe/actions/definition';
 import { Board } from './games/tic-tac-toe/board/board';
-import { ClientGameContext } from './game-lib/client-game-data-context';
-import { ClientGameData } from './game-lib/game-data';
+import { ClientGame, ClientGameContext } from './game-lib/client-game';
+import { useOfflineGameInstance } from './game-lib/use-offline-game-instance';
 
 const nPlayers = 2; // KLUDGE: hard-coded for now
 
-function BoardView({gameData} : {gameData: ClientGameData}) {
+function BoardView({gameData} : {gameData: ClientGame}) {
   return <ClientGameContext.Provider value={gameData}>
     <Board />
   </ClientGameContext.Provider>;
 }
 
 function App() {
-  const gameAndMoves = useGameDataAndMoves(gameDefinition, {nPlayers});
+  const gameAndMoves = useOfflineGameInstance(gameDefinition, {nPlayers});
 
   return <>
     <BoardView gameData={{...gameAndMoves, viewingPlayer: 0}} />
