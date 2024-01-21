@@ -1,5 +1,7 @@
 import { GameData } from "./game-instance";
 
+export type MoveFunction<GameState> = (state: GameState, data: GameData, arg: any) => GameState;
+
 // Information about a game, used when creating a new game instance.
 export interface GameDefinition<GameState = any> {
     name: string;
@@ -7,5 +9,5 @@ export interface GameDefinition<GameState = any> {
     maxPlayers: number;
 
     initialState: () => GameState;
-    moves: Record<string, (data: GameData<GameState>, arg: any) => GameState>;
+    moves: Record<string, MoveFunction<GameState>>;
 }

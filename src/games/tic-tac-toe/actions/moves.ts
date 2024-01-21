@@ -1,12 +1,13 @@
-import { GameData } from "../../../game-lib/game-instance";
+import { MoveFunction } from "../../../game-lib/game-definition";
 import { GameState, initialState } from "./game-state";
 
-function setSquare (
-    gameData: GameData<GameState>, 
+const setSquare: MoveFunction<GameState> = (
+    state, 
+    gameData,
     arg: {row: number, col: number}
-) : GameState {
+) => {
     const { row, col } = arg;
-    const { state, currentPlayer } = gameData;
+    const { currentPlayer } = gameData;
 
     const newBoard : GameState["board"] = [...state.board];
     newBoard[row] = [...newBoard[row]];
@@ -18,10 +19,11 @@ function setSquare (
     };   
 }
 
-function reset (
-    _gameData: GameData<GameState>, 
+const reset: MoveFunction<GameState> = (
+    _state,
+    _gameData, 
     _arg: void
-) : GameState {
+) => {
     return initialState();
 }
 

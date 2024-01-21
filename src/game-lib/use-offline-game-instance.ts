@@ -1,37 +1,41 @@
 import { useState } from "react";
 import { GameDefinition } from "./game-definition";
 import { makeSimplePlayerData } from "./player-data";
-import { GameData, GameInstance } from "./game-instance";
+import { GameData, GameInstance, GameInstanceMoveFunction } from "./game-instance";
 
 // Create and offilne game instance.
 export function useOfflineGameInstance(
     gameDefinition: GameDefinition,
     {nPlayers}: {nPlayers: number}
 ) : GameInstance {
-    const [gameData, setGameData] = useState<Omit<GameData,"moves">>({
+    const [gameData, setGameData] = useState<GameData>({
         playerData: makeSimplePlayerData(nPlayers),
         currentPlayer: 0,
-
-        state: gameDefinition.initialState(),
     });
+    const [state, setState] = useState(gameDefinition.initialState());
 
     // Inefficient, but simple. (Functions are recreated on every call.)
-    const clientMoves: Record<string, (arg: unknown) => void> = {};
+    const wrappedMoves: Record<string, GameInstanceMoveFunction> = {};
     for (const moveName in gameDefinition.moves) {
-        const moveFn = gameDefinition.moves[moveName];
+        const givenMove = gameDefinition.moves[moveName];
 
-        clientMoves[moveName] = (arg) => {
-            const newGameState = moveFn(gameData, arg);
+        const wrappedMove : GameInstanceMoveFunction = (arg) => {
+   
+            const newGameState = givenMove(state, gameData, arg);
+            setState(newGameState);
             setGameData({
                 ...gameData, 
-                state: newGameState,
                 currentPlayer: (gameData.currentPlayer + 1) % nPlayers,
             });
-        };
-    }
+        }
+
+        wrappedMoves[moveName] = wrappedMove;
+    };
+
 
     return {
         ...gameData,
-        moves: clientMoves,
+        state,
+        moves: wrappedMoves,
     };
 }
