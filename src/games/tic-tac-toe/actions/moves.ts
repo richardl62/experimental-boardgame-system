@@ -1,4 +1,4 @@
-import { ServerMoveFunction } from "../../../game-lib/game-definition";
+import { ServerMoveFunction } from "../../../game-definition";
 import { GameState, initialState } from "./game-state";
 
 const setSquare: ServerMoveFunction<GameState> = (

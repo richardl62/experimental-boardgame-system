@@ -1,8 +1,8 @@
 import React from 'react';
-import { gameDefinition } from './games/tic-tac-toe/actions/definition';
-import { Board } from './games/tic-tac-toe/board/board';
-import { ClientGame, ClientGameContext } from './game-lib/client-game';
-import { useOfflineGameInstance } from './game-lib/use-offline-game-instance';
+import { gameDefinition } from '../games/tic-tac-toe/actions/definition';
+import { Board } from '../games/tic-tac-toe/board/board';
+import { ClientGame, ClientGameContext } from './client-game';
+import { useOfflineMatch } from '../server-lib/use-offline-match';
 
 const nPlayers = 2; // KLUDGE: hard-coded for now
 
@@ -13,7 +13,7 @@ function BoardView({gameData} : {gameData: ClientGame}) {
 }
 
 function App() {
-  const gameAndMoves = useOfflineGameInstance(gameDefinition, {nPlayers});
+  const gameAndMoves = useOfflineMatch(gameDefinition, {nPlayers});
 
   return <>
     <BoardView gameData={{...gameAndMoves, viewingPlayer: 0}} />

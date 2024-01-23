@@ -1,10 +1,10 @@
-import { GameData } from "./game-instance";
+import { GenericMatchData } from "./server-lib/match";
 
 // A move function as run on a server (or pseudo-server).
 // Must be a pure function, i.e. no side effects.
 export type ServerMoveFunction<GameState> = (
     state: GameState, 
-    data: GameData,
+    data: GenericMatchData,
     active: {activePlayer: number}, 
     arg: any
 ) => GameState;

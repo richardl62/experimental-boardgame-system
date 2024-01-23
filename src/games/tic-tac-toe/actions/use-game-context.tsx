@@ -1,5 +1,5 @@
 import React from "react";
-import { ClientGameContext } from "../../../game-lib/client-game";
+import { ClientGameContext } from "../../../app/client-game";
 import { GameState } from "./game-state";
 import { ClientMoves } from "./moves";
 

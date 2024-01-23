@@ -1,5 +1,5 @@
 
-import { GameDefinition } from "../../../game-lib/game-definition";
+import { GameDefinition } from "../../../game-definition";
 import { GameState, initialState } from "./game-state";
 import { moves } from "./moves";
 

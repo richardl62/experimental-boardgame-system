@@ -1,14 +1,13 @@
 import { useState } from "react";
-import { GameDefinition } from "./game-definition";
-import { makeSimplePlayerData } from "./player-data";
-import { GameData, GameInstance, ClientMoveFunction } from "./game-instance";
+import { GameDefinition } from "../game-definition";
+import { GenericMatchData, Match, ClientMoveFunction } from "./match";
 
 // Create and offilne game instance.
-export function useOfflineGameInstance(
+export function useOfflineMatch(
     gameDefinition: GameDefinition,
     {nPlayers}: {nPlayers: number}
-) : GameInstance {
-    const [gameData, setGameData] = useState<GameData>({
+) : Match {
+    const [gameData, setGameData] = useState<GenericMatchData>({
         playerData: makeSimplePlayerData(nPlayers),
         currentPlayer: 0,
     });
@@ -38,4 +37,14 @@ export function useOfflineGameInstance(
         state,
         moves: wrappedMoves,
     };
+}
+
+// Create player data for an offline game.
+function makeSimplePlayerData(nPlayers: number) {
+    const playerData = [];
+    for (let i = 0; i < nPlayers; i++) {
+        playerData.push({ name: `Player ${i + 1}` });
+    }
+
+    return playerData;
 }
