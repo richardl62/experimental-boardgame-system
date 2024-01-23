@@ -13,13 +13,13 @@ const BoardDiv = styled.div`
 
 // TicTacToe board
 export function Board() {
-    const {moves, viewingPlayer} = useGameContext();
+    const {moves} = useGameContext();
 
     return (
         <BoardDiv>
             <Names />
             <Squares/>
-            <button onClick={() => moves.reset({activePlayer: viewingPlayer})}>Reset</button>
+            <button onClick={() => moves.reset()}>Reset</button>
         </BoardDiv>
     );
 }

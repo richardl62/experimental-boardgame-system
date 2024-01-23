@@ -1,10 +1,10 @@
 import React from "react";
-import { ClientGameContext } from "../../../app/client-game";
+import { ClientMatchContext } from '../../../app/board-wrapper';
 import { GameState } from "./game-state";
 import { ClientMoves } from "./moves";
 
 export function useGameContext() {
-    const game = React.useContext(ClientGameContext);
+    const game = React.useContext(ClientMatchContext);
     if (!game) throw new Error("GameContext not found");
     return {
         ...game,

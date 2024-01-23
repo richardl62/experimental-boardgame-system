@@ -30,6 +30,6 @@ export const moves = {
 
 // To do: Add generic tool to derive this from moves.
 export interface ClientMoves {
-    setSquare: (param : {activePlayer: number, arg: {row: number, col: number}}) => void;
-    reset: (param : {activePlayer: number}) => void;
+    setSquare: (arg: {row: number, col: number}) => void;
+    reset:  (arg: void) => void;
 }

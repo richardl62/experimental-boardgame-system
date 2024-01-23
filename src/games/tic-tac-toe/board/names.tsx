@@ -16,12 +16,12 @@ const Name = styled.div<{active: boolean}>`
 `;
 
 export function Names() {
-    const {playerData, currentPlayer, viewingPlayer} = useGameContext();
+    const {playerData, currentPlayer, activePlayer} = useGameContext();
 
     return <NamesDiv>
         {playerData.map((playerData, id) => {
             let name = playerData.name;
-            if (viewingPlayer === id) {
+            if (activePlayer === id) {
                 name += " (you)";
             }
 
