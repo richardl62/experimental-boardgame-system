@@ -1,14 +1,9 @@
-import { ServerMoveFunction } from "../../../game-definition";
+import { GameDefintionMove } from "../../../game-definition";
 import { GameState, initialState } from "./game-state";
 
-const setSquare: ServerMoveFunction<GameState> = (
-    state, 
-    gameData,
-    {activePlayer},
-    arg: {row: number, col: number}
+const setSquare: GameDefintionMove<GameState, {row: number, col: number}> = (
+    { state, activePlayer,  currentPlayer, arg: { row, col } } 
 ) => {
-    const { row, col } = arg;
-    const { currentPlayer } = gameData;
     if (currentPlayer !== activePlayer) {
         throw new Error("Not your turn!");
     }
@@ -22,11 +17,8 @@ const setSquare: ServerMoveFunction<GameState> = (
     };   
 }
 
-const reset: ServerMoveFunction<GameState> = (
-    _state,
-    _gameData,
-    _active, 
-    _arg: void
+const reset: GameDefintionMove<GameState, void> = (
+    _arg
 ) => {
     return initialState();
 }
@@ -38,6 +30,6 @@ export const moves = {
 
 // To do: Add generic tool to derive this from moves.
 export interface ClientMoves {
-    setSquare: ({activePlayer} : {activePlayer: number}, arg: {row: number, col: number}) => void;
-    reset: ({activePlayer} : {activePlayer: number}) => void;
+    setSquare: (param : {activePlayer: number, arg: {row: number, col: number}}) => void;
+    reset: (param : {activePlayer: number}) => void;
 }

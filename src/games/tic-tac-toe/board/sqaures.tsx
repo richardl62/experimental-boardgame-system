@@ -32,7 +32,7 @@ export function Squares() {
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++){
             const index = `${row}-${col}`;
-            const onClick= () => moves.setSquare({activePlayer: viewingPlayer}, {row, col});
+            const onClick= () => moves.setSquare({activePlayer: viewingPlayer, arg: {row, col}});
 
             squares.push(<Square 
                 key={index}
