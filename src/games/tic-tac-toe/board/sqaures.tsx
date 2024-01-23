@@ -26,13 +26,13 @@ const Grid = styled.div`
     margin: calc(${squareSize} / 4);
 `
 export function Squares() {
-    const {state, moves} = useGameContext();
+    const {state, moves, viewingPlayer} = useGameContext();
     const squares : JSX.Element[] = [];
     
     for (let row = 0; row < 3; row++) {
         for (let col = 0; col < 3; col++){
             const index = `${row}-${col}`;
-            const onClick= () => moves.setSquare({row, col});
+            const onClick= () => moves.setSquare({activePlayer: viewingPlayer}, {row, col});
 
             squares.push(<Square 
                 key={index}
