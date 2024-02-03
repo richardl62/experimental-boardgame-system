@@ -1,5 +1,6 @@
 
 import { GameDefinition, GameDefintionMove, PlayerData } from "../shared/game-definition";
+import { WsMoveData } from "../shared/types";
 import {Match, MatchMove } from "./match";
 import useWebSocket from 'react-use-websocket';
 
@@ -48,13 +49,13 @@ function makeMatchMove(
 ) : MatchMove {
     return ({ arg, activePlayer }) => {
 
-        const message = {
+        const data : WsMoveData = {
             move: moveName,
             activePlayer, // Does this need to be sent?
             arg,
         };
 
-        sendJsonMessage(message);
+        sendJsonMessage(data);
     };
 }
 
