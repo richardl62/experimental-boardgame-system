@@ -1,6 +1,6 @@
 import React from 'react';
 import { gameDefinition } from '../shared/tic-tac-toe/definition';
-import { Board } from '../board/tic-tac-toe/board';
+import { Board } from '../games/tic-tac-toe/board';
 import { useOnlineMatch } from '../server-lib/use-online-match';
 import { BoardWrapper } from './board-wrapper';
 
