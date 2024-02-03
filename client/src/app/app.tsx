@@ -1,22 +1,8 @@
 import React from 'react';
-import { gameDefinition } from '../games/tic-tac-toe/actions/definition';
-import { Board } from '../games/tic-tac-toe/board/board';
-import { useOfflineMatch } from '../server-lib/use-offline-match';
-import { BoardWrapper } from './board-wrapper';
-
+import { OnlineGame } from './online-game';
 
 function App() {
-  const match = useOfflineMatch(gameDefinition, {nPlayers: 2 /* for now */});
-
-  return <>
-    <BoardWrapper match={match} activePlayer={0} > 
-      <Board/>
-    </BoardWrapper>
-
-    <BoardWrapper match={match} activePlayer={1} > 
-      <Board/>
-    </BoardWrapper>
-  </>;
+  return <OnlineGame/>;
 }
 
 export default App;

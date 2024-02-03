@@ -26,6 +26,7 @@ const wss = new Server({ server });
 wss.on('connection', ws => {
   // Add the new client to the set
   clients.add(ws);
+  ws.send(JSON.stringify(gameState));
   console.log('Client connected - now: ', clients.size);
 
   ws.on('message', message => {

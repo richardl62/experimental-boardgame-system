@@ -19,7 +19,6 @@ export function useOfflineMatch(
         matchMoves[moveName] = makeMatchMove(givenMove, match, setMatch);
     };
 
-
     return {
         ...match,
         moves: matchMoves,
