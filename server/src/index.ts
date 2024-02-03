@@ -2,12 +2,14 @@ import express, { Express, Request, Response , Application } from 'express';
 import { welcomeMessage } from './welcomeMessage';
 import { Server, WebSocket as WSWebSocket  } from 'ws'; // Import the ws library
 
-import { gameDefinition as ticTacToe } from './games/tic-tac-toe/actions/definition';
+import { gameDefinition } from './games/tic-tac-toe/actions/definition';
+import { GameDefinition } from './games/game-definition';
+import { GameState } from './games/tic-tac-toe/actions/game-state';
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
 
-const gameState = ticTacToe.initialState();
+let gameState = gameDefinition.initialState();
 
 app.get('/', (req: Request, res: Response) => {
   res.send(`${welcomeMessage()}`);
@@ -31,8 +33,8 @@ wss.on('connection', ws => {
 
   ws.on('message', message => {
     try {
-      const receivedObject = JSON.parse(JSON.parse(message.toString()));
-      console.log('Received object:', receivedObject);
+      const receivedObject = JSON.parse(message.toString());
+      gameState = applyMove(gameState, gameDefinition, receivedObject);
     } catch (error) {
       console.error('Error parsing JSON message:', error);
     }
@@ -47,8 +49,27 @@ wss.on('connection', ws => {
 });
 
 // Function to send a message to all connected clients
-function broadcast(data: string) {
+function broadcast(data: unknown) {
   for (const client of clients) {
-    client.send(data);
+    client.send(JSON.stringify(data));
   }
 }
+
+function applyMove(gameState: GameState, gameDefinition: GameDefinition, receivedObject: any): any {
+  const { move, activePlayer, arg } = receivedObject;
+  if(typeof move !== 'string' || typeof activePlayer !== "number") {
+    throw new Error('Unexpected parameter to appplyMove');
+  }
+  const gameMove = gameDefinition.moves[move];
+  if(!gameMove) {
+    throw new Error(`Unknown move: ${move}`);
+  }
+
+  const newGameState = gameMove({
+    state: gameState, 
+    activePlayer,
+    currentPlayer: 0, // For now. 
+    arg});
+
+}
+
