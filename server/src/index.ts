@@ -2,9 +2,10 @@ import express, { Express, Request, Response , Application } from 'express';
 import { welcomeMessage } from './welcomeMessage';
 import { Server, WebSocket as WSWebSocket  } from 'ws'; // Import the ws library
 
-import { gameDefinition } from './games/tic-tac-toe/actions/definition';
-import { GameDefinition } from './games/game-definition';
-import { GameState } from './games/tic-tac-toe/actions/game-state';
+import { gameDefinition } from './shared/tic-tac-toe/definition';
+import { GameDefinition } from './shared/game-definition';
+import { GameState } from './shared/tic-tac-toe/game-state';
+import { WsMoveData } from './shared/types';
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
@@ -33,8 +34,11 @@ wss.on('connection', ws => {
 
   ws.on('message', message => {
     try {
-      const receivedObject = JSON.parse(message.toString());
-      gameState = applyMove(gameState, gameDefinition, receivedObject);
+      const str = message.toString();
+      console.log('Received message:', str);
+      const receivedObject = JSON.parse(str);
+      gameState = applyMove(gameState, gameDefinition, receivedObject as WsMoveData);
+      broadcast(gameState);
     } catch (error) {
       console.error('Error parsing JSON message:', error);
     }
@@ -51,12 +55,14 @@ wss.on('connection', ws => {
 // Function to send a message to all connected clients
 function broadcast(data: unknown) {
   for (const client of clients) {
-    client.send(JSON.stringify(data));
+    const str = JSON.stringify(data);
+    console.log('Sending message:', str);
+    client.send(str);
   }
 }
 
-function applyMove(gameState: GameState, gameDefinition: GameDefinition, receivedObject: any): any {
-  const { move, activePlayer, arg } = receivedObject;
+function applyMove(gameState: GameState, gameDefinition: GameDefinition, moveData: WsMoveData): any {
+  const { move, activePlayer, arg } = moveData;
   if(typeof move !== 'string' || typeof activePlayer !== "number") {
     throw new Error('Unexpected parameter to appplyMove');
   }
@@ -65,11 +71,11 @@ function applyMove(gameState: GameState, gameDefinition: GameDefinition, receive
     throw new Error(`Unknown move: ${move}`);
   }
 
-  const newGameState = gameMove({
+  return gameMove({
     state: gameState, 
     activePlayer,
     currentPlayer: 0, // For now. 
-    arg});
-
+    arg
+  });
 }
 

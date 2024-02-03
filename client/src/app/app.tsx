@@ -2,7 +2,7 @@ import React from 'react';
 import { OnlineGame } from './online-game';
 import { OfflineGame } from './offline-game';
 
-const isOnline = false;
+const isOnline = true;
 function App() {
   return isOnline ? <OnlineGame/> : <OfflineGame/>;
 }
