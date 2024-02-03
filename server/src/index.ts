@@ -1,18 +1,16 @@
 import express, { Express, Request, Response , Application } from 'express';
-import dotenv from 'dotenv';
 import { welcomeMessage } from './welcomeMessage';
 import { Server, WebSocket as WSWebSocket  } from 'ws'; // Import the ws library
 
-//For env File 
-dotenv.config();
+import { gameDefinition as ticTacToe } from './games/tic-tac-toe/actions/definition';
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
 
-let count = 0;
+const gameState = ticTacToe.initialState();
+
 app.get('/', (req: Request, res: Response) => {
-  ++count
-  res.send(`${welcomeMessage()} - ${count}`);
+  res.send(`${welcomeMessage()}`);
 });
 
 // Start the HTTP server
@@ -29,18 +27,20 @@ wss.on('connection', ws => {
   // Add the new client to the set
   clients.add(ws);
   console.log('Client connected - now: ', clients.size);
-  broadcast(`Number of clients: ${clients.size}`);
 
   ws.on('message', message => {
-    console.log(`Received: ${message}`);
-    broadcast(`Message: ${message}`+"!");
+    try {
+      const receivedObject = JSON.parse(JSON.parse(message.toString()));
+      console.log('Received object:', receivedObject);
+    } catch (error) {
+      console.error('Error parsing JSON message:', error);
+    }
   });
 
   ws.on('close', () => {
     // Remove the client from the set
     clients.delete(ws);
     console.log('Client disconnected - now: ', clients.size);
-    broadcast(`Number of clients: ${clients.size}`);
   });
 
 });
