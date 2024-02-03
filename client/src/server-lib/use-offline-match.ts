@@ -45,10 +45,10 @@ function makeMatchMove(
     gameState: MatchOmittingMoves,
     setMatch: (match: MatchOmittingMoves) => void
 ) : MatchMove {
-    const { state, currentPlayer, playerData } = gameState;
+    const { state, currentPlayer } = gameState;
     return ({ activePlayer, arg }) => {
 
-        const newState = givenMove({state, currentPlayer, playerData, activePlayer, arg});
+        const newState = givenMove({state, currentPlayer, activePlayer, arg});
         setMatch({
             ...gameState,
             state: newState,

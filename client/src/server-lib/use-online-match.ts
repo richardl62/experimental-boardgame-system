@@ -1,5 +1,5 @@
 
-import { GameDefinition, PlayerData } from "../games/game-definition";
+import { GameDefinition, GameDefintionMove, PlayerData } from "../games/game-definition";
 import {Match, MatchMove } from "./match";
 import useWebSocket from 'react-use-websocket';
 
@@ -18,7 +18,7 @@ export function useOnlineMatch(
     gameDefinition: GameDefinition,
     {nPlayers}: {nPlayers: number}
 ) : OnlineMatchResult {
-    const { lastJsonMessage } = useWebSocket(socketUrl);
+    const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
     
     if (lastJsonMessage === null) {
         return {message: "Loading the server (well, maybe something has go wrong)..."};
@@ -27,7 +27,8 @@ export function useOnlineMatch(
     // Inefficient, but simple. (Functions are recreated on every call.)
     const matchMoves: Record<string, MatchMove> = {};
     for (const moveName in gameDefinition.moves) {
-        matchMoves[moveName] = () =>{throw new Error("Online moves not implemented")};
+        const givenMove = gameDefinition.moves[moveName];
+        matchMoves[moveName] = makeMatchMove(moveName, givenMove, sendJsonMessage);
     };
 
     const match: Match = {
@@ -40,6 +41,22 @@ export function useOnlineMatch(
     return {match};
 }
 
+function makeMatchMove(
+    moveName: string,
+    givenMove: GameDefintionMove<unknown, unknown>, 
+    sendJsonMessage: (message: unknown) => void,
+) : MatchMove {
+    return ({ arg, activePlayer }) => {
+
+        const message = {
+            move: moveName,
+            activePlayer, // Does this need to be sent?
+            arg,
+        };
+
+        sendJsonMessage(message);
+    };
+}
 
 function playerDataHACK(nPlayers: number) : PlayerData[]{
     const playerData : PlayerData[] = [];

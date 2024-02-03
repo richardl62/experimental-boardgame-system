@@ -2,7 +2,7 @@ import { PlayerData } from "../games/game-definition";
 
 // A move function as run on a client.
 export type MatchMove = (arg0: {
-    activePlayer: number,
+    activePlayer: number, // Is this needed?
     arg: unknown,
 }) => void;
 
