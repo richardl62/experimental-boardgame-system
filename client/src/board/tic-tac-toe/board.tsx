@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useGameContext } from "../actions/use-game-context";
+import { useGameContext } from "./use-game-context";
 import { Names } from "./names";
 import { Squares } from "./sqaures";
 

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GameDefinition, GameDefintionMove } from "../games/game-definition";
+import { GameDefinition, GameDefintionMove } from "../shared/game-definition";
 import {Match, MatchMove } from "./match";
 
 type MatchOmittingMoves = Omit<Match, "moves">;

@@ -1,4 +1,4 @@
-import { PlayerData } from "../games/game-definition";
+import { PlayerData } from "../shared/game-definition";
 
 // A move function as run on a client.
 export type MatchMove = (arg0: {

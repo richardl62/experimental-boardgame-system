@@ -1,5 +1,5 @@
 
-import { GameDefinition, GameDefintionMove, PlayerData } from "../games/game-definition";
+import { GameDefinition, GameDefintionMove, PlayerData } from "../shared/game-definition";
 import {Match, MatchMove } from "./match";
 import useWebSocket from 'react-use-websocket';
 
