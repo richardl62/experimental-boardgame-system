@@ -2,10 +2,12 @@ import express, { Express, Request, Response , Application } from 'express';
 import { welcomeMessage } from './welcomeMessage';
 import { Server, WebSocket as WSWebSocket  } from 'ws'; // Import the ws library
 
-import { gameDefinition } from './shared/tic-tac-toe/definition';
+import { games } from './shared/games';
 import { GameDefinition } from './shared/game-definition';
-import { GameState } from './shared/tic-tac-toe/game-state';
 import { WsMoveData } from './shared/types';
+
+const selectedGame = 'tictactoe'; // For now
+const gameDefinition = games[selectedGame];
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
@@ -61,7 +63,7 @@ function broadcast(data: unknown) {
   }
 }
 
-function applyMove(gameState: GameState, gameDefinition: GameDefinition, moveData: WsMoveData): any {
+function applyMove(gameState: unknown, gameDefinition: GameDefinition, moveData: WsMoveData): any {
   const { move, activePlayer, arg } = moveData;
   if(typeof move !== 'string' || typeof activePlayer !== "number") {
     throw new Error('Unexpected parameter to appplyMove');
