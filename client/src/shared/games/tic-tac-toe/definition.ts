@@ -1,9 +1,9 @@
 
-import { GameDefinition } from "../game-definition";
+import { GameDefinition } from "../../game-definition";
 import { GameState, initialState } from "./game-state";
 import { moves } from "./moves";
 
-export const gameDefinition : GameDefinition<GameState> = {  
+const gameDefinition : GameDefinition<GameState> = {  
     name: "Tic Tac Toe",
     minPlayers: 2,
     maxPlayers: 2,
@@ -12,3 +12,5 @@ export const gameDefinition : GameDefinition<GameState> = {
 
     moves,
 } as const;
+
+export default gameDefinition;

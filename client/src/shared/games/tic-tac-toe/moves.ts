@@ -1,4 +1,4 @@
-import { GameDefintionMove } from "../game-definition";
+import { GameDefintionMove } from "../../game-definition";
 import { GameState, initialState } from "./game-state";
 
 const setSquare: GameDefintionMove<GameState, {row: number, col: number}> = (

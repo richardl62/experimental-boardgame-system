@@ -1,8 +1,12 @@
 import React from 'react';
-import { gameDefinition } from '../shared/tic-tac-toe/definition';
-import { Board } from '../games/tic-tac-toe/board';
+import { games } from '../shared/games';
+import { boards } from '../boards';
 import { useOnlineMatch } from '../server-lib/use-online-match';
 import { BoardWrapper } from './board-wrapper';
+import { selectedGame } from '../config';
+
+const gameDefinition = games[selectedGame];  // for now
+const Board = boards[selectedGame];  // for now
 
 export function OnlineGame() {
   const onlineMatchResult = useOnlineMatch(gameDefinition, {nPlayers: 2 /* for now */});

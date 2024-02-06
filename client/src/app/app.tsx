@@ -1,10 +1,10 @@
 import React from 'react';
 import { OnlineGame } from './online-game';
 import { OfflineGame } from './offline-game';
+import { playOnline } from '../config';
 
-const isOnline = true;
 function App() {
-  return isOnline ? <OnlineGame/> : <OfflineGame/>;
+  return playOnline ? <OnlineGame/> : <OfflineGame/>;
 }
 
 export default App;

@@ -12,7 +12,7 @@ const BoardDiv = styled.div`
 `;
 
 // TicTacToe board
-export function Board() {
+export default function Board() {
     const {moves} = useGameContext();
 
     return (
