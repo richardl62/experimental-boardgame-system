@@ -1,7 +1,13 @@
 import React from "react";
 import { ClientMatchContext } from '../../app/board-wrapper';
 import { GameState } from "../../shared/games/plusminus/game-state";
-import { ClientMoves } from "../../shared/games/plusminus/moves";
+import { moves } from "../../shared/games/plusminus/moves";
+
+// To do: Make this a generic type
+type Moves = typeof moves;
+export type ClientMoves = {
+    [K in keyof Moves]: (arg1: Parameters<Moves[K]>[0]["arg"]) => void;
+};
 
 export function useGameContext() {
     const game = React.useContext(ClientMatchContext);
@@ -9,6 +15,6 @@ export function useGameContext() {
     return {
         ...game,
         state: game.state as GameState,
-        moves: game.moves as unknown as ClientMoves, // To do: fix this
+        moves: game.moves as ClientMoves,
     };
 }

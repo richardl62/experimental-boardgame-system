@@ -28,8 +28,3 @@ export const moves = {
     reset,
 } as const;
 
-// To do: Add generic tool to derive this from moves.
-export interface ClientMoves {
-    setSquare: (arg: {row: number, col: number}) => void;
-    reset:  (arg: void) => void;
-}

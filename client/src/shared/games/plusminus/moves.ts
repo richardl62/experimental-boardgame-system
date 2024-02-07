@@ -10,8 +10,3 @@ const add: GameDefintionMove<GameState, number> = (
 export const moves = {
     add,
 } as const;
-
-// To do: Add generic tool to derive this from moves.
-export interface ClientMoves {
-    add:  (arg: number) => void;
-}
