@@ -1,5 +1,5 @@
-import tictactoe from './tic-tac-toe/definition';
-import plusminus from './plus-minus/definition';
+import tictactoe from './tictactoe/definition';
+import plusminus from './plusminus/definition';
 
 export const games = {
     tictactoe,

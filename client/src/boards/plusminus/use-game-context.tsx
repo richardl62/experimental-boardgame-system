@@ -1,7 +1,7 @@
 import React from "react";
 import { ClientMatchContext } from '../../app/board-wrapper';
-import { GameState } from "../../shared/games/tic-tac-toe/game-state";
-import { ClientMoves } from "../../shared/games/tic-tac-toe/moves";
+import { GameState } from "../../shared/games/plusminus/game-state";
+import { ClientMoves } from "../../shared/games/plusminus/moves";
 
 export function useGameContext() {
     const game = React.useContext(ClientMatchContext);
