@@ -17,9 +17,15 @@ type OnlineMatchResult = {
 // Create and offilne game instance.
 export function useOnlineMatch(
     gameDefinition: GameDefinition,
-    {nPlayers}: {nPlayers: number}
+    {nPlayers, matchID}: {nPlayers: number, matchID: string},
 ) : OnlineMatchResult {
-    const { sendJsonMessage, lastJsonMessage } = useWebSocket(socketUrl);
+    
+    const url = new URL(socketUrl);
+    url.searchParams.append("matchID", matchID);
+
+    console.log(url.toString());
+
+    const { sendJsonMessage, lastJsonMessage } = useWebSocket(url.toString());
     
     if (lastJsonMessage === null) {
         return {message: "Loading the server (well, maybe something has go wrong)..."};

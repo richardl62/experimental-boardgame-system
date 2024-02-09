@@ -9,7 +9,9 @@ const gameDefinition = games[selectedGame];  // for now
 const Board = boards[selectedGame];  // for now
 
 export function OnlineGame() {
-  const onlineMatchResult = useOnlineMatch(gameDefinition, {nPlayers: 2 /* for now */});
+  const nPlayers = 2;  // for now
+  const matchID = "123";  // for now
+  const onlineMatchResult = useOnlineMatch(gameDefinition, {nPlayers, matchID});
 
   if (onlineMatchResult.message) {
     return <div>{onlineMatchResult.message}</div>;

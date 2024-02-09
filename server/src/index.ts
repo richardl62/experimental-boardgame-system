@@ -6,6 +6,7 @@ import { games } from './shared/games';
 import { GameDefinition } from './shared/game-definition';
 import { WsMoveData } from './shared/types';
 import { Match } from './shared/match';
+import url from 'url';
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
@@ -26,7 +27,17 @@ const wss = new Server({ server });
 const selectedGame = 'tictactoe'; // For now
 const match = new Match(games[selectedGame])
 
-wss.on('connection', ws => {
+wss.on('connection', (ws, req)  => {
+  console.log('New client connected', req.url);
+  if(req.url === undefined) {
+    console.error('No URL');
+    return;
+  }
+  const parsedUrl = url.parse(req.url, true); // Set second argument to true for query object
+  const matchID = parsedUrl.query.matchID as string;
+  
+  console.log('matchID', matchID);
+
   // Add the new client to the set
   match.addPlayer(ws);
 
