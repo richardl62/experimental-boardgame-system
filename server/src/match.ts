@@ -1,4 +1,4 @@
-import { GameDefinition } from "./game-definition";
+import { GameDefinition } from "./shared/game-definition";
 import { WebSocket as WSWebSocket  } from 'ws'; // Import the ws library
 
 // A match is an instance of a game.
@@ -10,8 +10,8 @@ export class Match {
     }
 
     readonly definition: GameDefinition;
-    players: Set<WSWebSocket>;
-    state: any;
+    readonly players: Set<WSWebSocket>;
+    private state: any;
 
     addPlayer(player: WSWebSocket) {
         this.players.add(player);
