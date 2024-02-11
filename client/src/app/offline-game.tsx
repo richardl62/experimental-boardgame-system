@@ -1,14 +1,11 @@
 import React from 'react';
-import { games } from '../shared/games';
 import { useOfflineMatch } from '../server-lib/use-offline-match';
 import { BoardWrapper } from './board-wrapper';
-import { boards } from '../boards';
-import { selectedGame } from '../config';
+import { GameDefinition } from '../shared/game-definition';
 
-const gameDefinition = games[selectedGame];  // for now
-const Board = boards[selectedGame];  // for now
-
-export function OfflineGame() {
+export function OfflineGame({gameDefinition, Board} :
+  {gameDefinition: GameDefinition, Board: () => JSX.Element}
+) {
   const match = useOfflineMatch(gameDefinition, {nPlayers: 2 /* for now */});
 
   return <>

@@ -1,14 +1,11 @@
 import React from 'react';
-import { games } from '../shared/games';
-import { boards } from '../boards';
 import { useOnlineMatch } from '../server-lib/use-online-match';
 import { BoardWrapper } from './board-wrapper';
-import { selectedGame } from '../config';
+import { GameDefinition } from '../shared/game-definition';
 
-const gameDefinition = games[selectedGame];  // for now
-const Board = boards[selectedGame];  // for now
-
-export function OnlineGame() {
+export function OnlineGame({gameDefinition, Board} :
+  {gameDefinition: GameDefinition, Board: () => JSX.Element}
+) {
   const nPlayers = 2;  // for now
   const matchID = "123";  // for now
   const onlineMatchResult = useOnlineMatch(gameDefinition, {nPlayers, matchID});

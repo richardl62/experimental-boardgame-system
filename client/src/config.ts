@@ -1,2 +1,1 @@
-export const playOnline = true;
-export const selectedGame = "tictactoe";
+export const playOnline = false;
