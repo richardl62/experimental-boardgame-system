@@ -3,3 +3,5 @@ export interface WsMoveData {
     activePlayer: number, // Does this need to be sent?
     arg: unknown
 };
+
+export type MatchID = string;

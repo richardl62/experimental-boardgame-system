@@ -16,7 +16,7 @@ const matches = new Matches();
 app.get('/startmatch', (req: Request, res: Response) => {
   const game = req.query.game;
   const gameDefinition = typeof game === 'string' &&
-    games[game as keyof typeof games];
+    getGameDefinition(game);
     
   if (!gameDefinition) {
     res.status(400).send('Name of game missing or invalid');
@@ -74,3 +74,11 @@ wss.on('connection', (ws, req)  => {
   })
 });
 
+function getGameDefinition(name: string): GameDefinition | null {
+  for(const gameDefinition of games) {
+    if(gameDefinition.name === name) {
+      return gameDefinition;
+    }
+  } 
+  return null;
+}
