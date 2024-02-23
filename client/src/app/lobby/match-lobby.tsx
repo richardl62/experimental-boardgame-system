@@ -1,4 +1,3 @@
-import { LobbyAPI } from "boardgame.io";
 import React, { ReactNode } from "react";
 import { useAsync } from "react-async-hook";
 import styled from "styled-components";
@@ -9,6 +8,7 @@ import { JoinGame } from "./join-game";
 import { makeLobbyClient } from "./lobby-tools";
 import { nonJoinedPlayerName } from "../../app-game-support/player-names";
 import { MatchID } from "../../shared/types";
+import { LobbyAPI } from "./bgio-replacement";
 
 const Names = styled.div`
     display: flex;
