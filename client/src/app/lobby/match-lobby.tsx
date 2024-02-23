@@ -2,7 +2,7 @@ import { LobbyAPI } from "boardgame.io";
 import React, { ReactNode } from "react";
 import { useAsync } from "react-async-hook";
 import styled from "styled-components";
-import { AppGame, MatchID } from "../../app-game-support";
+import { GameDefinition, MatchID } from "../../shared/game-definition";
 import { AsyncStatus } from "../../utils/async-status";
 import { BoxWithLegend } from "../../utils/box-with-legend";
 import { JoinGame } from "./join-game";
@@ -48,7 +48,7 @@ function NotConnected(props: NotConnectedProps) {
 }
 
 interface MatchLobbyWithApiInfoProps {
-    game: AppGame;
+    game: GameDefinition;
     match: LobbyAPI.Match;
 }
 
@@ -88,7 +88,7 @@ export function MatchLobbyWithApiInfo(props: MatchLobbyWithApiInfoProps) : JSX.E
 }
 
 interface MatchLobbyProps {
-    game: AppGame;
+    game: GameDefinition;
     matchID: MatchID;
 }
 

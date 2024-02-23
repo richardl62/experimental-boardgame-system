@@ -1,13 +1,13 @@
 import React from "react";
 import { useAsync } from "react-async-hook";
 import styled from "styled-components";
-import { AppGame } from "../../app-game-support";
 import { standardOuterMargin } from "../../app-game-support/styles";
 import { LoadingOrError } from "../../utils/async-status";
 import { OfflineOptions } from "../offline-options";
 import { makeLobbyClient } from "./lobby-tools";
 import { MatchLobbyWithApiInfo } from "./match-lobby";
 import { StartMatch } from "./start-match";
+import { GameDefinition } from "../../shared/game-definition";
 
 
 const GameLobbyDiv = styled.div`
@@ -19,7 +19,7 @@ const GameLobbyDiv = styled.div`
 
 
 export function GameLobby(props: {
-    game: AppGame;
+    game: GameDefinition;
     setOfflineOptions: (opts: OfflineOptions) => void;
 }): JSX.Element {
     const { game, setOfflineOptions } = props;

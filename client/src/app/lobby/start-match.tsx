@@ -1,6 +1,6 @@
 import React from "react";
 import { useAsyncCallback } from "react-async-hook";
-import { AppGame } from "../../app-game-support";
+import { GameDefinition } from "../../shared/game-definition";
 import { loadingOrError, LoadingOrError } from "../../utils/async-status";
 import { BoxWithLegend } from "../../utils/box-with-legend";
 import { createMatch } from "./lobby-tools";
@@ -12,7 +12,7 @@ import { sAssert } from "../../utils/assert";
 import { defaultNumPlayers } from "../../app-game-support/default-num-players";
 
 export function StartMatch(props: {
-    game: AppGame;
+    game: GameDefinition;
     setOfflineOptions: (opts: OfflineOptions) => void;
   }): JSX.Element {
     const { game, setOfflineOptions } = props;
