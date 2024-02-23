@@ -1,7 +1,8 @@
 import { LobbyClient } from "boardgame.io/client";
-import { GameDefinition, MatchID, Player } from "../../shared/game-definition";
+import { GameDefinition } from "../../shared/game-definition";
 import { lobbyServer } from "../url-params";
 import { defaultPlayerName } from "../../app-game-support/player-names";
+import { MatchID, Player } from "../../shared/types";
 
 export function makeLobbyClient() : LobbyClient {
     return new LobbyClient({ server: lobbyServer() });

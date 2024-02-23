@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useAsyncCallback } from "react-async-hook";
-import { GameDefinition, MatchID } from "../../shared/game-definition";
+import { GameDefinition } from "../../shared/game-definition";
+import { MatchID } from "../../shared/types";
 import { AsyncStatus, loadingOrError } from "../../utils/async-status";
-import { joinMatch } from "./lobby-tools";
 import { addPlayerToHref } from "../url-params";
+import { joinMatch } from "./lobby-tools";
 
 interface JoinGameProps {
     game: GameDefinition;

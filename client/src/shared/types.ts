@@ -4,4 +4,12 @@ export interface WsMoveData {
     arg: unknown
 };
 
-export type MatchID = string;
+export interface Player {
+    id: string;
+    credentials: string;
+  }
+  
+export interface MatchID {
+    mid: string
+} 
+  
