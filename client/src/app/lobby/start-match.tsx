@@ -8,9 +8,8 @@ import { openOnlineMatchPage } from "../url-params";
 import { OfflineOptions } from "../offline-options";
 import { OptionValues, SpecifiedValues } from "../option-specification/types";
 import { InputValues } from "../option-specification/input-values";
-import { defaultNumPlayers } from "../../app-game-support/app-game";
 import { sAssert } from "../../utils/assert";
-
+import { defaultNumPlayers } from "../../app-game-support/default-num-players";
 
 export function StartMatch(props: {
     game: AppGame;
