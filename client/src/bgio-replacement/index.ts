@@ -1,3 +1,5 @@
+import { CallServer } from "./call-server";
+
 type PlayerMetadata = {
     id: number;
     name?: string;
@@ -28,43 +30,33 @@ export declare namespace LobbyAPI {
 }
 
 export class LobbyClient {
-    private server: string;
+    private server: CallServer;
     constructor({ server }: {
         server: string;
     }) {
-        this.server = server;
+        this.server = new CallServer(server);
     }
       
-    async createMatch(gameName: string, body: {
-        numPlayers: number;
-        setupData?: any;
-        unlisted?: boolean;
-        [key: string]: any;
-    }, init?: RequestInit): Promise<LobbyAPI.CreatedMatch> {
-        const searchParams = new URLSearchParams({name: gameName});
-      
-        // Build the full URL including query string
-        const fullUrl = `${this.server}?/createMatch/${searchParams.toString()}`;
-
-        try {
-            const response = await fetch(fullUrl);
-            // Check response status code for errors
-            if (!response.ok) {
-                console.log("createMatch failed", response.status)
-                throw new Error(`Error fetching data: ${response.status}`);
-            } else {
-                console.log("createMatch suceeded", response.json)
-            }
-
-            const data = await response.json() as LobbyAPI.CreatedMatch;
-            return data;
-        } catch (error) {
-            throw error; // Re-throw the error for handling
-        }
+    async createMatch(
+        gameName: string, 
+        body: {
+            numPlayers: number;
+            // setupData?: any;
+            // unlisted?: boolean;
+            // [key: string]: any;
+        }, 
+        //init?: RequestInit
+    ): Promise<LobbyAPI.CreatedMatch> {
+        const numPlayers = body.numPlayers.toString();
+        return await this.server.call("createMatch", {name: gameName, numPlayers}) as LobbyAPI.CreatedMatch;
     }
 
-    async getMatch(gameName: string, matchID: string, init?: RequestInit): Promise<LobbyAPI.Match> {
-        throw new Error("Not implemented");
+    async getMatch(
+        gameName: string, 
+        matchID: string, 
+        init?: RequestInit
+    ): Promise<LobbyAPI.Match> {
+        return await this.server.call("getMatch", {gameName, matchID}) as LobbyAPI.Match;
     }
 
     async joinMatch(gameName: string, matchID: string, body: {
@@ -73,7 +65,8 @@ export class LobbyClient {
         data?: any;
         [key: string]: any;
     }, init?: RequestInit): Promise<LobbyAPI.JoinedMatch> {
-        throw new Error("Not implemented");
+        const playerID = body.playerID || "";
+        return await this.server.call("joinMatch", {gameName, playerID}) as LobbyAPI.JoinedMatch;
     }
 
     async updatePlayer(gameName: string, matchID: string, body: {
@@ -86,25 +79,7 @@ export class LobbyClient {
     }
 
     async listMatches(gameName: string): Promise<LobbyAPI.MatchList> {
-        const searchParams = new URLSearchParams({name: gameName});
-      
-        // Build the full URL including query string
-        const fullUrl = `${this.server}?/listMatches/${searchParams.toString()}`;
-
-        try {
-            const response = await fetch(fullUrl);
-            // Check response status code for errors
-            if (!response.ok) {
-                console.log("listMatches failed", response.status)
-                throw new Error(`Error fetching data: ${response.status}`);
-            } else {
-                console.log("listMatches suceeded", response.json)
-            }
-
-            const data = await response.json() as LobbyAPI.MatchList;
-            return data;
-        } catch (error) {
-            throw error; // Re-throw the error for handling
-        }
+        return await this.server.call("listMatches", {gameName}) as LobbyAPI.MatchList;
     }
+
 }
