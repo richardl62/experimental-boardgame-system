@@ -7,6 +7,7 @@ import { WsMoveData } from './shared/types';
 import { Match } from './match';
 import url from 'url';
 import { Matches } from './matches';
+import { runLobbyFunction } from './run-lobby-function';
 
 const app: Application = express();
 const port = process.env.PORT || 8000;
@@ -30,18 +31,18 @@ function requireInteger(param: unknown) : number {
   return num;
 }
 
-
 function sendError(operation: string, res: Response, err: unknown) {
   const message = err instanceof Error ? err.message : "unknown error";
   res.status(400).send(`${operation}: ${message}`);
 }
 
-app.get('/creatematch', (req: Request, res: Response) => {
+// Run all the functions provided by the LobbyClient
+// The name of the function to run (createMatch, joinMatch etc)
+// is provided as a query parameter.
+app.get('/lobby', (req: Request, res: Response) => {
   try {
-    const game = requireString(req.query.game);
-    const nPlayers = requireInteger(req.query.nplayers)
-    const matchID = matches.create(game, {nPlayers});
-    res.send(JSON.stringify({ matchID }));
+    const result = runLobbyFunction(req.query);
+    res.send(JSON.stringify(result));
   } catch (err) {
       sendError("startmatch", res, err);
   }
@@ -93,3 +94,4 @@ wss.on('connection', (ws, req)  => {
     }
   })
 });
+

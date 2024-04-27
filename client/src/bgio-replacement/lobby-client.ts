@@ -1,12 +1,12 @@
 import { LobbyAPI } from "../shared/lobby-api";
-import { CallServer } from "./call-server";
+import { callServer } from "./call-server";
 
 export class LobbyClient {
-    private server: CallServer;
+    private server: string;
     constructor({ server }: {
         server: string;
     }) {
-        this.server = new CallServer(server);
+        this.server = server;
     }
       
     async createMatch(
@@ -16,14 +16,14 @@ export class LobbyClient {
         }, 
     ): Promise<LobbyAPI.CreatedMatch> {
         const numPlayers = body.numPlayers.toString();
-        return await this.server.call("createMatch", {game, numPlayers}) as LobbyAPI.CreatedMatch;
+        return await this.lobbyFunction("createMatch", {game, numPlayers}) as LobbyAPI.CreatedMatch;
     }
 
     async getMatch(
         game: string, 
         matchID: string, 
     ): Promise<LobbyAPI.Match> {
-        return await this.server.call("getMatch", {game, matchID}) as LobbyAPI.Match;
+        return await this.lobbyFunction("getMatch", {game, matchID}) as LobbyAPI.Match;
     }
 
     async joinMatch(
@@ -34,7 +34,7 @@ export class LobbyClient {
         }, 
     ): Promise<LobbyAPI.JoinedMatch> {
         const params = {game, matchID, ...body};
-        return await this.server.call("joinMatch", params) as LobbyAPI.JoinedMatch;
+        return await this.lobbyFunction("joinMatch", params) as LobbyAPI.JoinedMatch;
     }
 
     async updatePlayer(
@@ -47,10 +47,14 @@ export class LobbyClient {
         }
     ): Promise<void> {
         const params = {game, matchID, ...body}
-        return await this.server.call("updatePlayer", params) as void;
+        return await this.lobbyFunction("updatePlayer", params) as void;
     }
 
     async listMatches(game: string): Promise<LobbyAPI.MatchList> {
-        return await this.server.call("listMatches", {game}) as LobbyAPI.MatchList;
+        return await this.lobbyFunction("listMatches", {game}) as LobbyAPI.MatchList;
+    }
+
+    async lobbyFunction(func: string, params: Record<string,string>) : Promise<unknown> {
+        return callServer(this.server, "lobby", {func, ...params});
     }
 }
