@@ -8,7 +8,7 @@ import { JoinGame } from "./join-game";
 import { makeLobbyClient } from "./lobby-tools";
 import { nonJoinedPlayerName } from "../../app-game-support/player-names";
 import { MatchID } from "../../shared/types";
-import { LobbyAPI } from "../../bgio-replacement";
+import { LobbyAPI } from "../../shared/lobby-api";
 
 const Names = styled.div`
     display: flex;

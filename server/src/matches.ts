@@ -2,6 +2,7 @@ import { Match } from "./match";
 import { GameDefinition } from "./shared/game-definition";
 import { WebSocket  } from 'ws'; // Import the ws library
 import { WsMoveData } from "./shared/types";
+import { games } from "./shared/games";
 
 interface OptionalError {
     error?: string;
@@ -13,7 +14,8 @@ export class Matches {
     }
     matches: Match[];
 
-    add(gameDefinition: GameDefinition) {
+    add(game: string) {
+        const gameDefinition = getGameDefinition(game)
         this.matches.push(new Match(gameDefinition));
         return this.matches.length - 1;
     }
@@ -66,4 +68,14 @@ export class Matches {
             }
         }
     }
-}       
+} 
+
+function getGameDefinition(name: string): GameDefinition {
+    for(const gameDefinition of games) {
+      if(gameDefinition.name === name) {
+        return gameDefinition;
+      }
+    } 
+    
+    throw new Error(`Unrecognised game "${name}"`)
+  }

@@ -1,33 +1,5 @@
+import { LobbyAPI } from "../shared/lobby-api";
 import { CallServer } from "./call-server";
-
-type PlayerMetadata = {
-    id: number;
-    name?: string;
-    credentials?: string;
-    data?: any;
-    isConnected?: boolean;
-};
-type PublicPlayerMetadata = Omit<PlayerMetadata, "credentials">;
-
-export declare namespace LobbyAPI {
-    export type Match = {
-        matchID: string;
-        players: PublicPlayerMetadata[];
-    };
-
-    export interface CreatedMatch {
-        matchID: string;
-    }
-
-    export interface JoinedMatch {
-        playerID: string;
-        playerCredentials: string;
-    }
-
-    export interface MatchList {
-        matches: Match[];
-    }
-}
 
 export class LobbyClient {
     private server: CallServer;
@@ -38,48 +10,47 @@ export class LobbyClient {
     }
       
     async createMatch(
-        gameName: string, 
+        game: string, // The name of the game, e.g. "scrabble".
         body: {
             numPlayers: number;
-            // setupData?: any;
-            // unlisted?: boolean;
-            // [key: string]: any;
         }, 
-        //init?: RequestInit
     ): Promise<LobbyAPI.CreatedMatch> {
         const numPlayers = body.numPlayers.toString();
-        return await this.server.call("createMatch", {name: gameName, numPlayers}) as LobbyAPI.CreatedMatch;
+        return await this.server.call("createMatch", {game, numPlayers}) as LobbyAPI.CreatedMatch;
     }
 
     async getMatch(
-        gameName: string, 
+        game: string, 
         matchID: string, 
-        init?: RequestInit
     ): Promise<LobbyAPI.Match> {
-        return await this.server.call("getMatch", {gameName, matchID}) as LobbyAPI.Match;
+        return await this.server.call("getMatch", {game, matchID}) as LobbyAPI.Match;
     }
 
-    async joinMatch(gameName: string, matchID: string, body: {
-        playerID?: string;
-        playerName: string;
-        data?: any;
-        [key: string]: any;
-    }, init?: RequestInit): Promise<LobbyAPI.JoinedMatch> {
-        const playerID = body.playerID || "";
-        return await this.server.call("joinMatch", {gameName, playerID}) as LobbyAPI.JoinedMatch;
+    async joinMatch(
+        game: string, 
+        matchID: string,
+        body: {
+            playerName: string;
+        }, 
+    ): Promise<LobbyAPI.JoinedMatch> {
+        const params = {game, matchID, ...body};
+        return await this.server.call("joinMatch", params) as LobbyAPI.JoinedMatch;
     }
 
-    async updatePlayer(gameName: string, matchID: string, body: {
-        playerID: string;
-        credentials: string;
-        newName?: string;
-        data?: any;
-    }, init?: RequestInit): Promise<void> {
-        throw new Error("Not implemented");
+    async updatePlayer(
+        game: string, 
+        matchID: string, 
+        body: {
+            playerID: string;
+            credentials: string;
+            newName: string;
+        }
+    ): Promise<void> {
+        const params = {game, matchID, ...body}
+        return await this.server.call("updatePlayer", params) as void;
     }
 
-    async listMatches(gameName: string): Promise<LobbyAPI.MatchList> {
-        return await this.server.call("listMatches", {gameName}) as LobbyAPI.MatchList;
+    async listMatches(game: string): Promise<LobbyAPI.MatchList> {
+        return await this.server.call("listMatches", {game}) as LobbyAPI.MatchList;
     }
-
 }

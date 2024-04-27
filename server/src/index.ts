@@ -13,18 +13,38 @@ const port = process.env.PORT || 8000;
 
 const matches = new Matches();
 
-app.get('/startmatch', (req: Request, res: Response) => {
-  const game = req.query.game;
-  const gameDefinition = typeof game === 'string' &&
-    getGameDefinition(game);
-    
-  if (!gameDefinition) {
-    res.status(400).send('Name of game missing or invalid');
-    return;
+function requireString(param: unknown) : string {
+  if(typeof param === "string") {
+    return param;
+  }
+  throw new Error("Bad type when expecting string");
+}
+
+function requireInteger(param: unknown) : number {
+  const str = requireString(param);
+  const num = parseInt(str);
+  if(isNaN(num)) {
+    throw new Error(`"${str}" is not an integer`);
   }
 
-  const matchID = matches.add(gameDefinition);
-  res.send(JSON.stringify({ matchID }));  
+  return num;
+}
+
+
+function sendError(operation: string, res: Response, err: unknown) {
+  const message = err instanceof Error ? err.message : "unknown error";
+  res.status(400).send(`${operation}: ${message}`);
+}
+
+app.get('/creatematch', (req: Request, res: Response) => {
+  try {
+    const game = requireString(req.query.game);
+    const nPlayers = requireInteger(req.query.nplayers)
+    const matchID = matches.create(game, {nPlayers});
+    res.send(JSON.stringify({ matchID }));
+  } catch (err) {
+      sendError("startmatch", res, err);
+  }
 });
 
 // Start the HTTP server
@@ -73,12 +93,3 @@ wss.on('connection', (ws, req)  => {
     }
   })
 });
-
-function getGameDefinition(name: string): GameDefinition | null {
-  for(const gameDefinition of games) {
-    if(gameDefinition.name === name) {
-      return gameDefinition;
-    }
-  } 
-  return null;
-}
