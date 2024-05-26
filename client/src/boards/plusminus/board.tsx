@@ -10,7 +10,7 @@ const OuterDiv = styled.div`
 
 function Board() : JSX.Element {
     const context = useGameContext();
-    const {state: {count}, moves } = context;
+    const {state: {count}, moves, activePlayer, currentPlayer } = context;
 
     return <OuterDiv>
         <button 
@@ -25,6 +25,7 @@ function Board() : JSX.Element {
             -1
         </button>
         
+        <div>Player {currentPlayer} to move - You are player {activePlayer}</div>
         <div>{count}</div>
     </OuterDiv>;
 }
