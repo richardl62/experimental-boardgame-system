@@ -6,21 +6,20 @@ export async function callServer(
     const searchParams = new URLSearchParams(params);
 
     // Build the full URL including query string
-    const fullUrl = `${server}?/${serverFunction}/${searchParams.toString()}`;
-
+    const fullUrl = `${server}/${serverFunction}?${searchParams.toString()}`;
+    console.log("callServer", fullUrl);
     try {
         const response = await fetch(fullUrl);
         // Check response status code for errors
         if (!response.ok) {
-            const message = `${serverFunction} failed: fetch reported ${response.status}`
-            console.log(message)
-            throw new Error(message);
+            throw new Error(`fetch reported ${response.status}`);
         } else {
-            console.log("createMatch suceeded", response.json)
+            console.log(serverFunction,  "suceeded", response.json)
         }
 
         return response.json();
     } catch (error) {
+        console.log(serverFunction, params, "error", error)
         throw error;
     }
 
