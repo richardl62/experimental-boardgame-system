@@ -1,5 +1,4 @@
 import { LobbyAPI } from "../shared/lobby-api";
-import { callServer } from "./call-server";
 
 export class LobbyClient {
     private server: string;
@@ -55,6 +54,32 @@ export class LobbyClient {
     }
 
     async lobbyFunction(func: string, params: Record<string,string>) : Promise<unknown> {
-        return callServer(this.server, "lobby", {func, ...params});
+        const searchParams = new URLSearchParams({func, ...params});
+
+        // Build the full URL including query string
+        const fullUrl = `${this.server}/lobby?${searchParams.toString()}`;
+        //console.log(fullUrl);
+
+        return fetch(fullUrl)
+            .then(response => response.json())
+            .then(data => {
+                // The response should be an object of the form
+                //    {data: any}
+                // or
+                //    {error: string}
+
+                //console.log("callServer", data);
+                const { result, error } = data;
+
+                if (error) {
+                    throw Error(data.error);
+                }
+
+                if (result === undefined) {
+                    throw Error("Internal error: Cannot interpret server response");
+                }
+
+                return result;
+            })
     }
 }

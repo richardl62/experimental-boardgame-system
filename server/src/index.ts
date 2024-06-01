@@ -31,11 +31,6 @@ function requireInteger(param: unknown) : number {
   return num;
 }
 
-function sendError(operation: string, res: Response, err: unknown) {
-  const message = err instanceof Error ? err.message : "unknown error";
-  res.status(400).send(`${operation}: ${message}`);
-}
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // or "*" to cover all domains
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -46,12 +41,17 @@ app.use(function(req, res, next) {
 // The name of the function to run (createMatch, joinMatch etc)
 // is provided as a query parameter.
 app.get('/lobby', (req: Request, res: Response) => {
+  let data = {};
   try {
     const result = runLobbyFunction(req.query);
-    res.send(JSON.stringify(result));
+    data = {result};
   } catch (err) {
-      sendError("startmatch", res, err);
+    const error = err instanceof Error ? err.message : "unknown error";
+    data = {error};
   }
+  const sendText = JSON.stringify(data);
+  console.log("Response:", data, sendText);
+  res.send(sendText);
 });
 
 // Start the HTTP server
