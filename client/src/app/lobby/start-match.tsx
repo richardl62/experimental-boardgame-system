@@ -18,9 +18,7 @@ export function StartMatch(props: {
     const { game, setOfflineOptions } = props;
     const {minPlayers, maxPlayers } = game;
 
-    //const gameOptions = game.options || {};
-    const gameOptions = {};
-    console.warn("Game options are not yet supported");
+    const gameOptions = game.options || {};
 
     const optionsSpec = {
         numPlayers: {
