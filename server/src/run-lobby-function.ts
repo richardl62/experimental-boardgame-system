@@ -6,7 +6,12 @@ export function runLobbyFunction(query: ParsedQs) {
   const { func }  = query;
   if (func === "listMatches") {
     const result: LobbyAPI.MatchList = {
-      matches: []
+      matches: [
+        {
+          matchID: "dummy",
+          players: [{id: 0}, {id: 1}],
+        }
+      ]
     }
 
     return result;
