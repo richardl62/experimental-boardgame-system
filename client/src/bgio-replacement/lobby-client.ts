@@ -1,4 +1,4 @@
-import { LobbyAPI } from "../shared/lobby-api";
+import { LobbyTypes } from "../shared/lobby";
 import { callLobby } from "./call-lobby";
 
 export class LobbyClient {
@@ -14,16 +14,16 @@ export class LobbyClient {
         body: {
             numPlayers: number;
         }, 
-    ): Promise<LobbyAPI.CreatedMatch> {
+    ): Promise<LobbyTypes.CreatedMatch> {
         const numPlayers = body.numPlayers.toString();
-        return await this.lobby("createMatch", {game, numPlayers}) as LobbyAPI.CreatedMatch;
+        return await this.lobby("createMatch", {game, numPlayers}) as LobbyTypes.CreatedMatch;
     }
 
     async getMatch(
         game: string, 
         matchID: string, 
-    ): Promise<LobbyAPI.Match> {
-        return await this.lobby("getMatch", {game, matchID}) as LobbyAPI.Match;
+    ): Promise<LobbyTypes.Match> {
+        return await this.lobby("getMatch", {game, matchID}) as LobbyTypes.Match;
     }
 
     async joinMatch(
@@ -32,9 +32,9 @@ export class LobbyClient {
         body: {
             playerName: string;
         }, 
-    ): Promise<LobbyAPI.JoinedMatch> {
+    ): Promise<LobbyTypes.JoinedMatch> {
         const params = {game, matchID, ...body};
-        return await this.lobby("joinMatch", params) as LobbyAPI.JoinedMatch;
+        return await this.lobby("joinMatch", params) as LobbyTypes.JoinedMatch;
     }
 
     async updatePlayer(
@@ -50,8 +50,8 @@ export class LobbyClient {
         return await this.lobby("updatePlayer", params) as void;
     }
 
-    async listMatches(game: string): Promise<LobbyAPI.MatchList> {
-        return await this.lobby("listMatches", {game}) as LobbyAPI.MatchList;
+    async listMatches(game: string): Promise<LobbyTypes.MatchList> {
+        return await this.lobby("listMatches", {game}) as LobbyTypes.MatchList;
     }
 
     async lobby(func: string, params: Record<string,string>) : Promise<unknown> {

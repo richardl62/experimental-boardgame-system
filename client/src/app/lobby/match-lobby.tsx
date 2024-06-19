@@ -8,7 +8,7 @@ import { JoinGame } from "./join-game";
 import { makeLobbyClient } from "./lobby-tools";
 import { nonJoinedPlayerName } from "../../app-game-support/player-names";
 import { MatchID } from "../../shared/types";
-import { LobbyAPI } from "../../shared/lobby-api";
+import { LobbyTypes } from "../../shared/lobby";
 
 const Names = styled.div`
     display: flex;
@@ -50,7 +50,7 @@ function NotConnected(props: NotConnectedProps) {
 
 interface MatchLobbyWithApiInfoProps {
     game: GameDefinition;
-    match: LobbyAPI.Match;
+    match: LobbyTypes.Match;
 }
 
 export function MatchLobbyWithApiInfo(props: MatchLobbyWithApiInfoProps) : JSX.Element {
