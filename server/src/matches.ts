@@ -3,16 +3,42 @@ import { GameDefinition } from "./shared/game-definition";
 import { WebSocket  } from 'ws'; // Import the ws library
 import { WsMoveData } from "./shared/types";
 import { games } from "./shared/games";
+import { Lobby, LobbyTypes } from "./shared/lobby";
 
 interface OptionalError {
     error?: string;
 } 
 
-export class Matches {
+export class Matches implements Lobby {
     constructor() {
         this.matches = [];
     }
     matches: Match[];
+
+    createMatch(
+        game: string,  
+        options: {
+            numPlayers: number;
+        }
+    ): LobbyTypes.CreatedMatch {
+        const gameDefinition = getGameDefinition(game)
+        const id = this.matches.push(new Match(gameDefinition));
+
+        return {
+            matchID: id.toString(),
+        }
+    }
+
+    listMatches(
+        game: string
+    ): LobbyTypes.Match[] {
+        return [
+            {
+                matchID: "dummy",
+                players: [],
+            }
+        ];
+    }
 
     add(game: string) {
         const gameDefinition = getGameDefinition(game)

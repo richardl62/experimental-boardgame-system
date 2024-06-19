@@ -21,7 +21,7 @@ app.use(function(req, res, next) {
 // is provided as a query parameter.
 app.get('/lobby', (req: Request, res: Response) => {
   try {
-    const result = runLobbyFunction(req.query);
+    const result = runLobbyFunction(matches, req.query);
     res.send(JSON.stringify(result));
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
