@@ -6,8 +6,8 @@ import { BoxWithLegend } from "../../utils/box-with-legend";
 import { createMatch } from "./lobby-tools";
 import { openOnlineMatchPage } from "../url-params";
 import { OfflineOptions } from "../offline-options";
-import { OptionValues, SpecifiedValues } from "../option-specification/types";
-import { InputValues } from "../option-specification/input-values";
+import { OptionValues, SpecifiedValues } from "../../shared/option-specification/types";
+import { InputValues } from "../../shared/option-specification/input-values";
 import { sAssert } from "../../utils/assert";
 import { defaultNumPlayers } from "../../app-game-support/default-num-players";
 

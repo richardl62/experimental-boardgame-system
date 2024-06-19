@@ -1,3 +1,5 @@
+import { OptionSpecifications } from "./option-specification/types";
+
 export interface PlayerData {
     name: string;
 }
@@ -33,4 +35,6 @@ export interface GameDefinition<GameState = any> {
     initialState: () => GameState;
     
     moves: Record<string, GameDefintionMove<GameState, any>>;
+
+    options?: OptionSpecifications;
 }

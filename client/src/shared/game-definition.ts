@@ -1,4 +1,4 @@
-import { OptionSpecifications } from "../app/option-specification/types";
+import { OptionSpecifications } from "./option-specification/types";
 
 export interface PlayerData {
     name: string;

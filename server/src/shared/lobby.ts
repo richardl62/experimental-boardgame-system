@@ -7,7 +7,8 @@ type PlayerMetadata = {
 };
 type PublicPlayerMetadata = Omit<PlayerMetadata, "credentials">;
 
-export declare namespace LobbyAPI {
+// This namespace is a legally of BGIO (there is was called LobbyAPI)
+export declare namespace LobbyTypes {
     export type Match = {
         matchID: string;
         players: PublicPlayerMetadata[];
