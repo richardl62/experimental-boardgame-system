@@ -1,5 +1,5 @@
 import { LobbyAPI } from "../shared/lobby-api";
-import { callServer } from "./call-server";
+import { callLobby } from "./call-lobby";
 
 export class LobbyClient {
     private server: string;
@@ -16,14 +16,14 @@ export class LobbyClient {
         }, 
     ): Promise<LobbyAPI.CreatedMatch> {
         const numPlayers = body.numPlayers.toString();
-        return await this.lobbyFunction("createMatch", {game, numPlayers}) as LobbyAPI.CreatedMatch;
+        return await this.lobby("createMatch", {game, numPlayers}) as LobbyAPI.CreatedMatch;
     }
 
     async getMatch(
         game: string, 
         matchID: string, 
     ): Promise<LobbyAPI.Match> {
-        return await this.lobbyFunction("getMatch", {game, matchID}) as LobbyAPI.Match;
+        return await this.lobby("getMatch", {game, matchID}) as LobbyAPI.Match;
     }
 
     async joinMatch(
@@ -34,7 +34,7 @@ export class LobbyClient {
         }, 
     ): Promise<LobbyAPI.JoinedMatch> {
         const params = {game, matchID, ...body};
-        return await this.lobbyFunction("joinMatch", params) as LobbyAPI.JoinedMatch;
+        return await this.lobby("joinMatch", params) as LobbyAPI.JoinedMatch;
     }
 
     async updatePlayer(
@@ -47,14 +47,14 @@ export class LobbyClient {
         }
     ): Promise<void> {
         const params = {game, matchID, ...body}
-        return await this.lobbyFunction("updatePlayer", params) as void;
+        return await this.lobby("updatePlayer", params) as void;
     }
 
     async listMatches(game: string): Promise<LobbyAPI.MatchList> {
-        return await this.lobbyFunction("listMatches", {game}) as LobbyAPI.MatchList;
+        return await this.lobby("listMatches", {game}) as LobbyAPI.MatchList;
     }
 
-    async lobbyFunction(func: string, params: Record<string,string>) : Promise<unknown> {
-        return callServer(this.server, "lobby", {func, ...params});
+    async lobby(func: string, params: Record<string,string>) : Promise<unknown> {
+        return callLobby(this.server, func, params);
     }
 }
