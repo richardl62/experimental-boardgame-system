@@ -1,11 +1,10 @@
 import { GameDefinition } from "../../shared/game-definition";
-import { lobbyServer } from "../url-params";
 import { defaultPlayerName } from "../../app-game-support/player-names";
 import { MatchID, Player } from "../../shared/types";
 import { LobbyClient } from "../../bgio-replacement/lobby-client";
 
 export function makeLobbyClient() : LobbyClient {
-    return new LobbyClient({ server: lobbyServer() });
+    return new LobbyClient();
 }
 
 export async function createMatch(

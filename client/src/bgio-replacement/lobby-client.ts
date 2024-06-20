@@ -2,12 +2,7 @@ import { LobbyPromises, LobbyTypes } from "../shared/lobby";
 import { callLobby } from "./call-lobby";
 
 export class LobbyClient implements LobbyPromises {
-    private server: string;
-    constructor({ server }: {
-        server: string;
-    }) {
-        this.server = server;
-    }
+
     async createMatch(
         game: string, // The name of the game, e.g. "scrabble".
         body: {
@@ -15,18 +10,18 @@ export class LobbyClient implements LobbyPromises {
         }, 
     ): Promise<LobbyTypes.CreatedMatch> {
         const numPlayers = body.numPlayers.toString();
-        return await this.lobby("createMatch", {game, numPlayers}) as LobbyTypes.CreatedMatch;
+        return callLobby("createMatch", {game, numPlayers});
     }
 
     async listMatches(game: string): Promise<LobbyTypes.MatchList> {
-        return await this.lobby("listMatches", {game}) as LobbyTypes.MatchList;
+        return callLobby("listMatches", {game});
     }
 
     async getMatch(
         game: string, 
         matchID: string, 
     ): Promise<LobbyTypes.Match> {
-        return await this.lobby("getMatch", {game, matchID}) as LobbyTypes.Match;
+        return callLobby("getMatch", {game, matchID});
     }
 
     async joinMatch(
@@ -37,7 +32,7 @@ export class LobbyClient implements LobbyPromises {
         }, 
     ): Promise<LobbyTypes.JoinedMatch> {
         const params = {game, matchID, ...body};
-        return await this.lobby("joinMatch", params) as LobbyTypes.JoinedMatch;
+        return callLobby("joinMatch", params);
     }
 
     async updatePlayer(
@@ -50,10 +45,6 @@ export class LobbyClient implements LobbyPromises {
         }
     ): Promise<void> {
         const params = {game, matchID, ...body}
-        return await this.lobby("updatePlayer", params) as void;
-    }
-
-    async lobby(func: string, params: Record<string,string>) : Promise<unknown> {
-        return callLobby(this.server, func, params);
+        return await callLobby("updatePlayer", params);
     }
 }
