@@ -35,17 +35,11 @@ export interface Lobby {
             numPlayers: number;
         }
     ) => LobbyTypes.CreatedMatch;
-    listMatches: (game: string) => LobbyTypes.Match[];
+    listMatches: (game: string) => LobbyTypes.MatchList;
 }
 
-// Must to kept in sync with Lobby
-// To do: Derive from Lobby
-export interface LobbyPromises {
-    createMatch: (
-        game: string,  
-        options: {
-            numPlayers: number;
-        }
-    ) => Promise<LobbyTypes.CreatedMatch>;
-    listMatches: (game: string) => Promise<LobbyTypes.MatchList>;
-}
+// As Lobby but functions return promises
+export type LobbyPromises = {
+    [P in keyof Lobby]: 
+        (...args: Parameters<Lobby[P]>) => Promise<ReturnType<Lobby[P]>>;
+};

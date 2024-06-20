@@ -31,13 +31,15 @@ export class Matches implements Lobby {
 
     listMatches(
         game: string
-    ): LobbyTypes.Match[] {
-        return [
-            {
-                matchID: "dummy",
-                players: [],
-            }
-        ];
+    ): LobbyTypes.MatchList {
+        return {
+            matches: [
+                {
+                    matchID: "dummy",
+                    players: [],
+                }
+            ]
+        }
     }
 
     add(game: string) {
