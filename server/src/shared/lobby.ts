@@ -30,16 +30,41 @@ export declare namespace LobbyTypes {
 
 export interface Lobby {
     createMatch: (
-        game: string,  
-        options: {
+        arg: {
+            game: string,  
             numPlayers: number;
         }
     ) => LobbyTypes.CreatedMatch;
-    listMatches: (game: string) => LobbyTypes.MatchList;
-}
+    
+    listMatches: (
+        arg: {
+            game: string
+        }
+    ) => LobbyTypes.MatchList;
+    
+    getMatch: (
+        arg: {
+            game: string,
+            matchID: string,
+        }
+    ) => LobbyTypes.Match;
 
-// As Lobby but functions return promises
-export type LobbyPromises = {
-    [P in keyof Lobby]: 
-        (...args: Parameters<Lobby[P]>) => Promise<ReturnType<Lobby[P]>>;
-};
+    joinMatch(
+        arg: {
+            game: string,
+            matchID: string,
+            playerName: string;
+        }
+    ): LobbyTypes.JoinedMatch;
+
+    updatePlayer( 
+        arg: {
+            game: string,
+            matchID: string,
+
+            playerID: string;
+            credentials: string;
+            newName: string;
+        }
+    ): void;
+}

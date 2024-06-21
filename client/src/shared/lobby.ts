@@ -28,26 +28,26 @@ export declare namespace LobbyTypes {
     }
 }
 
-export interface LobbyPromises {
+export interface Lobby {
     createMatch: (
         arg: {
             game: string,  
             numPlayers: number;
         }
-    ) => Promise<LobbyTypes.CreatedMatch>;
+    ) => LobbyTypes.CreatedMatch;
     
     listMatches: (
         arg: {
             game: string
         }
-    ) => Promise<LobbyTypes.MatchList>;
+    ) => LobbyTypes.MatchList;
     
     getMatch: (
         arg: {
             game: string,
             matchID: string,
         }
-    ) => Promise<LobbyTypes.Match>;
+    ) => LobbyTypes.Match;
 
     joinMatch(
         arg: {
@@ -55,7 +55,7 @@ export interface LobbyPromises {
             matchID: string,
             playerName: string;
         }
-    ): Promise<LobbyTypes.JoinedMatch>;
+    ): LobbyTypes.JoinedMatch;
 
     updatePlayer( 
         arg: {
@@ -66,5 +66,5 @@ export interface LobbyPromises {
             credentials: string;
             newName: string;
         }
-    ): Promise<void>;
+    ): void;
 }
