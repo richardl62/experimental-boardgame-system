@@ -24,15 +24,25 @@ export function runLobbyFunction(matches: Matches, query: ParsedQs) {
     throw new Error("Parameters missing or invalid in call to lobby");
   }
 
+  /* To do - find better way to do this */
   if (func === "listMatches") {
-      const game = requireString(arg.game);
-      return matches.listMatches(game)
+      return matches.listMatches(arg);
   }
 
   if(func === "createMatch") {
-    const numPlayers = 2; // Short term Kludge
-    const game = requireString(arg.game);
-    return matches.createMatch(game, {numPlayers})
+    return matches.createMatch(arg);
+  }
+
+  if(func === "getMatch") {
+    return matches.getMatch(arg);
+  }
+
+  if(func === "joinMatch") {
+    return matches.joinMatch(arg);
+  }
+
+  if(func === "updatePlayer") {
+    return matches.updatePlayer(arg);
   }
 
   throw new Error('Lobby function not implemented.');

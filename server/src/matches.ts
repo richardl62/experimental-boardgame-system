@@ -16,12 +16,14 @@ export class Matches implements Lobby {
     matches: Match[];
 
     createMatch(
-        game: string,  
         options: {
+            game: string,
             numPlayers: number;
         }
     ): LobbyTypes.CreatedMatch {
-        const gameDefinition = getGameDefinition(game)
+        const { game } = options;
+        const gameDefinition = getGameDefinition(game);
+
         const id = this.matches.push(new Match(gameDefinition));
 
         return {
@@ -30,7 +32,9 @@ export class Matches implements Lobby {
     }
 
     listMatches(
-        game: string
+        options: {
+            game: string,
+        }
     ): LobbyTypes.MatchList {
         return {
             matches: [
@@ -40,6 +44,38 @@ export class Matches implements Lobby {
                 }
             ]
         }
+    }
+
+    getMatch(
+        arg: {
+            game: string,
+            matchID: string,
+        }
+    ): LobbyTypes.Match {
+        throw new Error("Not yet implemented");
+    }
+
+    joinMatch(
+        arg: {
+            game: string,
+            matchID: string,
+            playerName: string;
+        }
+    ): LobbyTypes.JoinedMatch {
+        throw new Error("Not yet implemented");
+    }
+
+    updatePlayer( 
+        arg: {
+            game: string,
+            matchID: string,
+
+            playerID: string;
+            credentials: string;
+            newName: string;
+        }
+    ): void {
+        throw new Error("Not yet implemented");
     }
 
     add(game: string) {
