@@ -9,16 +9,22 @@ export function makeLobbyClient() : LobbyClient {
 
 export async function createMatch(
     game: GameDefinition,
-    options: { numPlayers: number, setupData: unknown },
+    options: { numPlayers: number, /*setupData: unknown*/ },
 ): Promise<MatchID> {
-    const p = makeLobbyClient().createMatch(game.name, options);
+    const p = makeLobbyClient().createMatch({
+        game: game.name, 
+        numPlayers: options.numPlayers,
+    });
     const m = await p;
     return { mid: m.matchID };
 }
 
 export async function joinMatch(game: GameDefinition, matchID: MatchID, name: string | null = null): Promise<Player> {
     const lobbyClient = makeLobbyClient();
-    const match = await lobbyClient.getMatch(game.name, matchID.mid);
+    const match = await lobbyClient.getMatch({
+        game: game.name, 
+        matchID: matchID.mid
+    });
 
     const players = match.players;
     let index = 0;
@@ -29,14 +35,19 @@ export async function joinMatch(game: GameDefinition, matchID: MatchID, name: st
         }
     }
 
-    const joinMatchResult = await lobbyClient.joinMatch(game.name, matchID.mid,
-        {playerName: name || "unnamed"} );
+    const joinMatchResult = await lobbyClient.joinMatch({
+        game: game.name, 
+        matchID: matchID.mid,
+        playerName: name || "unnamed"
+    });
 
     const credentials = joinMatchResult.playerCredentials;
     const playerID = joinMatchResult.playerID;
 
     if(!name) {
-        await lobbyClient.updatePlayer(game.name, matchID.mid, {
+        await lobbyClient.updatePlayer({
+            game: game.name, 
+            matchID: matchID.mid, 
             playerID: playerID,
             credentials: credentials,
             newName: defaultPlayerName(playerID),

@@ -4,47 +4,50 @@ import { callLobby } from "./call-lobby";
 export class LobbyClient implements LobbyPromises {
 
     async createMatch(
-        game: string, // The name of the game, e.g. "scrabble".
-        body: {
+        options: {
+            game: string, // The name of the game, e.g. "scrabble".
             numPlayers: number;
         }, 
     ): Promise<LobbyTypes.CreatedMatch> {
-        const numPlayers = body.numPlayers.toString();
-        return callLobby("createMatch", {game, numPlayers});
+        return callLobby("createMatch", options);
     }
 
-    async listMatches(game: string): Promise<LobbyTypes.MatchList> {
-        return callLobby("listMatches", {game});
+    async listMatches(
+        options: {
+            game: string
+        }
+    ): Promise<LobbyTypes.MatchList> {
+        return callLobby("listMatches", options);
     }
 
     async getMatch(
-        game: string, 
-        matchID: string, 
+        options: {
+            game: string, 
+            matchID: string,
+        } 
     ): Promise<LobbyTypes.Match> {
-        return callLobby("getMatch", {game, matchID});
+        return callLobby("getMatch", options);
     }
 
     async joinMatch(
-        game: string, 
-        matchID: string,
-        body: {
+        options: {
+            game: string,
+            matchID: string,
             playerName: string;
-        }, 
+        }
     ): Promise<LobbyTypes.JoinedMatch> {
-        const params = {game, matchID, ...body};
-        return callLobby("joinMatch", params);
+        return callLobby("joinMatch", options);
     }
 
     async updatePlayer(
-        game: string, 
-        matchID: string, 
-        body: {
+        options: {
+            game: string,
+            matchID: string,
             playerID: string;
             credentials: string;
             newName: string;
         }
     ): Promise<void> {
-        const params = {game, matchID, ...body}
-        return await callLobby("updatePlayer", params);
+        return await callLobby("updatePlayer", options);
     }
 }

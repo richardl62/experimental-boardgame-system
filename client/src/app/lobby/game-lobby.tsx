@@ -23,7 +23,9 @@ export function GameLobby(props: {
     setOfflineOptions: (opts: OfflineOptions) => void;
 }): JSX.Element {
     const { game, setOfflineOptions } = props;
-    const asyncMatchList = useAsync(() => makeLobbyClient().listMatches(game.name), []);
+    const asyncMatchList = useAsync(() => makeLobbyClient().listMatches(
+        {game: game.name}
+    ), []);
 
     const matches = asyncMatchList.result?.matches;
 
