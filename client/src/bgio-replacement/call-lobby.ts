@@ -1,9 +1,12 @@
 import { lobbyServer } from "../app/url-params";
 
-export async function callLobby(func: string, params: Record<string,string|number>) : Promise<any> {
+export async function callLobby(func: string, arg: Record<string,string|number>) : Promise<any> {
     // Note: The name of the lobbyFunction ('createMatch' etc.) is passed to the
     // server as query parameter with name 'func'.
-    const searchParams = new URLSearchParams({func, ...params});
+    const searchParams = new URLSearchParams();
+    searchParams.append("func", func);
+    searchParams.append("arg", JSON.stringify(arg));
+
     const fullUrl = `${lobbyServer()}/lobby?${searchParams.toString()}`;
     console.log("callLobby fetching from", fullUrl);
 

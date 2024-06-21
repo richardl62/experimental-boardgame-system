@@ -25,6 +25,7 @@ app.get('/lobby', (req: Request, res: Response) => {
     res.send(JSON.stringify(result));
   } catch (err) {
     const message = err instanceof Error ? err.message : "unknown error";
+    console.log("Lobby error:", message);
     res.status(400).send(`Lobby error: ${message}`);
   }
 });
