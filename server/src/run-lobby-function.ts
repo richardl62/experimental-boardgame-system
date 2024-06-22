@@ -1,14 +1,7 @@
 import { ParsedQs } from 'qs';
 import { Matches } from './matches';
 
-function requireString(param: unknown) : string {
-  if(typeof param === "string") {
-    return param;
-  }
-  throw new Error("Bad type when expecting string");
-}
-
-export function runLobbyFunction(matches: Matches, query: ParsedQs) {
+export function runLobbyFunction(matches: Matches, query: ParsedQs) : unknown {
   console.log("Lobby function called:", query);
   
   const func = query.func;
@@ -21,28 +14,11 @@ export function runLobbyFunction(matches: Matches, query: ParsedQs) {
     arg = JSON.parse(query.arg);
   }
   if (typeof arg !== "object") {
-    throw new Error("Parameters missing or invalid in call to lobby");
+    throw new Error("Parameter missing or invalid in call to lobby");
   }
 
-  /* To do - find better way to do this */
-  if (func === "listMatches") {
-      return matches.listMatches(arg);
-  }
-
-  if(func === "createMatch") {
-    return matches.createMatch(arg);
-  }
-
-  if(func === "getMatch") {
-    return matches.getMatch(arg);
-  }
-
-  if(func === "joinMatch") {
-    return matches.joinMatch(arg);
-  }
-
-  if(func === "updatePlayer") {
-    return matches.updatePlayer(arg);
+  if(typeof (matches as any)[func] === "function") {
+    return (matches as any)[func](arg);
   }
 
   throw new Error('Lobby function not implemented.');
