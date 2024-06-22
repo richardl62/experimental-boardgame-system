@@ -9,74 +9,11 @@ interface OptionalError {
     error?: string;
 } 
 
-export class Matches implements Lobby {
+export class Matches {
     constructor() {
         this.matches = [];
     }
     matches: Match[];
-
-    createMatch(
-        options: {
-            game: string,
-            numPlayers: number;
-        }
-    ): LobbyTypes.CreatedMatch {
-        const { game } = options;
-        const gameDefinition = getGameDefinition(game);
-
-        const id = this.matches.push(new Match(gameDefinition));
-
-        return {
-            matchID: id.toString(),
-        }
-    }
-
-    listMatches(
-        options: {
-            game: string,
-        }
-    ): LobbyTypes.MatchList {
-        return {
-            matches: [
-                {
-                    matchID: "dummy",
-                    players: [],
-                }
-            ]
-        }
-    }
-
-    getMatch(
-        arg: {
-            game: string,
-            matchID: string,
-        }
-    ): LobbyTypes.Match {
-        throw new Error("Not yet implemented");
-    }
-
-    joinMatch(
-        arg: {
-            game: string,
-            matchID: string,
-            playerName: string;
-        }
-    ): LobbyTypes.JoinedMatch {
-        throw new Error("Not yet implemented");
-    }
-
-    updatePlayer( 
-        arg: {
-            game: string,
-            matchID: string,
-
-            playerID: string;
-            credentials: string;
-            newName: string;
-        }
-    ): void {
-        throw new Error("Not yet implemented");
-    }
 
     add(game: string) {
         const gameDefinition = getGameDefinition(game)

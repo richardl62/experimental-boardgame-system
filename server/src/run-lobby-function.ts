@@ -1,5 +1,6 @@
 import { ParsedQs } from 'qs';
 import { Matches } from './matches';
+import { ServerLobby } from './server-lobby';
 
 export function runLobbyFunction(matches: Matches, query: ParsedQs) : unknown {
   console.log("Lobby function called:", query);
@@ -17,8 +18,9 @@ export function runLobbyFunction(matches: Matches, query: ParsedQs) : unknown {
     throw new Error("Parameter missing or invalid in call to lobby");
   }
 
-  if(typeof (matches as any)[func] === "function") {
-    return (matches as any)[func](arg);
+  const lobby = new ServerLobby(matches);
+  if(typeof (lobby as any)[func] === "function") {
+    return (lobby as any)[func](arg);
   }
 
   throw new Error('Lobby function not implemented.');
