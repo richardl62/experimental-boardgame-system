@@ -5,10 +5,6 @@ import { WsMoveData } from "./shared/types";
 import { games } from "./shared/games";
 import { Lobby, LobbyTypes } from "./shared/lobby";
 
-interface OptionalError {
-    error?: string;
-} 
-
 // The Match interface is intended to be convenient for internal use.
 // (ServerLobby uses Match to help respond to client request.)
 export class Matches {
@@ -23,43 +19,31 @@ export class Matches {
         return this.matches.push(match) - 1;
     }
     
-    addPlayerToMatch(matchID: number, player: WebSocket) : OptionalError {
+    addPlayerToMatch(matchID: number, player: WebSocket) : void {
         if(!this.matches[matchID]){
-            return { error: 'Invalid Match ID' };
+            throw new Error("Invalid Match ID");
         }
         
         this.matches[matchID].addPlayer(player);
-        return {};
     }
 
-    makeMove(player: WebSocket, parameterStr: string) : OptionalError {
-        let error: string | undefined;
-        try {
-            const match = this.getMatchByPlayer(player);
-            if (!match) {
-                throw new Error('Player not in a match');
-            }
-            const moveData: WsMoveData = JSON.parse(parameterStr);
-            match.move(moveData.move, moveData.arg);
-        } catch (error) {
-            error =  (error instanceof Error) ? error.message : "unknown error";
-        }
-
-        return {error};
-    }
-
-    removePlayer(player: WebSocket) : OptionalError {
-        let error: string | undefined;
-        
+    makeMove(player: WebSocket, parameterStr: string) : void {
         const match = this.getMatchByPlayer(player);
         if (!match) {
-            error = 'Player not in a match';
+            throw new Error('Player not in a match');
+        }
+        const moveData: WsMoveData = JSON.parse(parameterStr);
+        match.move(moveData.move, moveData.arg);
+    }
+
+    removePlayer(player: WebSocket) : void {
+        const match = this.getMatchByPlayer(player);
+        if (!match) {
+           throw new Error('Player not in a match');
         } else {
             match.removePlayer(player);
 
         }
-        
-        return {error}
     }
     
     // Get the match that a player is in

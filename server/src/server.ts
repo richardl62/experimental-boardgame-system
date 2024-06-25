@@ -38,21 +38,31 @@ const server = app.listen(port, () => {
 // Create a WebSocket server
 const wss = new Server({ server });
 
+function errorResponse(
+  // err should be the parameter from a catch statement 
+  err: unknown
+)
+{
+  const message = err instanceof Error ? err.message : "unknown error";
+  return JSON.stringify({ error: message });
+}
+
 wss.on('connection', (ws, req)  => {
   console.log('New client connected', req.url);
   
-  let error : string | undefined = "Match ID not found";
   if (req.url) {
-    const parsedUrl = url.parse(req.url, true); // Set second argument to true for query object
-    const matchID = parsedUrl.query.matchID;
-    if(typeof matchID === 'string') {
-        error = matches.addPlayerToMatch(parseInt(matchID), ws).error;
+    try {
+      const parsedUrl = url.parse(req.url, true); // Set second argument to true for query object
+      const matchID = parsedUrl.query.matchID;
+      if (typeof matchID !== 'string') {
+        throw new Error("Bad match ID");
+      }
+      matches.addPlayerToMatch(parseInt(matchID), ws);
     }
-  }
-
-  if (error) {
-    console.error('Error during connection:', error);
-    ws.send(JSON.stringify({ error }));
+    catch (err) {
+      console.error('Error during connection:', err);
+      ws.send(errorResponse(err)); // Does it makes sense to report an eror here?
+    }
   }
 
   ws.on('error', (error) => {
@@ -60,19 +70,19 @@ wss.on('connection', (ws, req)  => {
   });
 
   ws.on('message', message => {
-    const str = message.toString();
-    const { error } = matches.makeMove(ws, str);
-    if (error) {
-      console.error('Error during move:', error);
-      ws.send(JSON.stringify({ error }));
+    try {
+      const str = message.toString();
+      matches.makeMove(ws, str);
+    } catch  (err) {
+      ws.send(errorResponse(err));
     }
   });
 
   ws.on('close', () => {
-    const { error } = matches.removePlayer(ws);
-    if (error) {
-      console.error('Error during close:', error);
-      ws.send(JSON.stringify({ error }));
+    try {
+      matches.removePlayer(ws);
+    } catch  (err) {
+      ws.send(errorResponse(err)); // Does it makes sense to report an eror here?
     }
   })
 });
