@@ -9,25 +9,26 @@ interface OptionalError {
     error?: string;
 } 
 
+// The Match interface is intended to be convenient for internal use.
+// (ServerLobby uses Match to help respond to client request.)
 export class Matches {
     constructor() {
         this.matches = [];
     }
-    matches: Match[];
+    private matches: Match[];
 
-    add(game: string) {
-        const gameDefinition = getGameDefinition(game)
-        this.matches.push(new Match(gameDefinition));
-        return this.matches.length - 1;
+    /** Create a new match and return it's ID */
+    addMatch(name: string) : number {
+        const match = new Match(getGameDefinition(name)) 
+        return this.matches.push(match) - 1;
     }
     
-    addPlayerToMatch(matchID: string, player: WebSocket) : OptionalError {
-        const matchIDNum = parseInt(matchID);
-        if(!this.matches[matchIDNum]){
+    addPlayerToMatch(matchID: number, player: WebSocket) : OptionalError {
+        if(!this.matches[matchID]){
             return { error: 'Invalid Match ID' };
         }
         
-        this.matches[matchIDNum].addPlayer(player);
+        this.matches[matchID].addPlayer(player);
         return {};
     }
 
@@ -79,4 +80,4 @@ function getGameDefinition(name: string): GameDefinition {
     } 
     
     throw new Error(`Unrecognised game "${name}"`)
-  }
+}

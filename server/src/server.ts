@@ -46,7 +46,7 @@ wss.on('connection', (ws, req)  => {
     const parsedUrl = url.parse(req.url, true); // Set second argument to true for query object
     const matchID = parsedUrl.query.matchID;
     if(typeof matchID === 'string') {
-        error = matches.addPlayerToMatch(matchID, ws).error;
+        error = matches.addPlayerToMatch(parseInt(matchID), ws).error;
     }
   }
 

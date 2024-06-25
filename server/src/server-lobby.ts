@@ -13,8 +13,8 @@ export class ServerLobby implements Lobby {
             game: string,
             numPlayers: number;
         }
-    ): LobbyTypes.CreatedMatch {    
-        const id = this.matches.add(options.game);
+    ): LobbyTypes.CreatedMatch {   
+        const id = this.matches.addMatch(options.game);
 
         return {
             matchID: id.toString(),
