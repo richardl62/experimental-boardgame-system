@@ -1,9 +1,9 @@
 import express, { Express, Request, Response , Application } from 'express';
-import { Server, WebSocket as WSWebSocket  } from 'ws'; // Import the ws library
-
+import { Server  } from 'ws';
 import url from 'url';
 import { Matches } from './matches';
 import { runLobbyFunction } from './run-lobby-function';
+import { Player } from './shared/games/player';
 
 const port = process.env.PORT || 8000;
 const matches = new Matches();
@@ -54,10 +54,17 @@ wss.on('connection', (ws, req)  => {
     try {
       const parsedUrl = url.parse(req.url, true); // Set second argument to true for query object
       const matchID = parsedUrl.query.matchID;
+      const name = parsedUrl.query.name;
       if (typeof matchID !== 'string') {
         throw new Error("Bad match ID");
       }
-      matches.addPlayerToMatch(parseInt(matchID), ws);
+      if (typeof name !== 'string') {
+        throw new Error("Bad player name");
+      }
+
+      const match = matches.getMatch(parseInt(matchID));
+
+      match.addPlayer(new Player(name, ws));
     }
     catch (err) {
       console.error('Error during connection:', err);
@@ -80,7 +87,7 @@ wss.on('connection', (ws, req)  => {
 
   ws.on('close', () => {
     try {
-      matches.removePlayer(ws);
+      matches.playerDisconnected(ws);
     } catch  (err) {
       ws.send(errorResponse(err)); // Does it makes sense to report an eror here?
     }

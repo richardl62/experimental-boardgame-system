@@ -1,26 +1,44 @@
 import { GameDefinition } from "./shared/game-definition";
-import { WebSocket as WSWebSocket  } from 'ws'; // Import the ws library
+import { WebSocket } from 'ws';
+import { Player } from "./shared/games/player";
 
 // A match is an instance of a game.
 export class Match {
-    constructor(definition: GameDefinition) {
+    constructor(definition: GameDefinition, numPlayers: number) {
         this.definition = definition;
         this.state = definition.initialState();
-        this.players = new Set<WSWebSocket>();  
+        this.numPlayers = numPlayers;
+        this.players = [];
     }
 
     readonly definition: GameDefinition;
-    readonly players: Set<WSWebSocket>;
+    readonly numPlayers: number;  // Is this needed?
+
+    readonly players: Player[];
     private state: any;
 
-    addPlayer(player: WSWebSocket) {
-        this.players.add(player);
+    addPlayer(player: Player) {
+        this.players.push(player);
         player.send(JSON.stringify(this.state));
     }
 
-    removePlayer(player: WSWebSocket) {
-        this.players.delete(player);
-    }   
+    getPlayerByWebSocket(ws: WebSocket) : Player | null {
+        for (let player of this.players) {
+            if ( player.ws === ws ) {
+                return player;
+            }
+        }
+
+        return null;
+    }
+    
+    playerDisconnected(ws: WebSocket) : void {
+        const player = this.getPlayerByWebSocket(ws);
+        if (!player) {
+            throw new Error("Disconnect report when player not connected");
+        }
+        player.recordDisconnect();
+    }
     
     // Simplified move function
     move(name: string, parameter: any) {

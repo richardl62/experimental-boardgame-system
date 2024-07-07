@@ -9,12 +9,12 @@ export class ServerLobby implements Lobby {
     matches: Matches;
 
     createMatch(
-        options: {
+        {game, numPlayers}: {
             game: string,
             numPlayers: number;
         }
     ): LobbyTypes.CreatedMatch {   
-        const id = this.matches.addMatch(options.game);
+        const id = this.matches.addMatch(game, numPlayers);
 
         return {
             matchID: id.toString(),
@@ -26,13 +26,17 @@ export class ServerLobby implements Lobby {
             game: string,
         }
     ): LobbyTypes.MatchList {
+        const matchIds = this.matches.getMatchIDs();
+
+        const matchInfo = (matchID: number) : LobbyTypes.Match => {
+            return {
+                matchID: matchID.toString(),
+                players: [],
+            }
+        }
+  
         return {
-            matches: [
-                {
-                    matchID: "dummy",
-                    players: [],
-                }
-            ]
+            matches: matchIds.map(matchInfo)
         }
     }
 

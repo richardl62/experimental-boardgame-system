@@ -1,9 +1,8 @@
 import { Match } from "./match";
 import { GameDefinition } from "./shared/game-definition";
-import { WebSocket  } from 'ws'; // Import the ws library
+import { WebSocket  } from 'ws';
 import { WsMoveData } from "./shared/types";
 import { games } from "./shared/games";
-import { Lobby, LobbyTypes } from "./shared/lobby";
 
 // The Match interface is intended to be convenient for internal use.
 // (ServerLobby uses Match to help respond to client request.)
@@ -13,22 +12,31 @@ export class Matches {
     }
     private matches: Match[];
 
+    getMatchIDs() : number[] {
+        const ids = [];
+        for (let id = 0; id < this.matches.length; id++) {
+            ids.push(id);
+            
+        }
+        return ids;
+    }
+
     /** Create a new match and return it's ID */
-    addMatch(name: string) : number {
-        const match = new Match(getGameDefinition(name)) 
+    addMatch(name: string, numPlayer: number) : number {
+        const match = new Match(getGameDefinition(name), numPlayer) 
         return this.matches.push(match) - 1;
     }
     
-    addPlayerToMatch(matchID: number, player: WebSocket) : void {
-        if(!this.matches[matchID]){
+    getMatch(matchID: number) : Match {
+        const match = !this.matches[matchID];
+        if(!match) {
             throw new Error("Invalid Match ID");
         }
-        
-        this.matches[matchID].addPlayer(player);
+        return match;
     }
 
-    makeMove(player: WebSocket, parameterStr: string) : void {
-        const match = this.getMatchByPlayer(player);
+    makeMove(ws: WebSocket, parameterStr: string) : void {
+        const match = this.getMatchByWebSocket(ws);
         if (!match) {
             throw new Error('Player not in a match');
         }
@@ -36,23 +44,24 @@ export class Matches {
         match.move(moveData.move, moveData.arg);
     }
 
-    removePlayer(player: WebSocket) : void {
-        const match = this.getMatchByPlayer(player);
+    playerDisconnected(ws: WebSocket) : void {
+        const match = this.getMatchByWebSocket(ws);
         if (!match) {
            throw new Error('Player not in a match');
         } else {
-            match.removePlayer(player);
-
+            match.playerDisconnected(ws);
         }
     }
-    
+
     // Get the match that a player is in
-    private getMatchByPlayer(player: WebSocket) {
+    private getMatchByWebSocket(ws: WebSocket) : Match | null {
         for (const match of this.matches) {
-            if (match.players.has(player)) {
+            if (match.getPlayerByWebSocket(ws)) {
                 return match;
             }
         }
+        
+        return null;
     }
 } 
 
