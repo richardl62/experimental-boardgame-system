@@ -61,7 +61,7 @@ wss.on('connection', (ws, req)  => {
         throw new Error("Bad player name");
       }
 
-      const match = matches.getMatch(parseInt(matchID));
+      const match = matches.getMatch(matchID);
 
       match.addPlayer(new Player(name, ws));
     }

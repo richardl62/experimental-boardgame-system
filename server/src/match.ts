@@ -1,24 +1,33 @@
 import { GameDefinition } from "./shared/game-definition";
 import { WebSocket } from 'ws';
 import { Player } from "./shared/games/player";
+import { LobbyTypes } from "./shared/lobby";
 
 // A match is an instance of a game.
 export class Match {
-    constructor(definition: GameDefinition, numPlayers: number) {
+    constructor(
+        definition: GameDefinition, 
+        id: string, // The caller must ensure that that ID is unique.
+        numPlayers: number
+    ) {
         this.definition = definition;
+        this.id = id;
+
         this.state = definition.initialState();
+        
         this.numPlayers = numPlayers;
         this.players = [];
     }
 
     readonly definition: GameDefinition;
+    readonly id: string;
     readonly numPlayers: number;  // Is this needed?
 
     readonly players: Player[];
     private state: any;
 
     get game() {return this.definition.name}
-    
+
     addPlayer(player: Player) {
         this.players.push(player);
         player.send(JSON.stringify(this.state));
@@ -50,6 +59,13 @@ export class Match {
         }
         this.state = move({ state: this.state, currentPlayer: 0, activePlayer: 0, arg: parameter });
         this.broadcast();   
+    }
+
+    lobbyMatch() : LobbyTypes.Match {
+        return {
+            matchID: this.id,
+            players: [], // Temporary KLUDGE
+        }
     }
 
     // Function to send a message to all connected players

@@ -14,11 +14,8 @@ export class ServerLobby implements Lobby {
             numPlayers: number;
         }
     ): LobbyTypes.CreatedMatch {   
-        const id = this.matches.addMatch(game, numPlayers);
-
-        return {
-            matchID: id.toString(),
-        }
+        const match = this.matches.addMatch(game, numPlayers);
+        return match.lobbyMatch();
     }
 
     listMatches(
@@ -26,31 +23,28 @@ export class ServerLobby implements Lobby {
             game: string, // TO DO: Use this to filter the returned matches.
         }
     ): LobbyTypes.MatchList {
-        const matchIds = this.matches.getMatchIDs();
+        const { game } = options;
+        const matches = this.matches.getMatches(game);
 
-        const matchInfo = (matchID: number) : LobbyTypes.Match => {
-            return {
-                matchID: matchID.toString(),
-                players: [],
-            }
-        }
-  
         return {
-            matches: matchIds.map(matchInfo)
+            matches: matches.map(m => m.lobbyMatch())
         }
     }
 
     getMatch(
         options : {
-            game: string,
+            game: string, // Is this helpful?
             matchID: string,
         }
     ): LobbyTypes.Match {
         const { game, matchID } = options;
 
-        const match =  getMatchFromStringID(this.matches, matchID, game );
+        const match = this.matches.getMatch(matchID);
+        if ( match.game !== game ) {
+            throw new Error("selected match is not of the expected game");
+        }
 
-        return lobbyMatch(matchID, match);
+        return match.lobbyMatch();
     }
 
     joinMatch(
@@ -76,25 +70,3 @@ export class ServerLobby implements Lobby {
         throw new Error("Not yet implemented");
     }
 } 
-
-function getMatchFromStringID(matches: Matches, id: string, game: string ) : Match {
-        
-    const processedID = parseInt(id);
-    if ( isNaN(processedID) ) {
-        throw new Error(`matchID "${id}" is not an integer`);
-    }
-
-    const match = matches.getMatch(processedID);
-    if(match.game !== game ) {
-        throw new Error('game is not of the expected type');
-    }
-
-    return match;
-}
-
-function lobbyMatch(matchID: string, match: Match) : LobbyTypes.Match {
-    return {
-        matchID,
-        players: [] // Temporary kludge
-    }
-}

@@ -12,27 +12,41 @@ export class Matches {
     }
     private matches: Match[];
 
-    getMatchIDs() : number[] {
-        const ids = [];
-        for (let id = 0; id < this.matches.length; id++) {
-            ids.push(id);
-            
-        }
-        return ids;
-    }
-
     /** Create a new match and return it's ID */
-    addMatch(name: string, numPlayer: number) : number {
-        const match = new Match(getGameDefinition(name), numPlayer) 
-        return this.matches.push(match) - 1;
+    addMatch(name: string, numPlayer: number) : Match
+    {
+        // Base the id on the number of recorded matches.  This feels like
+        // a bit of a kludge, but should ensure a unique id.
+        const id = (this.matches.length+1).toString(); 
+
+        const match = new Match(getGameDefinition(name), id, numPlayer);
+        this.matches.push(match);
+
+        return match;
     }
     
-    getMatch(matchID: number) : Match {
-        const match = this.matches[matchID];
-        if(!match) {
-            throw new Error("Invalid Match ID");
+    getMatch(matchID: string) : Match
+    {
+        for( const match of this.matches) {
+            if (match.id === matchID) {
+                return match;
+            }
         }
-        return match;
+
+        throw new Error("Invalid Match ID");
+    }
+
+    /** Get all the matchs of a particular game (e.g. Scrabble) */
+    getMatches(game: string) : Match[]
+    {
+        const matches: Match[] = [];
+        for( const match of this.matches) {
+            if ( match.game === game ) {
+                matches.push(match);
+            }
+        }
+
+        return matches;
     }
 
     makeMove(ws: WebSocket, parameterStr: string) : void {
