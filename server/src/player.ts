@@ -1,18 +1,29 @@
 import { WebSocket  } from 'ws'; // Import the ws library
+import { PublicPlayerMetadata } from './shared/lobby';
 
 export class Player {
-    constructor(name: string, ws: WebSocket) {
-        this.name = name;
-        this.ws_ = null;  
+    constructor(id: number) {
+        this.id = id;
+        this.ws_ = null;
     }
-    readonly name: string;
-    private ws_: WebSocket | null; // Null if disconnected
+
+    readonly id: number;
+    name?: string;
+    credentials?: string;
+    data?: any;
+    isConnected?: boolean;
+    ws_?: WebSocket | null;
 
     get ws() {return this.ws_;}
 
     recordDisconnect() {this.ws_ = null;}
     
     get connected() {return this.ws_ !== null}
+
+    publicMetada(): PublicPlayerMetadata {
+        const { id, name, data, isConnected } = this;
+        return  { id, name, data, isConnected };
+    }
 
     send(obj: unknown) {
         const text = JSON.stringify(obj);

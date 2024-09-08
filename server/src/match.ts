@@ -8,21 +8,17 @@ export class Match {
     constructor(
         definition: GameDefinition, 
         id: string, // The caller must ensure that that ID is unique.
-        numPlayers: number
+        players: Player[],
     ) {
         this.definition = definition;
         this.id = id;
+        this.players = players;
 
         this.state = definition.initialState();
-        
-        this.numPlayers = numPlayers;
-        this.players = [];
     }
 
     readonly definition: GameDefinition;
     readonly id: string;
-    readonly numPlayers: number;  // Is this needed?
-
     readonly players: Player[];
     private state: any;
 
@@ -64,7 +60,7 @@ export class Match {
     lobbyMatch() : LobbyTypes.Match {
         return {
             matchID: this.id,
-            players: [], // Temporary KLUDGE
+            players: this.players.map(p => p.publicMetada()),
         }
     }
 

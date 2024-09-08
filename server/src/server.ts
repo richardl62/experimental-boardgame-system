@@ -63,7 +63,8 @@ wss.on('connection', (ws, req)  => {
 
       const match = matches.getMatch(matchID);
 
-      match.addPlayer(new Player(name, ws));
+      throw new Error("wss.on('connection', ...) not fully implemented")
+      //match.addPlayer(new Player(name, ws));
     }
     catch (err) {
       console.error('Error during connection:', err);
