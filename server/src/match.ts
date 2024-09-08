@@ -1,6 +1,6 @@
 import { GameDefinition } from "./shared/game-definition";
 import { WebSocket } from 'ws';
-import { Player } from "./shared/games/player";
+import { Player } from "./player";
 import { LobbyTypes } from "./shared/lobby";
 
 // A match is an instance of a game.

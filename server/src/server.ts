@@ -3,7 +3,7 @@ import { Server  } from 'ws';
 import url from 'url';
 import { Matches } from './matches';
 import { runLobbyFunction } from './run-lobby-function';
-import { Player } from './shared/games/player';
+import { Player } from './player';
 
 const port = process.env.PORT || 8000;
 const app: Application = express();
