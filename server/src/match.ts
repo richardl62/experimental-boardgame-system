@@ -17,6 +17,8 @@ export class Match {
     readonly players: Player[];
     private state: any;
 
+    get game() {return this.definition.name}
+    
     addPlayer(player: Player) {
         this.players.push(player);
         player.send(JSON.stringify(this.state));

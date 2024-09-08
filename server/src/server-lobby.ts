@@ -41,12 +41,16 @@ export class ServerLobby implements Lobby {
     }
 
     getMatch(
-        arg: {
+        options : {
             game: string,
             matchID: string,
         }
     ): LobbyTypes.Match {
-        throw new Error("Not yet implemented");
+        const { game, matchID } = options;
+
+        const match =  getMatchFromStringID(this.matches, matchID, game );
+
+        return lobbyMatch(matchID, match);
     }
 
     joinMatch(
@@ -72,3 +76,25 @@ export class ServerLobby implements Lobby {
         throw new Error("Not yet implemented");
     }
 } 
+
+function getMatchFromStringID(matches: Matches, id: string, game: string ) : Match {
+        
+    const processedID = parseInt(id);
+    if ( isNaN(processedID) ) {
+        throw new Error(`matchID "${id}" is not an integer`);
+    }
+
+    const match = matches.getMatch(processedID);
+    if(match.game !== game ) {
+        throw new Error('game is not of the expected type');
+    }
+
+    return match;
+}
+
+function lobbyMatch(matchID: string, match: Match) : LobbyTypes.Match {
+    return {
+        matchID,
+        players: [] // Temporary kludge
+    }
+}

@@ -28,7 +28,7 @@ export class Matches {
     }
     
     getMatch(matchID: number) : Match {
-        const match = !this.matches[matchID];
+        const match = this.matches[matchID];
         if(!match) {
             throw new Error("Invalid Match ID");
         }
