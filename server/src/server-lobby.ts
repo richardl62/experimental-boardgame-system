@@ -23,7 +23,7 @@ export class ServerLobby implements Lobby {
 
     listMatches(
         options: {
-            game: string,
+            game: string, // TO DO: Use this to filter the returned matches.
         }
     ): LobbyTypes.MatchList {
         const matchIds = this.matches.getMatchIDs();

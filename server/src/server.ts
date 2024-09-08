@@ -6,9 +6,9 @@ import { runLobbyFunction } from './run-lobby-function';
 import { Player } from './shared/games/player';
 
 const port = process.env.PORT || 8000;
-const matches = new Matches();
-
 const app: Application = express();
+
+const matches = new Matches();
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3000");
@@ -39,8 +39,7 @@ const server = app.listen(port, () => {
 const wss = new Server({ server });
 
 function errorResponse(
-  // err should be the parameter from a catch statement 
-  err: unknown
+  err: unknown // The parameter from a catch statement 
 )
 {
   const message = err instanceof Error ? err.message : "unknown error";
@@ -52,7 +51,7 @@ wss.on('connection', (ws, req)  => {
   
   if (req.url) {
     try {
-      const parsedUrl = url.parse(req.url, true); // Set second argument to true for query object
+      const parsedUrl = url.parse(req.url, true); // Does the 2nd parameter matter?
       const matchID = parsedUrl.query.matchID;
       const name = parsedUrl.query.name;
       if (typeof matchID !== 'string') {
