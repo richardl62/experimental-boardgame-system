@@ -2,16 +2,20 @@ import { WebSocket  } from 'ws'; // Import the ws library
 import { PublicPlayerMetadata } from './shared/lobby';
 
 export class Player {
-    constructor(id: number) {
+    constructor(id: number, name: string) {
         this.id = id;
+        this.credentials = 'c' + 'id'; // for now
+        
+        this.name = name;
+        this.data = null;
         this._ws = null;
     }
 
     readonly id: number;
-    readonly credentials?: string;
+    readonly credentials: string;
 
-    private name?: string;
-    private data?: any;
+    private name: string;
+    private data: any; // Is this needed?
 
     private _ws: WebSocket | null;
     get ws() {return this._ws;}
