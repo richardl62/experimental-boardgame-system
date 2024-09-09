@@ -18,7 +18,7 @@ export class Matches {
     private matches: Match[];
 
     /** Create a new match and return it's ID */
-    addMatch(name: string, numPlayer: number) : Match
+    addMatch(game: string, numPlayer: number) : Match
     {
         // Base the id on the number of recorded matches.  This feels like
         // a bit of a kludge, but should ensure a unique id.
@@ -29,7 +29,7 @@ export class Matches {
             playersForMatch.push(this.players.addPlayer());
         }
 
-        const match = new Match(getGameDefinition(name), id, playersForMatch);
+        const match = new Match(getGameDefinition(game), id, playersForMatch);
         this.matches.push(match);
 
         return match;

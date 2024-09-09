@@ -4,21 +4,22 @@ import { PublicPlayerMetadata } from './shared/lobby';
 export class Player {
     constructor(id: number) {
         this.id = id;
-        this.ws_ = null;
+        this._ws = null;
     }
 
     readonly id: number;
-    name?: string;
-    credentials?: string;
-    data?: any;
-    isConnected?: boolean;
-    ws_?: WebSocket | null;
+    readonly credentials?: string;
 
-    get ws() {return this.ws_;}
+    private name?: string;
+    private data?: any;
 
-    recordDisconnect() {this.ws_ = null;}
+    private _ws: WebSocket | null;
+    get ws() {return this._ws;}
+    private set ws(ws_) {this._ws = ws_;}
+
+    recordDisconnect() {this.ws = null;}
     
-    get connected() {return this.ws_ !== null}
+    get isConnected() {return this.ws !== null}
 
     publicMetada(): PublicPlayerMetadata {
         const { id, name, data, isConnected } = this;
