@@ -8,8 +8,8 @@ export class Players {
     players: Player [];
 
     addPlayer() : Player {
-        const id = this.players.length + 1;
-        const player = new Player(id);
+        const seed = this.players.length + 1;
+        const player = new Player(seed);
 
         this.players.push(player);
 

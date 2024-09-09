@@ -54,7 +54,12 @@ export class ServerLobby implements Lobby {
             playerName: string;
         }
     ): LobbyTypes.JoinedMatch {
-        throw new Error("Not yet implemented");
+        const { matchID, playerName } = arg;
+        const match = this.matches.getMatch(matchID);
+
+        const player = match.allocatePlayer(playerName);
+
+        return { playerID: player.id, playerCredentials: player.credentials}
     }
 
     updatePlayer( 

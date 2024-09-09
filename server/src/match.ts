@@ -24,9 +24,15 @@ export class Match {
 
     get game() {return this.definition.name}
 
-    addPlayer(player: Player) {
-        this.players.push(player);
-        player.send(JSON.stringify(this.state));
+    allocatePlayer(name: string) : Player {
+        const player = this.players.find(p => !p.isAllocated);
+        if ( !player ) {
+            throw new Error("No unallocated player found");
+        }
+
+        player.allocate(name);
+
+        return player;
     }
 
     getPlayerByWebSocket(ws: WebSocket) : Player | null {
