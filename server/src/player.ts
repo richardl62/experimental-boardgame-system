@@ -22,8 +22,8 @@ export class Player {
     get isConnected() {return this.ws !== null}
 
     publicMetada(): PublicPlayerMetadata {
-        const { id, name, data, isConnected } = this;
-        return  { id, name, data, isConnected };
+        const { name, isConnected } = this;
+        return  { name, isConnected };
     }
 
     send(obj: unknown) {

@@ -1,12 +1,17 @@
-export type PlayerMetadata = {
-    id: number;
+// export type PlayerMetadata = {
+//     id: number;
+//     name?: string;
+//     credentials?: string;
+//     data?: any;
+//     isConnected?: boolean;
+// };
+
+// export type PublicPlayerMetadata = Omit<PlayerMetadata, "credentials">;
+
+export type PublicPlayerMetadata = {
     name?: string;
-    credentials?: string;
-    data?: any;
     isConnected?: boolean;
 };
-
-export type PublicPlayerMetadata = Omit<PlayerMetadata, "credentials">;
 
 // This namespace is a legacy of BGIO (there is was called LobbyAPI)
 export declare namespace LobbyTypes {
