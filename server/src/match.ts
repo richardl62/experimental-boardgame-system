@@ -8,11 +8,17 @@ export class Match {
     constructor(
         definition: GameDefinition, 
         id: string, // The caller must ensure that that ID is unique.
-        players: Player[],
+        numPlayers: number,
     ) {
         this.definition = definition;
         this.id = id;
-        this.players = players;
+        this.players = [];
+
+        // For legacy reasons players IDs are set to reflect their position
+        // within the match.
+        for(let id = 0; id < numPlayers; ++id) {
+            this.players[id] = new Player(id.toString());
+        }
 
         this.state = definition.initialState();
     }

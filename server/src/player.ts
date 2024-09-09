@@ -14,12 +14,13 @@ import { PublicPlayerMetadata } from './shared/lobby';
 //
 // If an allocated Player is not connected, this could indicate a network problem, or that
 // the browser running the relevant client was shut. In general, it should be possible for a
-// client to re-establish a lost connection.   
+// client to re-establish a lost connection. 
+//
+// Players ID must be unique within a match, but need not be globally unique.  
 export class Player {
-    // KLUDGE? seed is used to help generate id and credentials.  A different seed should be
-    // use for each Player.
-    constructor(seed: number) {
-        this.id = seed.toString(); // for now
+    
+    constructor(id: string) {
+        this.id = id;
         this.credentials = 'c' + this.id; // for now
         
         this.name = null;

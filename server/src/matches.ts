@@ -3,18 +3,15 @@ import { GameDefinition } from "./shared/game-definition";
 import { WebSocket  } from 'ws';
 import { WsMoveData } from "./shared/types";
 import { games } from "./shared/games";
-import { Players } from "./players";
 import { Player } from "./player";
 
 // The Match interface is intended to be convenient for internal use.
 // (ServerLobby uses Match to help respond to client request.)
 export class Matches {
     constructor() {
-        this.players = new Players;
         this.matches = [];
     }
 
-    private players: Players;
     private matches: Match[];
 
     /** Create a new match and return it's ID */
@@ -24,12 +21,7 @@ export class Matches {
         // a bit of a kludge, but should ensure a unique id.
         const id = (this.matches.length+1).toString(); 
 
-        const playersForMatch: Player[] = [];
-        for(let i = 0; i < numPlayer; ++i) {
-            playersForMatch.push(this.players.addPlayer());
-        }
-
-        const match = new Match(getGameDefinition(game), id, playersForMatch);
+        const match = new Match(getGameDefinition(game), id, numPlayer);
         this.matches.push(match);
 
         return match;
