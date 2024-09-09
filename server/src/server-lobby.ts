@@ -72,6 +72,14 @@ export class ServerLobby implements Lobby {
             newName: string;
         }
     ): void {
-        throw new Error("Not yet implemented");
+        const { matchID, playerID, newName } = arg;
+        const match = this.matches.getMatch(matchID);
+
+        const player = match.findPlayerByID(playerID);
+        if( !player ) {
+            throw new Error("cannot find player to update");
+        }
+
+        player.setName(newName);
     }
 } 

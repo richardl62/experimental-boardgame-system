@@ -35,7 +35,17 @@ export class Match {
         return player;
     }
 
-    getPlayerByWebSocket(ws: WebSocket) : Player | null {
+    findPlayerByID(id: string) : Player | null {
+        for (let player of this.players) {
+            if ( player.id === id ) {
+                return player;
+            }
+        }
+
+        return null;
+    }
+
+    findPlayerByWebSocket(ws: WebSocket) : Player | null {
         for (let player of this.players) {
             if ( player.ws === ws ) {
                 return player;
@@ -46,7 +56,7 @@ export class Match {
     }
     
     playerDisconnected(ws: WebSocket) : void {
-        const player = this.getPlayerByWebSocket(ws);
+        const player = this.findPlayerByWebSocket(ws);
         if (!player) {
             throw new Error("Disconnect report when player not connected");
         }

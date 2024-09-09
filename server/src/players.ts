@@ -2,17 +2,13 @@ import { Player } from "./player";
 
 export class Players {
     constructor() {
-        this.players = [];
+        this.lastSeed = 0;
     }
 
-    players: Player [];
+    lastSeed: number;
 
     addPlayer() : Player {
-        const seed = this.players.length + 1;
-        const player = new Player(seed);
-
-        this.players.push(player);
-
-        return player;
+        this.lastSeed++;
+        return new Player(this.lastSeed);
     }
 }

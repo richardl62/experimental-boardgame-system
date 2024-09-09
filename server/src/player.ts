@@ -7,7 +7,8 @@ import { PublicPlayerMetadata } from './shared/lobby';
 // even if they (temporarily, we hope) leave the table.
 //
 // An allocated Player is indcated by the name being set or, equivalently, by isAllocated().
-// 
+// (The name of a player can change after allocation, but it will always remain set.) 
+//
 // A connected Player (i.e. one who is at their seat in the analogy above), is indicated by
 // the websocket being set or, equivalently, by isConnected.  
 //
@@ -18,8 +19,8 @@ export class Player {
     // KLUDGE? seed is used to help generate id and credentials.  A different seed should be
     // use for each Player.
     constructor(seed: number) {
-        this.id = "p" + seed; // for now
-        this.credentials = 'c' + seed; // for now
+        this.id = seed.toString(); // for now
+        this.credentials = 'c' + this.id; // for now
         
         this.name = null;
         this.data = null;
@@ -43,6 +44,10 @@ export class Player {
     recordConnection(ws: WebSocket) { this.ws = ws;}
     recordDisconnect() {this.ws = null;}
     get isConnected() {return this.ws !== null; } 
+
+    setName(name: string) {
+        this.name = name;
+    }
 
     publicMetada(): PublicPlayerMetadata {
         const { name, isConnected } = this;

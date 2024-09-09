@@ -80,7 +80,7 @@ export class Matches {
     // Get the match that a player is in
     private getMatchByWebSocket(ws: WebSocket) : Match | null {
         for (const match of this.matches) {
-            if (match.getPlayerByWebSocket(ws)) {
+            if (match.findPlayerByWebSocket(ws)) {
                 return match;
             }
         }
