@@ -32,7 +32,6 @@ export function JoinGame(props: JoinGameProps): JSX.Element {
 
     const doSetName = (str: string) => {
         const filtered = str.replace(/\s/g, "");
-        console.log(str, filtered);
         setName(filtered);
     };
 

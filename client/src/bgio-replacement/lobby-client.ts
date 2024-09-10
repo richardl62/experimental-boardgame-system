@@ -53,7 +53,7 @@ export class LobbyClient implements LobbyPromises {
             credentials: string;
             newName: string;
         }
-    ): Promise<void> {
+    ): Promise<null> {
         return await callLobby("updatePlayer", options);
     }
 }

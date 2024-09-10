@@ -17,11 +17,11 @@ export async function callLobby(func: string, arg: Record<string,string|number>)
             const message = `${func} failed: fetch reported ${response.status}`
             console.log(message)
             throw new Error(message);
-        } else {
-            console.log("createMatch suceeded", response.json);
-        }
+        } 
 
-        return response.json();
+        const result = await response.json();
+        console.log(`${func} suceeded`, result);
+        return result
     } catch (error) {
         throw error;
     }

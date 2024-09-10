@@ -71,7 +71,7 @@ export class ServerLobby implements Lobby {
             credentials: string;
             newName: string;
         }
-    ): void {
+    ) : null {
         const { matchID, playerID, newName } = arg;
         const match = this.matches.getMatch(matchID);
 
@@ -81,5 +81,6 @@ export class ServerLobby implements Lobby {
         }
 
         player.setName(newName);
+        return null;
     }
 } 

@@ -72,5 +72,7 @@ export interface Lobby {
             credentials: string;
             newName: string;
         }
-    ): void;
+        // Returning something allows response.json() to be used in
+        // the client, which helps with writting generic lobby code.
+    ): null;
 }
