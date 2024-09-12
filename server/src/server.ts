@@ -52,14 +52,21 @@ wss.on('connection', (ws, req)  => {
   if (req.url) {
     try {
       const parsedUrl = url.parse(req.url, true); // Does the 2nd parameter matter?
-      const matchID = parsedUrl.query.matchID;
-      const name = parsedUrl.query.name;
-      if (typeof matchID !== 'string') {
-        throw new Error("Bad match ID");
+
+      const urlParam = (name: string) => {
+        const param = parsedUrl.query[name];
+
+        if (typeof param !== 'string') {
+          throw new Error(`URL parameter "${name}" missing or invalid`);
+        }
+        console.log(name, param);
+        return param;
       }
-      if (typeof name !== 'string') {
-        throw new Error("Bad player name");
-      }
+
+      const matchID = urlParam("matchID");
+      const playerID = urlParam("playerID");
+      const credentials = urlParam("credentials");
+      console.log(matchID, playerID, credentials);
 
       const match = matches.getMatch(matchID);
 

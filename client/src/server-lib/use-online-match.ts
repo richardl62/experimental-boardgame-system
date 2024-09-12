@@ -1,10 +1,10 @@
 
 import { GameDefinition, GameDefintionMove, PlayerData } from "../shared/game-definition";
-import { WsMoveData } from "../shared/types";
+import { MatchID, Player, WsMoveData } from "../shared/types";
+import { sAssert } from "../utils/assert";
 import {Match, MatchMove } from "./match";
-import useWebSocket from 'react-use-websocket';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 
-const socketUrl = "ws://localhost:8000";
 
 type OnlineMatchResult = {
     match: Match,
@@ -14,21 +14,38 @@ type OnlineMatchResult = {
     message: string,
 };
 
-// Create and offilne game instance.
 export function useOnlineMatch(
+    server: string,
     gameDefinition: GameDefinition,
-    {nPlayers, matchID}: {nPlayers: number, matchID: string},
+    {matchID, player}: {matchID: MatchID, player: Player},
 ) : OnlineMatchResult {
     
-    const url = new URL(socketUrl);
-    url.searchParams.append("matchID", matchID);
+    const url = new URL(server);
+    url.protocol = "ws";
+    url.searchParams.append("matchID", matchID.mid);
+    url.searchParams.append("playerID", player.id);
+    url.searchParams.append("credentials", player.credentials);
 
     console.log(url.toString());
 
-    const { sendJsonMessage, lastJsonMessage } = useWebSocket(url.toString());
+    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url.toString());
+
+
+    if (readyState !== ReadyState.OPEN) {
+        const message = {
+            [ReadyState.CONNECTING]: 'Connecting',
+            [ReadyState.CLOSING]: 'Closing',
+            [ReadyState.CLOSED]: 'Closed',
+            [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+        }[readyState];
+
+        sAssert(message, "Unrecoginsed WebSocket connect state");
+        
+        return { message };
+    }
     
     if (lastJsonMessage === null) {
-        return {message: "Loading the server (well, maybe something has go wrong)..."};
+        return {message: "Null message recieved (unexpected error)"};
     }
 
     // Inefficient, but simple. (Functions are recreated on every call.)
@@ -39,7 +56,7 @@ export function useOnlineMatch(
     };
 
     const match: Match = {
-        playerData: playerDataHACK(nPlayers),
+        playerData: playerDataHACK(),
         currentPlayer: 0,
         moves: matchMoves, 
         state: lastJsonMessage,
@@ -65,9 +82,9 @@ function makeMatchMove(
     };
 }
 
-function playerDataHACK(nPlayers: number) : PlayerData[]{
+function playerDataHACK() : PlayerData[]{
     const playerData : PlayerData[] = [];
-    for (let i = 0; i < nPlayers; i++) {
+    for (let i = 0; i < 2; i++) {
         playerData.push({ name: `Player ${i + 1}` });
     }
 
