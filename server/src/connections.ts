@@ -1,6 +1,8 @@
 import WebSocket from "ws";
 import url from 'url';
 import { Matches } from "./matches";
+import { ServerMoveResponse } from "./shared/server-move-response";
+import { response } from "express";
 
 function errorResponse(
     err: unknown // The parameter from a catch statement 
@@ -17,8 +19,8 @@ export class Connections {
     matches: Matches;
 
     connection(ws: WebSocket, requestUrl: string | undefined) {
-        console.log('New client connected', requestUrl);
-  
+        let response: ServerMoveResponse;
+
         if (requestUrl) {
           try {
             const parsedUrl = url.parse(requestUrl, true); // Does the 2nd parameter matter?
@@ -29,24 +31,34 @@ export class Connections {
               if (typeof param !== 'string') {
                 throw new Error(`URL parameter "${name}" missing or invalid`);
               }
-              console.log(name, param);
               return param;
             }
       
             const matchID = urlParam("matchID");
             const playerID = urlParam("playerID");
             const credentials = urlParam("credentials");
-            console.log(matchID, playerID, credentials);
-      
+
             const match = this.matches.getMatch(matchID);
+
+            console.log(`Connection made - matchID:${matchID} playerID:${playerID}`);
       
-            throw new Error("wss.on('connection', ...) not fully implemented")
-            //match.addPlayer(new Player(name, ws));
+            response = {
+              matchData: {
+                playerData: [],
+                currentPlayer: 0, // TEMPORARY HACK
+                state: "dummy game state", // TEMPORARY HACK
+              }
+            }
           }
           catch (err) {
-            console.error('Error during connection:', err);
-            ws.send(errorResponse(err)); // Does it makes sense to report an eror here?
+            const message = err instanceof Error ? err.message : "unknown error";
+
+            console.log('Error during connection:', message);
+
+            response = {error: message};
           }
+
+          ws.send(JSON.stringify(response));
         }
     }
 

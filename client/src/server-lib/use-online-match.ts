@@ -1,24 +1,29 @@
-
-import { GameDefinition, GameDefintionMove, PlayerData } from "../shared/game-definition";
+import { GameDefinition, GameDefintionMove } from "../shared/game-definition";
 import { MatchID, Player, WsMoveData } from "../shared/types";
-import { sAssert } from "../utils/assert";
 import {Match, MatchMove } from "./match";
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { ServerMoveResponse } from "../shared/server-move-response";
+import { sAssert } from "../utils/assert";
 
-
-type OnlineMatchResult = {
-    match: Match,
-    message?: undefined,
-} | {
+type UseOnlineMatchResult = {
+    readyState: ReadyState; // Use if the connection is not open
+    error?: undefined,
     match?: undefined,
-    message: string,
+} | {
+    readyState?: undefined;
+    error: string | null,
+    match?: undefined,
+} | {
+    readyState?: undefined;
+    error?: undefined,
+    match: Match | null,
 };
 
 export function useOnlineMatch(
     server: string,
     gameDefinition: GameDefinition,
     {matchID, player}: {matchID: MatchID, player: Player},
-) : OnlineMatchResult {
+) : UseOnlineMatchResult {
     
     const url = new URL(server);
     url.protocol = "ws";
@@ -29,23 +34,19 @@ export function useOnlineMatch(
     console.log(url.toString());
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url.toString());
-
-
     if (readyState !== ReadyState.OPEN) {
-        const message = {
-            [ReadyState.CONNECTING]: 'Connecting',
-            [ReadyState.CLOSING]: 'Closing',
-            [ReadyState.CLOSED]: 'Closed',
-            [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-        }[readyState];
-
-        sAssert(message, "Unrecoginsed WebSocket connect state");
-        
-        return { message };
+        return { readyState };
     }
     
-    if (lastJsonMessage === null) {
-        return {message: "Null message recieved (unexpected error)"};
+    if (!lastJsonMessage) {
+        return { 
+            error: "No data recieved from server (unexpected error)",
+        };
+    }
+
+    const {error, matchData} = lastJsonMessage as ServerMoveResponse;
+    if (error) {
+        return { error };
     }
 
     // Inefficient, but simple. (Functions are recreated on every call.)
@@ -54,15 +55,14 @@ export function useOnlineMatch(
         const givenMove = gameDefinition.moves[moveName];
         matchMoves[moveName] = makeMatchMove(moveName, givenMove, sendJsonMessage);
     };
-
+    sAssert(matchData);
+    
     const match: Match = {
-        playerData: playerDataHACK(),
-        currentPlayer: 0,
+        ...matchData,
         moves: matchMoves, 
-        state: lastJsonMessage,
     };
 
-    return {match};
+    return { match };
 }
 
 function makeMatchMove(
@@ -82,11 +82,3 @@ function makeMatchMove(
     };
 }
 
-function playerDataHACK() : PlayerData[]{
-    const playerData : PlayerData[] = [];
-    for (let i = 0; i < 2; i++) {
-        playerData.push({ name: `Player ${i + 1}` });
-    }
-
-    return playerData;
-}

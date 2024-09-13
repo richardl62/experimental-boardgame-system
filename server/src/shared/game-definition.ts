@@ -1,9 +1,5 @@
 import { OptionSpecifications } from "./option-specification/types";
 
-export interface PlayerData {
-    name: string;
-}
-
 // The string values are uses as section headers when displaying the list of
 // games.
 export enum GameCategory {
