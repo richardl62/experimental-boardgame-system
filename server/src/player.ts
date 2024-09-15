@@ -25,7 +25,7 @@ export class Player {
         
         this.name = null;
         this.data = null;
-        this._ws = null;
+        this.ws = null;
     }
 
     readonly id: string;
@@ -34,16 +34,12 @@ export class Player {
     private name: string | null;
     private data: any; // Is this needed?
 
-    private _ws: WebSocket | null;
-    get ws() {return this._ws;}
-    private set ws(ws_) {this._ws = ws_;}
+    ws: WebSocket | null;
+
 
     /** Permanently allocate this player (see class comment) */
     allocate(name: string) { this.name = name; }
     get isAllocated() { return this.name !== null; }
-
-    recordConnection(ws: WebSocket) { this.ws = ws;}
-    recordDisconnect() {this.ws = null;}
     get isConnected() {return this.ws !== null; } 
 
     setName(name: string) {
@@ -56,13 +52,5 @@ export class Player {
             name: name || undefined, 
             isConnected 
         };
-    }
-
-    send(obj: unknown) {
-        const text = JSON.stringify(obj);
-        if(!this.ws) {
-            throw new Error("Attempt to send message to disconnected player");
-        }
-        this.ws.send(text);
     }
 }

@@ -19,8 +19,7 @@ export class Connections {
     matches: Matches;
 
     connection(ws: WebSocket, requestUrl: string | undefined) {
-        let response: ServerMoveResponse;
-
+        
         if (requestUrl) {
           try {
             const parsedUrl = url.parse(requestUrl, true); // Does the 2nd parameter matter?
@@ -42,23 +41,17 @@ export class Connections {
 
             console.log(`Connection made - matchID:${matchID} playerID:${playerID}`);
       
-            response = {
-              matchData: {
-                playerData: [],
-                currentPlayer: 0, // TEMPORARY HACK
-                state: "dummy game state", // TEMPORARY HACK
-              }
-            }
+            // the match is responsible for sending data if a connection is sucessful.
+            match.playerConnected(playerID, ws);
           }
           catch (err) {
             const message = err instanceof Error ? err.message : "unknown error";
 
             console.log('Error during connection:', message);
 
-            response = {error: message};
+            const response: ServerMoveResponse = {error: message};
+            ws.send(JSON.stringify(response));
           }
-
-          ws.send(JSON.stringify(response));
         }
     }
 

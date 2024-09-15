@@ -2,6 +2,8 @@ import { GameDefinition } from "./shared/game-definition";
 import { WebSocket } from 'ws';
 import { Player } from "./player";
 import { LobbyTypes } from "./shared/lobby";
+import { MatchData } from "./shared/match-data";
+import { ServerMoveResponse } from "./shared/server-move-response";
 
 // A match is an instance of a game.
 export class Match {
@@ -41,6 +43,47 @@ export class Match {
         return player;
     }
 
+    lobbyMatch() : LobbyTypes.Match {
+        return {
+            matchID: this.id,
+            players: this.players.map(p => p.publicMetada()),
+        }
+    }
+    
+    playerConnected(id: string, ws: WebSocket) {
+        const player = this.findPlayerByID(id);
+        if (!player) {
+            throw new Error(`Player ${id} not found - cannot record connection`);
+        }
+
+        if (player.ws) {
+            throw new Error(`Player ${id} connected - cannot reconnect`);
+        }
+
+        player.ws = ws;
+        this.broadcastMatchData();
+    }
+
+    playerDisconnected(ws: WebSocket) : void {
+        const player = this.findPlayerByWebSocket(ws);
+        if (!player) {
+            throw new Error("Disconnect report when player not connected");
+        }
+        
+        player.ws = null;
+        this.broadcastMatchData();
+    }
+    
+    // Simplified move function
+    move(name: string, parameter: any) {
+        const move = this.definition.moves[name];
+        if (!move) {
+            throw new Error(`Unknown move: ${name}`);
+        }
+        this.state = move({ state: this.state, currentPlayer: 0, activePlayer: 0, arg: parameter }); 
+        this.broadcastMatchData();
+    }
+
     findPlayerByID(id: string) : Player | null {
         for (let player of this.players) {
             if ( player.id === id ) {
@@ -60,37 +103,22 @@ export class Match {
 
         return null;
     }
-    
-    playerDisconnected(ws: WebSocket) : void {
-        const player = this.findPlayerByWebSocket(ws);
-        if (!player) {
-            throw new Error("Disconnect report when player not connected");
-        }
-        player.recordDisconnect();
-    }
-    
-    // Simplified move function
-    move(name: string, parameter: any) {
-        const move = this.definition.moves[name];
-        if (!move) {
-            throw new Error(`Unknown move: ${name}`);
-        }
-        this.state = move({ state: this.state, currentPlayer: 0, activePlayer: 0, arg: parameter });
-        this.broadcast();   
-    }
 
-    lobbyMatch() : LobbyTypes.Match {
-        return {
-            matchID: this.id,
-            players: this.players.map(p => p.publicMetada()),
-        }
-    }
+    private broadcastMatchData() {
+        const matchData : MatchData = { // TEMPORARY HACK
+            playerData: [],
+            currentPlayer: 0,
+            state: "dummy game state",
+        };
+        
+        const response: ServerMoveResponse = { matchData };
 
-    // Function to send a message to all connected players
-    broadcast() {
+        console.log("Boardcasting")
         for (const player of this.players) {
-            const str = JSON.stringify(this.state);
-            player.send(str);
+            console.log(`   ${player.id} ${player.ws}`)
+            if( player.ws ) {
+                player.ws.send(JSON.stringify(response));
+            }
         }
     }
 };  
