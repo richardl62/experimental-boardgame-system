@@ -3,21 +3,12 @@ import { MatchID, Player, WsMoveData } from "../shared/types";
 import {Match, MatchMove } from "./match";
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { ServerMoveResponse } from "../shared/server-move-response";
-import { sAssert } from "../utils/assert";
 
 type UseOnlineMatchResult = {
     readyState: ReadyState; // Use if the connection is not open
-    error?: undefined,
-    match?: undefined,
-} | {
-    readyState?: undefined;
-    error: string | null,
-    match?: undefined,
-} | {
-    readyState?: undefined;
-    error?: undefined,
-    match: Match | null,
-};
+    error?: string,
+    match?: Match,
+}
 
 export function useOnlineMatch(
     server: string,
@@ -31,22 +22,16 @@ export function useOnlineMatch(
     url.searchParams.append("playerID", player.id);
     url.searchParams.append("credentials", player.credentials);
 
-    console.log(url.toString());
+    //console.log(url.toString());
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url.toString());
-    if (readyState !== ReadyState.OPEN) {
+    if ( !lastJsonMessage ) {
         return { readyState };
     }
-    
-    if (!lastJsonMessage) {
-        return { 
-            error: "No data recieved from server (unexpected error)",
-        };
-    }
 
-    const {error, matchData} = lastJsonMessage as ServerMoveResponse;
-    if (error) {
-        return { error };
+    const { error, matchData } = lastJsonMessage as ServerMoveResponse;
+    if ( !matchData ) {
+        return { readyState, error };
     }
 
     // Inefficient, but simple. (Functions are recreated on every call.)
@@ -55,14 +40,13 @@ export function useOnlineMatch(
         const givenMove = gameDefinition.moves[moveName];
         matchMoves[moveName] = makeMatchMove(moveName, givenMove, sendJsonMessage);
     };
-    sAssert(matchData);
-    
-    const match: Match = {
-        ...matchData,
-        moves: matchMoves, 
-    };
 
-    return { match };
+    const match : Match = {
+        ...matchData,
+        moves: matchMoves,
+    };
+    
+    return { readyState, error, match };
 }
 
 function makeMatchMove(
