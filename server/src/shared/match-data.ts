@@ -1,6 +1,6 @@
-
-interface PlayerData {
-    name: string;
+export interface PlayerData {
+    name?: string;
+    isConnected?: boolean;
 }
 
 export interface MatchData<GameState = unknown> {

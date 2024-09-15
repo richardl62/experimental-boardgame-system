@@ -24,7 +24,6 @@ export class Player {
         this.credentials = 'c' + this.id; // for now
         
         this.name = null;
-        this.data = null;
         this.ws = null;
     }
 
@@ -32,8 +31,6 @@ export class Player {
     readonly credentials: string;
 
     private name: string | null;
-    private data: any; // Is this needed?
-
     ws: WebSocket | null;
 
 

@@ -6,6 +6,7 @@ import { GameDefinition } from "../shared/game-definition";
 import { useOnlineMatch } from "../server-lib/use-online-match";
 import { ReadyState } from "react-use-websocket";
 import { Match } from "../server-lib/match";
+import { PlayerData } from "../shared/match-data";
 
 interface MatchPlayOnlineProps {
   game: GameDefinition;
@@ -43,8 +44,24 @@ export function MatchPlayOnline({ game, matchID, player }: MatchPlayOnlineProps)
     </div>
 }
 
+
+function PlayerDataX( {playerData} : {playerData: PlayerData}) {
+    const { name, isConnected } = playerData;
+    if (!name) {
+        return <div>*unallocated*</div>
+    }
+    return <div>
+        {name} {isConnected? "connected" : "not connected"}
+    </div>
+}
 function MatchDummy( {match, playerID} :
     {match: Match, playerID: string}
  ) {
-    return <div>Match started - player:{playerID}</div>;
+    return <div>
+        <div>Match started - player:{playerID}</div>
+        {match.playerData.map(
+            (data, index) => <PlayerDataX key={index} playerData={data} />
+        )}
+
+    </div>; 
 }

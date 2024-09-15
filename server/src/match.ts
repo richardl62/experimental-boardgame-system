@@ -105,8 +105,8 @@ export class Match {
     }
 
     private broadcastMatchData() {
-        const matchData : MatchData = { // TEMPORARY HACK
-            playerData: [],
+        const matchData : MatchData = {
+            playerData: this.players.map(p => p.publicMetada()),
             currentPlayer: 0,
             state: "dummy game state",
         };
