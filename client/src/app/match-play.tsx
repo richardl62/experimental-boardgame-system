@@ -1,5 +1,8 @@
 import React, { createContext } from 'react';
 import { Match } from '../server-lib/match';
+import { GameDefinition } from '../shared/game-definition';
+import { boards } from '../boards';
+import { sAssert } from '../utils/assert';
 
 // Data and functions relating to a specific game instance. This is available
 // to the client via React context.
@@ -11,12 +14,14 @@ export interface ClientMatch extends Omit<Match,"moves"> {
 
 export const ClientMatchContext = createContext<ClientMatch | null>(null);
 
-export function BoardWrapper({ match, activePlayer, children }: {
+export function MatchPlay({ game, match, activePlayer }: {
+  game:GameDefinition,
   match: Match;
   activePlayer: number;
-  children: React.ReactNode;
 }) {
-
+  const Board = boards[game.name as keyof typeof boards];
+  sAssert(Board, "board not found");
+  
   const wrappedMoves: Record<string, (arg: any) => void> = {};
   for (const moveName in match.moves) {
     const givenMove = match.moves[moveName];
@@ -28,7 +33,7 @@ export function BoardWrapper({ match, activePlayer, children }: {
     activePlayer,
     moves: wrappedMoves, 
   }}>
-    {children}
+    <Board/>
   </ClientMatchContext.Provider>;
 }
 

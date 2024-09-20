@@ -9,8 +9,6 @@ import { MatchPlayOnline } from "./match-play-online";
 import { OfflineOptions } from "./offline-options";
 import * as UrlParams from "./url-params";
 import { GameDefinition } from "../shared/game-definition";
-import { boards } from "../boards";
-import { sAssert } from "../utils/assert";
 
 const OuterDiv = styled.div`
     font-size: 18px;
@@ -22,15 +20,12 @@ const OuterDiv = styled.div`
 `;
 function InnerGameComponent(props: {game : GameDefinition} ) {
     const { game } = props;
-    const Board = boards[game.name as keyof typeof boards];
-    sAssert(Board, "board not found");
-    
     const {matchID, offlineData: offlineOptionsFromUrl, player} = UrlParams;
 
     const [ offlineOptions, setOfflineOptions ] = useState<OfflineOptions | null>(null);
 
     if (offlineOptions) {
-        return <MatchPlayOffline game={game} Board={Board} options={offlineOptions} />;
+        return <MatchPlayOffline game={game} options={offlineOptions} />;
     }
 
     if (offlineOptionsFromUrl) {
@@ -38,7 +33,7 @@ function InnerGameComponent(props: {game : GameDefinition} ) {
             ...offlineOptionsFromUrl,
             setupData: defaultValues(game.options || {}),
         };
-        return <MatchPlayOffline game={game} Board={Board} options={options} />;
+        return <MatchPlayOffline game={game} options={options} />;
     }
 
     if ( player && matchID ) {

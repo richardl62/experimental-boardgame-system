@@ -2,12 +2,11 @@ import React from "react";
 import { OfflineOptions } from "./offline-options";
 import { GameDefinition } from "../shared/game-definition";
 import { useOfflineMatch } from "../server-lib/use-offline-match";
-import { BoardWrapper } from "./board-wrapper";
+import { MatchPlay } from "./match-play";
 
 
-export function MatchPlayOffline({game, Board, options}: {
+export function MatchPlayOffline({game, options}: {
     game:GameDefinition,
-    Board: () => JSX.Element,
     options: OfflineOptions,
 }): JSX.Element {
 
@@ -20,9 +19,7 @@ export function MatchPlayOffline({game, Board, options}: {
         const showBoard = passAndPlay || id === match.currentPlayer;
         if (showBoard) {
             matches.push(
-                <BoardWrapper match={match} activePlayer={id} >
-                    <Board />
-                </BoardWrapper>
+                <MatchPlay game={game} match={match} activePlayer={id} />
             )
         };
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { ClientMatchContext } from '../../app/board-wrapper';
+import { ClientMatchContext } from '../../app/match-play';
 import { GameState } from "../../shared/games/plusminus/game-state";
 import { moves } from "../../shared/games/plusminus/moves";
 import { ClientMoves } from "../client-moves";
