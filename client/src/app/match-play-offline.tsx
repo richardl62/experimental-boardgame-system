@@ -16,7 +16,7 @@ export function MatchPlayOffline({game, options}: {
 
     const matches : JSX.Element[] = [];
     for(let id = 0; id < numPlayers; ++id) {
-        const showBoard = passAndPlay || id === match.currentPlayer;
+        const showBoard = !passAndPlay || id === match.currentPlayer;
         if (showBoard) {
             matches.push(
                 <MatchPlay game={game} match={match} activePlayer={id} />
