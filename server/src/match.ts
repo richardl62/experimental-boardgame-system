@@ -80,6 +80,7 @@ export class Match {
         if (!move) {
             throw new Error(`Unknown move: ${name}`);
         }
+
         this.state = move({ state: this.state, currentPlayer: 0, activePlayer: 0, arg: parameter }); 
         this.broadcastMatchData();
     }
@@ -108,14 +109,12 @@ export class Match {
         const matchData : MatchData = {
             playerData: this.players.map(p => p.publicMetada()),
             currentPlayer: 0,
-            state: "dummy game state",
+            state: this.state,
         };
         
         const response: ServerMoveResponse = { matchData };
 
-        console.log("Boardcasting")
         for (const player of this.players) {
-            console.log(`   ${player.id} ${player.ws}`)
             if( player.ws ) {
                 player.ws.send(JSON.stringify(response));
             }

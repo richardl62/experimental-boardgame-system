@@ -8,6 +8,8 @@ import { ReadyState } from "react-use-websocket";
 import { Match } from "../server-lib/match";
 import { PlayerData } from "../shared/match-data";
 import { MatchPlay } from "./match-play";
+import { sAssert } from "../utils/assert";
+import { nonJoinedPlayerName } from "../app-game-support/player-names";
 
 interface MatchPlayOnlineProps {
   game: GameDefinition;
@@ -39,32 +41,39 @@ export function MatchPlayOnline({ game, matchID, player }: MatchPlayOnlineProps)
         {error && <div>Server error: {error} </div>}
         
         {match?  
-            <MatchDummy game={game} match={match} playerID={player.id}/> :
+            <MatchPlayWrapper game={game} match={match} playerID={player.id}/> :
             <div>Awaiting match data from server</div>
         } 
     </div>
 }
 
-
-function PlayerDataX( {playerData} : {playerData: PlayerData}) {
+function PlayerDataShow( {playerData} : {playerData: PlayerData}) {
     const { name, isConnected } = playerData;
     if (!name) {
-        return <div>*unallocated*</div>
+        return <div>{nonJoinedPlayerName}</div>
     }
     return <div>
         {name} {isConnected? "connected" : "not connected"}
     </div>
 }
-function MatchDummy( {game, match, playerID} :
+
+function MatchPlayWrapper( {game, match, playerID} :
     {game: GameDefinition, match: Match, playerID: string}
  ) {
-    const activePlayer = 0; // TEMPORARY
+    // KLUDGE: This convertion should not be ne
+    const activePlayer = parseInt(playerID); // TEMPORARY
+    sAssert(!isNaN(activePlayer), "Unexpected player ID")
+
     return <div>
-        <div>Match started - player:{playerID}</div>
+        {/* KLUDGE/TEMPORARY show names and connection data here where it will
+        be shared by all games. It should really be up to the indivual games to show
+        this */}
         {match.playerData.map(
-            (data, index) => <PlayerDataX key={index} playerData={data} />
+            (data, index) => <PlayerDataShow key={index} playerData={data} />
         )}
-        <div>---</div>
+
+        <div></div>
+        
         <MatchPlay game={game} match={match} activePlayer={activePlayer} />
     </div>; 
 }
