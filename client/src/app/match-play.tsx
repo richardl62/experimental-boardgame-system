@@ -1,41 +1,42 @@
-import React, { createContext } from 'react';
-import { Match } from '../server-lib/match';
-import { GameDefinition } from '../shared/game-definition';
-import { boards } from '../boards';
-import { sAssert } from '../utils/assert';
+import { ReadyState } from "react-use-websocket";
+import { ActiveMatch } from "../server-lib/active-match";
+import { GameDefinition } from "../shared/game-definition";
+import { MatchPlayWithContext } from "./match-play-with-context";
+import { ShowPlayerData } from "./show-player-data";
 
-// Data and functions relating to a specific game instance. This is available
-// to the client via React context.
-export interface ClientMatch extends Omit<Match,"moves"> {
-  /** The player who is viewing the game - potentially making moves*/
-  activePlayer: number;
-  moves: Record<string, (arg: any) => void>;
+function readyStatus( state: ReadyState) {
+    const status = {
+        [ReadyState.CONNECTING]: 'connecting',
+        [ReadyState.OPEN]: 'open',
+        [ReadyState.CLOSING]: 'closing',
+        [ReadyState.CLOSED]: 'closed',
+        [ReadyState.UNINSTANTIATED]: 'uninstantiated',
+      }[state];
+
+    return status || "unknown";
 }
 
-export const ClientMatchContext = createContext<ClientMatch | null>(null);
+export function MatchPlay({ game, matchResult, activePlayer }  : {
+    game: GameDefinition,
+    matchResult: ActiveMatch,
+    activePlayer: number,
+}) : JSX.Element {
+    const { readyState, error, match } = matchResult;
 
-export function MatchPlay({ game, match, activePlayer }: {
-  game:GameDefinition,
-  match: Match;
-  activePlayer: number;
-}) {
-  const Board = boards[game.name as keyof typeof boards];
-  sAssert(Board, "board not found");
-  
-  const wrappedMoves: Record<string, (arg: any) => void> = {};
-  for (const moveName in match.moves) {
-    const givenMove = match.moves[moveName];
-    wrappedMoves[moveName] = (arg: any) => givenMove({arg, activePlayer});  
-  }
+    if (readyState !== ReadyState.OPEN) {
+        <div>Server Status: {readyStatus(readyState)}</div>
+    }
 
-  return <ClientMatchContext.Provider value={{ 
-    ...match, 
-    activePlayer,
-    moves: wrappedMoves, 
-  }}>
-    <Board/>
-  </ClientMatchContext.Provider>;
+    if ( !match ) {
+        return <div>Awaiting match data from server</div>
+    }
+        
+    return <div>
+        {error && <div>Error reported: {error} </div>}
+
+        {/* Kludge: Showing player data should be up to the individual games*/ }
+        <ShowPlayerData match={match} />
+         
+        <MatchPlayWithContext game={game} match={match} activePlayer={activePlayer}/>
+    </div>;       
 }
-
-
-

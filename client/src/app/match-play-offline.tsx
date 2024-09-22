@@ -3,7 +3,7 @@ import { OfflineOptions } from "./offline-options";
 import { GameDefinition } from "../shared/game-definition";
 import { useOfflineMatch } from "../server-lib/use-match-offline";
 import { sAssert } from "../utils/assert";
-import { MatchPlayNew } from "./match-play-new";
+import { MatchPlay } from "./match-play";
 
 
 export function MatchPlayOffline({game, options}: {
@@ -22,7 +22,7 @@ export function MatchPlayOffline({game, options}: {
         const showBoard = !passAndPlay || id === match.currentPlayer;
         if (showBoard) {
             matches.push(
-                <MatchPlayNew game={game} matchResult={activeMatch} activePlayer={id} />
+                <MatchPlay game={game} matchResult={activeMatch} activePlayer={id} />
             )
         };
     }
