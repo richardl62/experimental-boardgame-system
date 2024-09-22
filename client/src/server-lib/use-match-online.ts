@@ -1,20 +1,15 @@
 import { GameDefinition, GameDefintionMove } from "../shared/game-definition";
 import { MatchID, Player, WsMoveData } from "../shared/types";
 import {Match, MatchMove } from "./match";
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import useWebSocket from 'react-use-websocket';
 import { ServerMoveResponse } from "../shared/server-move-response";
-
-type UseOnlineMatchResult = {
-    readyState: ReadyState; // Use if the connection is not open
-    error?: string,
-    match?: Match,
-}
+import { UseMatchResult } from "./use-match-result";
 
 export function useOnlineMatch(
     server: string,
     gameDefinition: GameDefinition,
     {matchID, player}: {matchID: MatchID, player: Player},
-) : UseOnlineMatchResult {
+) : UseMatchResult {
     
     const url = new URL(server);
     url.protocol = "ws";

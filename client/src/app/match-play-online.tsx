@@ -3,7 +3,7 @@ import React from "react";
 import * as UrlParams from "./url-params";
 import { MatchID, Player } from "../shared/types";
 import { GameDefinition } from "../shared/game-definition";
-import { useOnlineMatch } from "../server-lib/use-online-match";
+import { useOnlineMatch } from "../server-lib/use-match-online";
 import { ReadyState } from "react-use-websocket";
 import { Match } from "../server-lib/match";
 import { PlayerData } from "../shared/match-data";

@@ -2,7 +2,7 @@ import { MatchData } from "../shared/match-data";
 
 // A move function as run on a client.
 export type MatchMove = (arg0: {
-    activePlayer: number, // Is this needed?
+    activePlayer: number,
     arg: unknown,
 }) => void;
 
