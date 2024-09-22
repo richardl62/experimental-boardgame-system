@@ -60,13 +60,13 @@ function PlayerDataShow( {playerData} : {playerData: PlayerData}) {
 function MatchPlayWrapper( {game, match, playerID} :
     {game: GameDefinition, match: Match, playerID: string}
  ) {
-    // KLUDGE: This convertion should not be ne
+    // KLUDGE: This convertion should not be needed.
     const activePlayer = parseInt(playerID); // TEMPORARY
     sAssert(!isNaN(activePlayer), "Unexpected player ID")
 
     return <div>
         {/* KLUDGE/TEMPORARY show names and connection data here where it will
-        be shared by all games. It should really be up to the indivual games to show
+        be shared by all games. It should really be up to the individual games to show
         this */}
         {match.playerData.map(
             (data, index) => <PlayerDataShow key={index} playerData={data} />
