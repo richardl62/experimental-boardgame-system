@@ -3,13 +3,13 @@ import { MatchID, Player, WsMoveData } from "../shared/types";
 import {Match, MatchMove } from "./match";
 import useWebSocket from 'react-use-websocket';
 import { ServerMoveResponse } from "../shared/server-move-response";
-import { UseMatchResult } from "./use-match-result";
+import { ActiveMatch } from "./active-match";
 
 export function useOnlineMatch(
     server: string,
     gameDefinition: GameDefinition,
     {matchID, player}: {matchID: MatchID, player: Player},
-) : UseMatchResult {
+) : ActiveMatch {
     
     const url = new URL(server);
     url.protocol = "ws";
