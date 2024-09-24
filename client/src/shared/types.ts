@@ -1,6 +1,6 @@
 export interface WsMoveData {
     move: string,
-    activePlayer: number, // Does this need to be sent?
+    activePlayer: number,
     arg: unknown
 };
 

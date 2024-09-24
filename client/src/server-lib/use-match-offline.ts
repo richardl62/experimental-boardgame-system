@@ -12,7 +12,6 @@ export function useOfflineMatch(
 ) : ActiveMatch {
     const [matchData, setMatchData] = useState<MatchData>(matchOmittingMoves(gameDefinition, nPlayers));
 
-
     // Inefficient, but simple. (Functions are recreated on every call.)
     const matchMoves: Record<string, MatchMove> = {};
     for (const moveName in gameDefinition.moves) {
@@ -27,7 +26,7 @@ export function useOfflineMatch(
         moves: matchMoves,
     };
 
-    return { readyState, match};
+    return { readyState, match };
 }
 
 // Create player data for an offline game.

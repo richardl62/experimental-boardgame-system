@@ -53,7 +53,7 @@ function makeMatchMove(
 
         const data : WsMoveData = {
             move: moveName,
-            activePlayer, // Does this need to be sent?
+            activePlayer,
             arg,
         };
 
