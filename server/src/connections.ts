@@ -49,7 +49,7 @@ export class Connections {
 
             console.log('Error during connection:', message);
 
-            const response: ServerMoveResponse = {error: message};
+            const response: ServerMoveResponse = {error: message, matchData: null};
             ws.send(JSON.stringify(response));
           }
         }

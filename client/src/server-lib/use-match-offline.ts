@@ -26,7 +26,7 @@ export function useOfflineMatch(
         moves: matchMoves,
     };
 
-    return { readyState, match };
+    return { match, readyState, error: null };
 }
 
 // Create player data for an offline game.

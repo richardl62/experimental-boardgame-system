@@ -5,8 +5,8 @@ import { MatchData } from "./match-data";
 export type ServerMoveResponse = {
     /** Error typically related to the previous move, but could show other bugs.
      */
-    error?: string;
+    error: string | null;
 
     /** Match data will be missing following certain errors */
-    matchData?: MatchData; 
+    matchData: MatchData | null; 
 };

@@ -21,12 +21,12 @@ export function useOnlineMatch(
 
     const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url.toString());
     if ( !lastJsonMessage ) {
-        return { readyState };
+        return { readyState, match: null, error: null };
     }
 
     const { error, matchData } = lastJsonMessage as ServerMoveResponse;
     if ( !matchData ) {
-        return { readyState, error };
+        return { readyState, error, match: null };
     }
 
     // Inefficient, but simple. (Functions are recreated on every call.)

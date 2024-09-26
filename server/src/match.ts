@@ -63,7 +63,7 @@ export class Match {
         }
 
         player.ws = ws;
-        this.broadcastMatchData();
+        this.broadcastMatchData({error: null});
     }
 
     playerDisconnected(ws: WebSocket) : void {
@@ -73,13 +73,13 @@ export class Match {
         }
         
         player.ws = null;
-        this.broadcastMatchData();
+        this.broadcastMatchData({error: null});
     }
     
     // Simplified move function
     move(name: string, activePlayer: number, arg: any) {
 
-        let error: string | undefined = undefined;
+        let error: string | null = null;
 
         try {
             const move = this.definition.moves[name];
@@ -107,7 +107,7 @@ export class Match {
             error = err instanceof Error ? err.message : "unknown error";
         }
 
-        this.broadcastMatchData(error);
+        this.broadcastMatchData({error});
     }
 
     findPlayerByID(id: string) : Player | null {
@@ -130,7 +130,7 @@ export class Match {
         return null;
     }
 
-    private broadcastMatchData(error?: string) {
+    private broadcastMatchData({error} : {error : string | null}) {
         const matchData : MatchData = {
             playerData: this.players.map(p => p.publicMetada()),
             currentPlayer: 0,
