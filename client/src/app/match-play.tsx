@@ -27,16 +27,22 @@ export function MatchPlay({ game, matchResult, activePlayer }  : {
         <div>Server Status: {readyStatus(readyState)}</div>
     }
 
-    if ( !match ) {
-        return <div>Awaiting match data from server</div>
-    }
-        
+
     return <div>
         {error && <div>Error reported: {error} </div>}
 
-        {/* Kludge: Showing player data should be up to the individual games*/ }
-        <ShowPlayerData match={match} />
-         
-        <MatchPlayWithContext game={game} match={match} activePlayer={activePlayer}/>
+        {/* match can be null immediately after connection or after an certain errors
+        have been detected on the server. */}
+        {match ?
+            <>
+            {/* Kludge: Showing player data should be up to the individual games*/ }
+            <ShowPlayerData match={match} />
+            <MatchPlayWithContext game={game} match={match} activePlayer={activePlayer}/> 
+            </> 
+            :
+            <div>Match data not received from server</div>
+
+        }
+
     </div>;       
 }

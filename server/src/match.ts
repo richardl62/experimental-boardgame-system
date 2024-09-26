@@ -77,27 +77,37 @@ export class Match {
     }
     
     // Simplified move function
-    move(name: string, activePlayer: number, arg: any ) {
-        const move = this.definition.moves[name];
-        if (!move) {
-            throw new Error(`Unknown move: ${name}`);
+    move(name: string, activePlayer: number, arg: any) {
+
+        let error: string | undefined = undefined;
+
+        try {
+            const move = this.definition.moves[name];
+            if (!move) {
+                throw new Error(`Unknown move: ${name}`);
+            }
+
+            const { currentPlayer, state } = this;
+            if (activePlayer !== currentPlayer) {
+                // Can this happen without a bug if the client code? If not,
+                // is this test worth having? For the time being I regard it as a
+                // sanity check.
+                throw new Error("Illegal move - wrong player");
+            }
+
+            this.state = move({ state, currentPlayer, activePlayer, arg });
+
+            // currentPlayer should not be changed if an error has been throws.
+            this.currentPlayer += 1;
+            if (this.currentPlayer == this.players.length) {
+                this.currentPlayer = 0;
+            }
+
+        } catch (err) {
+            error = err instanceof Error ? err.message : "unknown error";
         }
 
-        const { currentPlayer, state } = this;
-        if ( activePlayer !== currentPlayer ) {
-            // Can this happen without a bug if the client code? If not,
-            // is this test worth having? For the time being I regard it as a
-            // sanity check.
-            throw new Error("Illegal move - wrong player");
-        }
-
-        this.state = move({ state, currentPlayer, activePlayer, arg }); 
-        this.broadcastMatchData();
-        
-        this.currentPlayer += 1;
-        if ( this.currentPlayer == this.players.length ) {
-            this.currentPlayer = 0;
-        }
+        this.broadcastMatchData(error);
     }
 
     findPlayerByID(id: string) : Player | null {
@@ -120,14 +130,14 @@ export class Match {
         return null;
     }
 
-    private broadcastMatchData() {
+    private broadcastMatchData(error?: string) {
         const matchData : MatchData = {
             playerData: this.players.map(p => p.publicMetada()),
             currentPlayer: 0,
             state: this.state,
         };
         
-        const response: ServerMoveResponse = { matchData };
+        const response: ServerMoveResponse = { matchData, error };
 
         for (const player of this.players) {
             if( player.ws ) {
