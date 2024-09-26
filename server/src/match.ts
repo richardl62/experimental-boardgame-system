@@ -15,6 +15,7 @@ export class Match {
         this.definition = definition;
         this.id = id;
         this.players = [];
+        this.currentPlayer = 0;
 
         // For legacy reasons players IDs are set to reflect their position
         // within the match.
@@ -28,6 +29,7 @@ export class Match {
     readonly definition: GameDefinition;
     readonly id: string;
     readonly players: Player[];
+    private currentPlayer: number;
     private state: any;
 
     get game() {return this.definition.name}
@@ -75,14 +77,27 @@ export class Match {
     }
     
     // Simplified move function
-    move(name: string, parameter: any) {
+    move(name: string, activePlayer: number, arg: any ) {
         const move = this.definition.moves[name];
         if (!move) {
             throw new Error(`Unknown move: ${name}`);
         }
 
-        this.state = move({ state: this.state, currentPlayer: 0, activePlayer: 0, arg: parameter }); 
+        const { currentPlayer, state } = this;
+        if ( activePlayer !== currentPlayer ) {
+            // Can this happen without a bug if the client code? If not,
+            // is this test worth having? For the time being I regard it as a
+            // sanity check.
+            throw new Error("Illegal move - wrong player");
+        }
+
+        this.state = move({ state, currentPlayer, activePlayer, arg }); 
         this.broadcastMatchData();
+        
+        this.currentPlayer += 1;
+        if ( this.currentPlayer == this.players.length ) {
+            this.currentPlayer = 0;
+        }
     }
 
     findPlayerByID(id: string) : Player | null {

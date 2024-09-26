@@ -57,7 +57,12 @@ export class Matches {
             throw new Error('Player not in a match');
         }
         const moveData: WsMoveData = JSON.parse(parameterStr);
-        match.move(moveData.move, moveData.arg);
+        const { activePlayer, arg } = moveData;
+        if ( typeof activePlayer !== "number" ) {
+            throw new Error('bad parameter string in makeMove');
+        }
+
+        match.move(moveData.move, activePlayer, arg);
     }
 
     playerDisconnected(ws: WebSocket) : void {
