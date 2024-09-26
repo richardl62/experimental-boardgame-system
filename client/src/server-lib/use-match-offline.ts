@@ -11,12 +11,13 @@ export function useOfflineMatch(
     {nPlayers}: {nPlayers: number}
 ) : ActiveMatch {
     const [matchData, setMatchData] = useState<MatchData>(matchOmittingMoves(gameDefinition, nPlayers));
+    const [error, setError] = useState<string|null>(null);
 
     // Inefficient, but simple. (Functions are recreated on every call.)
     const matchMoves: Record<string, MatchMove> = {};
     for (const moveName in gameDefinition.moves) {
         const givenMove = gameDefinition.moves[moveName];
-        matchMoves[moveName] = makeMatchMove(givenMove, matchData, setMatchData);
+        matchMoves[moveName] = makeMatchMove(givenMove, matchData, setMatchData, setError);
     };
 
     const readyState = ReadyState.OPEN; // KLUDGE?
@@ -26,7 +27,7 @@ export function useOfflineMatch(
         moves: matchMoves,
     };
 
-    return { match, readyState, error: null };
+    return { match, readyState, error };
 }
 
 // Create player data for an offline game.
@@ -46,20 +47,30 @@ function matchOmittingMoves(gameDefinition: GameDefinition, nPlayers: number) : 
     };
 }
 
-
 function makeMatchMove(
     givenMove: GameDefintionMove<unknown, unknown>, 
     gameState: MatchData,
-    setMatch: (match: MatchData) => void
+    setMatch: (match: MatchData) => void,
+    setError: (error: string | null) => void
 ) : MatchMove {
     const { state, currentPlayer } = gameState;
+    
     return ({ activePlayer, arg }) => {
+        try {
+            if (currentPlayer !== activePlayer) {
+                throw new Error("Illegal move - wrong player");
+            }
 
-        const newState = givenMove({state, currentPlayer, activePlayer, arg});
-        setMatch({
-            ...gameState,
-            state: newState,
-            currentPlayer: (currentPlayer + 1) % gameState.playerData.length,
-        });
+            const newState = givenMove({ state, currentPlayer, activePlayer, arg });
+            setMatch({
+                ...gameState,
+                state: newState,
+                currentPlayer: (currentPlayer + 1) % gameState.playerData.length,
+            });
+            setError(null);
+        } catch (error) {
+            const msg = error instanceof Error ? error.message : "unknown error";
+            setError(msg);
+        }
     };
 }

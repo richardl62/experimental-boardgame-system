@@ -4,9 +4,6 @@ import { GameState, initialState } from "./game-state";
 const setSquare: GameDefintionMove<GameState, {row: number, col: number}> = (
     { state, activePlayer,  currentPlayer, arg: { row, col } } 
 ) => {
-    if (currentPlayer !== activePlayer) {
-        throw new Error("Not your turn!");
-    }
     const newBoard : GameState["board"] = [...state.board];
     newBoard[row] = [...newBoard[row]];
     newBoard[row][col] = currentPlayer === 0 ? "X" : "O";        
