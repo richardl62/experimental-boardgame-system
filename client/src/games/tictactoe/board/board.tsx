@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { useGameContext } from "./use-game-context";
+import { useGameContext } from "../utils/use-game-context";
 import { Names } from "./names";
-import { Squares } from "./sqaures";
+import { Squares } from "./squares";
 
 const BoardDiv = styled.div`
     display: inline flex;

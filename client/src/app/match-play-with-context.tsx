@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { Match } from '../server-lib/match';
 import { GameDefinition } from '../shared/game-definition';
-import { boards } from '../boards';
+import { boards } from '../games';
 import { sAssert } from '../utils/assert';
 
 // Data and functions relating to a specific game instance. This is available

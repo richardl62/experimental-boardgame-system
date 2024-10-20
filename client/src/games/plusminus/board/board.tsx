@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { useGameContext } from "./use-game-context";
+import { useGameContext } from "../utils/use-game-context";
 
 const standardOuterMargin = "10px";
 const OuterDiv = styled.div`

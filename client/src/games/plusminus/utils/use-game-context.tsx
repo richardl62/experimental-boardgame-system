@@ -1,8 +1,9 @@
 import React from "react";
-import { ClientMatchContext } from '../../app/match-play-with-context';
-import { GameState } from "../../shared/games/plusminus/game-state";
-import { moves } from "../../shared/games/plusminus/moves";
-import { ClientMoves } from "../client-moves";
+
+import { GameState } from "../../../shared/games/plusminus/game-state";
+import { moves } from "../../../shared/games/plusminus/moves";
+import { ClientMoves } from "../../client-moves";
+import { ClientMatchContext } from "../../../app/match-play-with-context";
 
 export function useGameContext() {
     const game = React.useContext(ClientMatchContext);
