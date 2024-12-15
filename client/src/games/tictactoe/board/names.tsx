@@ -5,13 +5,13 @@ const NamesDiv = styled.div`
     display: flex;
 `;
 
-const Name = styled.div<{active: boolean}>`
+const Name = styled.div<{$active: boolean}>`
     font-size: 14px;
     font-family: sans-serif;
     font-weight: bold;
     margin: 0 8px;
 
-    text-decoration: ${(props) => (props.active ? "underline" : "none")};
+    text-decoration: ${(props) => (props.$active ? "underline" : "none")};
     text-decoration-thickness: 2px;
 `;
 
@@ -25,7 +25,7 @@ export function Names() {
                 name += " (you)";
             }
 
-            return <Name key={id} active={id === currentPlayer}>{name}</Name>;
+            return <Name key={id} $active={id === currentPlayer}>{name}</Name>;
         })}
     </NamesDiv>;
 }

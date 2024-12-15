@@ -22,7 +22,7 @@ export function MatchPlayOffline({game, options}: {
         const showBoard = !passAndPlay || id === match.currentPlayer;
         if (showBoard) {
             matches.push(
-                <MatchPlay game={game} matchResult={activeMatch} activePlayer={id} />
+                <MatchPlay key={id} game={game} matchResult={activeMatch} activePlayer={id} />
             )
         };
     }
