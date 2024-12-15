@@ -2,7 +2,7 @@ import { useState } from "react";
 import { GameDefinition, GameDefintionMove } from "../shared/game-definition";
 import {Match, MatchMove } from "./match";
 import { MatchData, PlayerData } from "../shared/match-data";
-import { ReadyState } from 'react-use-websocket';
+import { ReadyState } from "react-use-websocket";
 import { ActiveMatch } from "./active-match";
 
 // Create and offilne game instance.
@@ -18,7 +18,7 @@ export function useOfflineMatch(
     for (const moveName in gameDefinition.moves) {
         const givenMove = gameDefinition.moves[moveName];
         matchMoves[moveName] = makeMatchMove(givenMove, matchData, setMatchData, setError);
-    };
+    }
 
     const readyState = ReadyState.OPEN; // KLUDGE?
 

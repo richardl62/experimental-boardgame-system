@@ -1,3 +1,4 @@
+import React from "react";
 import { ReadyState } from "react-use-websocket";
 import { ActiveMatch } from "../server-lib/active-match";
 import { GameDefinition } from "../shared/game-definition";
@@ -6,12 +7,12 @@ import { ShowPlayerData } from "./show-player-data";
 
 function readyStatus( state: ReadyState) {
     const status = {
-        [ReadyState.CONNECTING]: 'connecting',
-        [ReadyState.OPEN]: 'open',
-        [ReadyState.CLOSING]: 'closing',
-        [ReadyState.CLOSED]: 'closed',
-        [ReadyState.UNINSTANTIATED]: 'uninstantiated',
-      }[state];
+        [ReadyState.CONNECTING]: "connecting",
+        [ReadyState.OPEN]: "open",
+        [ReadyState.CLOSING]: "closing",
+        [ReadyState.CLOSED]: "closed",
+        [ReadyState.UNINSTANTIATED]: "uninstantiated",
+    }[state];
 
     return status || "unknown";
 }
@@ -24,7 +25,7 @@ export function MatchPlay({ game, matchResult, activePlayer }  : {
     const { readyState, error, match } = matchResult;
 
     if (readyState !== ReadyState.OPEN) {
-        <div>Server Status: {readyStatus(readyState)}</div>
+        <div>Server Status: {readyStatus(readyState)}</div>;
     }
 
 
@@ -35,9 +36,9 @@ export function MatchPlay({ game, matchResult, activePlayer }  : {
         have been detected on the server. */}
         {match ?
             <>
-            {/* Kludge: Showing player data should be up to the individual games*/ }
-            <ShowPlayerData match={match} />
-            <MatchPlayWithContext game={game} match={match} activePlayer={activePlayer}/> 
+                {/* Kludge: Showing player data should be up to the individual games*/}
+                <ShowPlayerData match={match} />
+                <MatchPlayWithContext game={game} match={match} activePlayer={activePlayer} />
             </> 
             :
             <div>Match data not received from server</div>

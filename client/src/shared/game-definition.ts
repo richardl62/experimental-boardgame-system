@@ -18,6 +18,7 @@ export type GameDefintionMove<GameState, Arg> = (arg0: {
 }) => GameState;
 
 // Information about a game, used when creating a new game instance.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface GameDefinition<GameState = any> {
     displayName: string;
     category: GameCategory;
@@ -30,6 +31,7 @@ export interface GameDefinition<GameState = any> {
 
     initialState: () => GameState;
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     moves: Record<string, GameDefintionMove<GameState, any>>;
 
     options?: OptionSpecifications;

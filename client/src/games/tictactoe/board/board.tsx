@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { useGameContext } from "../utils/use-game-context";
 import { Names } from "./names";

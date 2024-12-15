@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { useGameContext } from "../utils/use-game-context";
 
@@ -16,7 +17,7 @@ const Square = styled.div`
 
     background-color: white;
     border: 2px solid black;
-`
+`;
 
 const Grid = styled.div`
     display: grid;
@@ -24,7 +25,7 @@ const Grid = styled.div`
     grid-template-rows: repeat(3, ${squareSize});
 
     margin: calc(${squareSize} / 4);
-`
+`;
 export function Squares() {
     const {state, moves} = useGameContext();
     const squares : JSX.Element[] = [];
@@ -39,7 +40,7 @@ export function Squares() {
                 onClick={onClick}
             >
                 {state.board[row][col]}
-            </Square>)
+            </Square>);
         }
     } 
 

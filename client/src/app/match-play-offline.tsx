@@ -23,8 +23,8 @@ export function MatchPlayOffline({game, options}: {
         if (showBoard) {
             matches.push(
                 <MatchPlay key={id} game={game} matchResult={activeMatch} activePlayer={id} />
-            )
-        };
+            );
+        }
     }
     
     return (

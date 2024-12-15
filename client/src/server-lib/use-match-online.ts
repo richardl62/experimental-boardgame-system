@@ -1,7 +1,7 @@
 import { GameDefinition, GameDefintionMove } from "../shared/game-definition";
 import { MatchID, Player, WsMoveData } from "../shared/types";
 import {Match, MatchMove } from "./match";
-import useWebSocket from 'react-use-websocket';
+import useWebSocket from "react-use-websocket";
 import { ServerMoveResponse } from "../shared/server-move-response";
 import { ActiveMatch } from "./active-match";
 
@@ -34,7 +34,7 @@ export function useOnlineMatch(
     for (const moveName in gameDefinition.moves) {
         const givenMove = gameDefinition.moves[moveName];
         matchMoves[moveName] = makeMatchMove(moveName, givenMove, sendJsonMessage);
-    };
+    }
 
     const match : Match = {
         ...matchData,
