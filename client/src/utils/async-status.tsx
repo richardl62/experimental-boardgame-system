@@ -5,14 +5,14 @@ const Message = styled.div`
     font-size: large;
 `;
 
-interface Status {
+interface AsyncStatus {
     loading?: boolean; // 'loading' rather than 'waiting' to suit useAsync.
     error?: Error;
     result?: unknown;
 }
 
 interface AsyncStatusProps {
-    status: Status;
+    status: AsyncStatus;
     /** Optional name of activity. Used in error and waiting messages */ 
     activity: string;
 }
@@ -53,7 +53,7 @@ export function AsyncStatus(props: AsyncStatusProps) : JSX.Element {
 }
 
 // Convenience function
-export function loadingOrError(props: Status) : boolean {
+export function loadingOrError(props: AsyncStatus) : boolean {
     const { loading, error } = props;
 
     return Boolean(loading || error);
