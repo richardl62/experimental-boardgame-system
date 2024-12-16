@@ -9,7 +9,7 @@ import { OfflineOptions } from "../offline-options";
 import { OptionValues, SpecifiedValues } from "../../shared/option-specification/types";
 import { InputValues } from "../../shared/option-specification/input-values";
 import { sAssert } from "../../utils/assert";
-import { defaultNumPlayers } from "../../app-game-support/default-num-players";
+import { defaultNumPlayers } from "../../app-game-support/app-game";
 
 export function StartMatch(props: {
     game: GameDefinition;
@@ -23,7 +23,8 @@ export function StartMatch(props: {
     const optionsSpec = {
         numPlayers: {
             label: "Number of players",
-            default: defaultNumPlayers(game),
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            default: defaultNumPlayers(game as any /*XXX*/),
             min: minPlayers,
             max: maxPlayers,
         },

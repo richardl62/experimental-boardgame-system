@@ -1,7 +1,7 @@
 import React from "react";
-import { nonJoinedPlayerName } from "../app-game-support/player-names";
 import { Match } from "../server-lib/match";
 import { PlayerData } from "../shared/match-data";
+import { nonJoinedPlayerName } from "../app-game-support";
 
 function PD( {playerData} : {playerData: PlayerData}) {
     const { name, isConnected } = playerData;

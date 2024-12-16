@@ -1,7 +1,7 @@
 import { GameDefinition } from "../../shared/game-definition";
-import { defaultPlayerName } from "../../app-game-support/player-names";
 import { MatchID, Player } from "../../shared/types";
 import { LobbyClient } from "../../bgio-replacement/lobby-client";
+import { defaultPlayerName } from "../../app-game-support";
 
 export function makeLobbyClient() : LobbyClient {
     return new LobbyClient();

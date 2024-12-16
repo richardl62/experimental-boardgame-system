@@ -6,9 +6,9 @@ import { AsyncStatus } from "../../utils/async-status";
 import { BoxWithLegend } from "../../utils/box-with-legend";
 import { JoinGame } from "./join-game";
 import { makeLobbyClient } from "./lobby-tools";
-import { nonJoinedPlayerName } from "../../app-game-support/player-names";
 import { MatchID } from "../../shared/types";
 import { LobbyTypes } from "../../shared/lobby";
+import { nonJoinedPlayerName } from "../../app-game-support";
 
 const Names = styled.div`
     display: flex;
