@@ -2,11 +2,8 @@ import { GameDefintionMove } from "../../game-definition";
 import { GameState, initialState } from "./game-state";
 
 const setSquare: GameDefintionMove<GameState, {row: number, col: number}> = (
-    { state, activePlayer,  currentPlayer, arg: { row, col } } 
+    { state, currentPlayer, arg: { row, col } } 
 ) => {
-    if (currentPlayer !== activePlayer) {
-        throw new Error("Not your turn!");
-    }
     const newBoard : GameState["board"] = [...state.board];
     newBoard[row] = [...newBoard[row]];
     newBoard[row][col] = currentPlayer === 0 ? "X" : "O";        
@@ -15,13 +12,13 @@ const setSquare: GameDefintionMove<GameState, {row: number, col: number}> = (
         ...state, 
         board: newBoard 
     };   
-}
+};
 
 const reset: GameDefintionMove<GameState, void> = (
     _arg
 ) => {
     return initialState();
-}
+};
 
 export const moves = {
     setSquare,
