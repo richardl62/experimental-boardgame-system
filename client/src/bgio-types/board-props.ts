@@ -1,4 +1,5 @@
 import { Ctx } from "./ctx";
+import { EventsAPI } from "./events";
 import { PlayerID } from "./types";
 
 export interface MatchDataElem {
@@ -13,19 +14,6 @@ type Moves = {
     [x: string]: (...args: any[]) => void;
 }
 
-type Events =  {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    endGame?: (gameover?: any) => void;
-    // endPhase?: () => void;
-    endTurn?: (arg?: {
-        next: PlayerID;
-    }) => void;
-    // setPhase?: (newPhase: string) => void;
-    // endStage?: () => void;
-    // setStage?: (newStage: string) => void;
-    //setActivePlayers?: (arg: ActivePlayersArg) => void;
-}
-
 export interface BoardProps<TypeG=unknown> {
     playerID: PlayerID;
     credentials: string;
@@ -36,7 +24,7 @@ export interface BoardProps<TypeG=unknown> {
     ctx: Ctx;
 
     moves: Moves;
-    events: Events;
+    events: EventsAPI;
 
     isConnected: boolean;
     G: TypeG;

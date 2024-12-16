@@ -1,13 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unnecessary-type-constraint */
 import { Ctx } from "./ctx";
+import { EventsAPI } from "./events";
+import { RandomAPI } from "./random";
 import { PlayerID } from "./types";
 
 
 declare const INVALID_MOVE = "INVALID_MOVE";
+export interface DefaultPluginAPIs {
+    random: RandomAPI;
+    events: EventsAPI;
+}
 
 export declare type FnContext<G extends any = any, PluginAPIs extends Record<string, unknown> = Record<string, unknown>> 
-    = PluginAPIs /* & DefaultPluginAPIs */ & {
+    = PluginAPIs & DefaultPluginAPIs & {
     G: G;
     ctx: Ctx;
 };
@@ -40,23 +46,14 @@ export interface Game<G extends any = any, PluginAPIs extends Record<string, unk
     deltaState?: boolean;
     disableUndo?: boolean;
     seed?: string | number;
-    setup?: (context: PluginAPIs /*& DefaultPluginAPIs */ & {
+    setup?: (context: PluginAPIs & DefaultPluginAPIs & {
         ctx: Ctx;
     }, setupData?: SetupData) => G;
     validateSetupData?: (setupData: SetupData | undefined, numPlayers: number) => string | undefined;
     moves?: MoveMap<G, PluginAPIs>;
     // phases?: PhaseMap<G, PluginAPIs>;
     // turn?: TurnConfig<G, PluginAPIs>;
-    events?: {
-        endGame?: boolean;
-        endPhase?: boolean;
-        endTurn?: boolean;
-        setPhase?: boolean;
-        endStage?: boolean;
-        setStage?: boolean;
-        pass?: boolean;
-        setActivePlayers?: boolean;
-    };
+    events?: EventsAPI;
     // endIf?: (context: FnContext<G, PluginAPIs>) => any;
     // onEnd?: (context: FnContext<G, PluginAPIs>) => void | G;
     // playerView?: (context: {

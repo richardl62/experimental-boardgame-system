@@ -2,8 +2,8 @@ import { sAssert } from "../../../utils/assert";
 import { AppGame, GameCategory } from "../../../app-game-support";
 import { Letter, standardLetterSet} from "./letters";
 import { SquareType } from "./square-type";
-import { RandomAPI } from "boardgame.io/dist/types/src/plugins/random/random";
 import { getScrabbleWords } from "../../../utils/get-scrabble-words";
+import { RandomAPI } from "../../../bgio-types/random";
 
 const D = SquareType.doubleWord;
 const T = SquareType.tripleWord;
