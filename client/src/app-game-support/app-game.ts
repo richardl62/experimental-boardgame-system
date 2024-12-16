@@ -1,8 +1,8 @@
-import { Game } from "boardgame.io";
 import { RequiredServerData } from "./required-server-data";
-import { OptionSpecifications } from "../app/option-specification/types";
 import { WrappedGameProps } from "./wrapped-game-props";
 import { SetupArg0 } from "./bgio-types";
+import { Game } from "../bgio-types/game";
+import { OptionSpecifications } from "../shared/option-specification/types";
 
 // The string values are uses as section headers when displaying the list of
 // games.
@@ -38,7 +38,11 @@ export interface AppGame extends AppGameNoBoard {
   board: (props: WrappedGameProps) => JSX.Element;
 }
 
-export function defaultNumPlayers(game: AppGame): number {
+// This simplified interface was added as part of a spike on porting Scrabble,
+// and more specifically copying in app-game-support from react-board-games.
+// Being simple, it works with AppGame and bgio game.
+export function defaultNumPlayers(game: {minPlayers: number, maxPlayers: number}): number {
+//export function defaultNumPlayers(game: AppGame): number {
     let num = 2; //Arbitrary
 
     if (num < game.minPlayers) {

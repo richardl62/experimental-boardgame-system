@@ -24,7 +24,7 @@ export function StartMatch(props: {
         numPlayers: {
             label: "Number of players",
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            default: defaultNumPlayers(game as any /*XXX*/),
+            default: defaultNumPlayers(game),
             min: minPlayers,
             max: maxPlayers,
         },
