@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import { Match } from "../server-lib/match";
-import { GameDefinition } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 import { boards } from "../games";
 import { sAssert } from "../utils/assert";
 

@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import { defaultValues } from "../shared/option-specification/tools";
+import { defaultValues } from "../option-specification/tools";
 import { GameLobby } from "./lobby/game-lobby";
 import { MatchLobby } from "./lobby/match-lobby";
 import { MatchPlayOffline } from "./match-play-offline";
 import { MatchPlayOnline } from "./match-play-online";
 import { OfflineOptions } from "./offline-options";
 import * as UrlParams from "./url-params";
-import { GameDefinition } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 
 const OuterDiv = styled.div`
     font-size: 18px;

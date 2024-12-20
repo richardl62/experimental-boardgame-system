@@ -1,7 +1,7 @@
 import React from "react";
 
-import { GameState } from "../../../shared/games/plusminus/game-state";
-import { moves } from "../../../shared/games/plusminus/moves";
+import { GameState } from "../../../shared/server-games/plusminus/game-state";
+import { moves } from "../../../shared/server-games/plusminus/moves";
 import { ClientMoves } from "../../client-moves";
 import { ClientMatchContext } from "../../../app/match-play-with-context";
 

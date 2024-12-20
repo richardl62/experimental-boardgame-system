@@ -1,7 +1,7 @@
-import { GameDefintionMove } from "../../game-definition";
+import { ServerMove } from "../../server-game-definition";
 import { GameState, initialState } from "./game-state";
 
-const setSquare: GameDefintionMove<GameState, {row: number, col: number}> = (
+const setSquare: ServerMove<GameState, {row: number, col: number}> = (
     { state, currentPlayer, arg: { row, col } } 
 ) => {
     const newBoard : GameState["board"] = [...state.board];
@@ -14,7 +14,7 @@ const setSquare: GameDefintionMove<GameState, {row: number, col: number}> = (
     };   
 };
 
-const reset: GameDefintionMove<GameState, void> = (
+const reset: ServerMove<GameState, void> = (
     _arg
 ) => {
     return initialState();

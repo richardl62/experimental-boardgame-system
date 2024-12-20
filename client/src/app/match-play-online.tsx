@@ -1,7 +1,7 @@
 
 import React from "react";
 import { useOnlineMatch } from "../server-lib/use-match-online";
-import { GameDefinition } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 import { MatchID, Player } from "../shared/types";
 import { sAssert } from "../utils/assert";
 import { MatchPlay } from "./match-play";

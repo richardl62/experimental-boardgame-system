@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import { useAsync } from "react-async-hook";
 import styled from "styled-components";
-import { GameDefinition } from "../../shared/game-definition";
+import { GameDefinition } from "../../game-definition";
 import { AsyncStatus } from "../../utils/async-status";
 import { BoxWithLegend } from "../../utils/box-with-legend";
 import { JoinGame } from "./join-game";

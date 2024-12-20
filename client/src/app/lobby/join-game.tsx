@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAsyncCallback } from "react-async-hook";
-import { GameDefinition } from "../../shared/game-definition";
+import { GameDefinition } from "../../game-definition";
 import { MatchID } from "../../shared/types";
 import { AsyncStatus, loadingOrError } from "../../utils/async-status";
 import { addPlayerToHref } from "../url-params";

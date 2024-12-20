@@ -1,7 +1,7 @@
-import { GameDefintionMove } from "../../game-definition";
+import { ServerMove } from "../../server-game-definition";
 import { GameState } from "./game-state";
 
-const add: GameDefintionMove<GameState, number> = (
+const add: ServerMove<GameState, number> = (
     { state,  arg: value } 
 ) => {
     return  { count: state.count + value }; 

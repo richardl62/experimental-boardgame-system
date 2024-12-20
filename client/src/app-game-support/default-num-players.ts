@@ -1,4 +1,4 @@
-import { GameDefinition } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 
 export function defaultNumPlayers(game: GameDefinition): number {
     let num = 2; //Arbitrary

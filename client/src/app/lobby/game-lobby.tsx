@@ -7,7 +7,7 @@ import { OfflineOptions } from "../offline-options";
 import { makeLobbyClient } from "./lobby-tools";
 import { MatchLobbyWithApiInfo } from "./match-lobby";
 import { StartMatch } from "./start-match";
-import { GameDefinition } from "../../shared/game-definition";
+import { GameDefinition } from "../../game-definition";
 
 
 const GameLobbyDiv = styled.div`

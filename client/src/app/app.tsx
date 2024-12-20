@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
-import { GameDefinition, GameCategory } from "../shared/game-definition";
+import { GameDefinition, GameCategory } from "../game-definition";
 import "./app.css";
 import { GameComponent } from "./game-component";
 import { gamePath } from "./url-params";
-import { games } from "../shared/games";
+import { games } from "../games/all-games";
 
 const HomePageStyles = styled.div`
     font-size: 18px;

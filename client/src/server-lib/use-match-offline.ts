@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { GameDefinition, GameDefintionMove } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 import {Match, MatchMove } from "./match";
 import { MatchData, PlayerData } from "../shared/match-data";
 import { ReadyState } from "react-use-websocket";
 import { ActiveMatch } from "./active-match";
+import { ServerMove } from "../shared/server-game-definition";
 
 // Create and offilne game instance.
 export function useOfflineMatch(
@@ -48,7 +49,7 @@ function matchOmittingMoves(gameDefinition: GameDefinition, nPlayers: number) : 
 }
 
 function makeMatchMove(
-    givenMove: GameDefintionMove<unknown, unknown>, 
+    givenMove: ServerMove<unknown, unknown>, 
     gameState: MatchData,
     setMatch: (match: MatchData) => void,
     setError: (error: string | null) => void

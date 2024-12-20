@@ -1,6 +1,6 @@
 // Get values that can be set in the url.
 // If not set, give default value.
-import { GameDefinition } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 import { MatchID, Player } from "../shared/types";
 import { sAssert } from "../utils/assert";
 import { OfflineOptions } from "./offline-options";

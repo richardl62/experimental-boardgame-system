@@ -1,4 +1,4 @@
-import { GameDefinition } from "./shared/game-definition";
+import { ServerGameDefinition } from "./shared/server-game-definition";
 import { WebSocket } from 'ws';
 import { Player } from "./player";
 import { LobbyTypes } from "./shared/lobby";
@@ -8,7 +8,7 @@ import { ServerMoveResponse } from "./shared/server-move-response";
 // A match is an instance of a game.
 export class Match {
     constructor(
-        definition: GameDefinition, 
+        definition: ServerGameDefinition, 
         id: string, // The caller must ensure that that ID is unique.
         numPlayers: number,
     ) {
@@ -26,7 +26,7 @@ export class Match {
         this.state = definition.initialState();
     }
 
-    readonly definition: GameDefinition;
+    readonly definition: ServerGameDefinition;
     readonly id: string;
     readonly players: Player[];
     private currentPlayer: number;

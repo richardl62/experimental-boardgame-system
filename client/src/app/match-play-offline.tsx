@@ -1,6 +1,6 @@
 import React from "react";
 import { OfflineOptions } from "./offline-options";
-import { GameDefinition } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 import { useOfflineMatch } from "../server-lib/use-match-offline";
 import { sAssert } from "../utils/assert";
 import { MatchPlay } from "./match-play";

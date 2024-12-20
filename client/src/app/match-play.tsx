@@ -1,7 +1,7 @@
 import React from "react";
 import { ReadyState } from "react-use-websocket";
 import { ActiveMatch } from "../server-lib/active-match";
-import { GameDefinition } from "../shared/game-definition";
+import { GameDefinition } from "../game-definition";
 import { MatchPlayWithContext } from "./match-play-with-context";
 import { ShowPlayerData } from "./show-player-data";
 

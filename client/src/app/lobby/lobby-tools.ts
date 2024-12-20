@@ -1,4 +1,4 @@
-import { GameDefinition } from "../../shared/game-definition";
+import { GameDefinition } from "../../game-definition";
 import { defaultPlayerName } from "../../app-game-support/player-names";
 import { MatchID, Player } from "../../shared/types";
 import { LobbyClient } from "../../bgio-replacement/lobby-client";

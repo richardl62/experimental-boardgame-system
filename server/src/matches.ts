@@ -1,8 +1,8 @@
 import { Match } from "./match";
-import { GameDefinition } from "./shared/game-definition";
+import { ServerGameDefinition } from "./shared/server-game-definition";
 import { WebSocket  } from 'ws';
 import { WsMoveData } from "./shared/types";
-import { games } from "./shared/games";
+import { games } from "./shared/server-games";
 import { Player } from "./player";
 
 // The Match interface is intended to be convenient for internal use.
@@ -86,7 +86,7 @@ export class Matches {
     }
 } 
 
-function getGameDefinition(name: string): GameDefinition {
+function getGameDefinition(name: string): ServerGameDefinition {
     for(const gameDefinition of games) {
       if(gameDefinition.name === name) {
         return gameDefinition;
