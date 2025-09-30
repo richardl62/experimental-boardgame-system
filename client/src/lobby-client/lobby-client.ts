@@ -2,7 +2,8 @@ import { Lobby } from "../shared/lobby";
 import * as LobbyTypes from "../shared/lobby-types";
 import { callLobby } from "./call-lobby";
 
-// As Lobby but functions return promises
+// As Lobby but functions return promises. (Lobby is used in the server where
+// promises are not needed.)
 export type LobbyPromises = {
     [P in keyof Lobby]: 
         (...args: Parameters<Lobby[P]>) => Promise<ReturnType<Lobby[P]>>;
