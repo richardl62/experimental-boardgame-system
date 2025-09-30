@@ -1,4 +1,5 @@
-import { Lobby, LobbyTypes } from "../shared/lobby";
+import { Lobby } from "../shared/lobby";
+import * as LobbyTypes from "../shared/lobby-types";
 import { callLobby } from "./call-lobby";
 
 // As Lobby but functions return promises

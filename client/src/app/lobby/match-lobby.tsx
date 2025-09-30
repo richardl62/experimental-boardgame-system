@@ -8,7 +8,7 @@ import { JoinGame } from "./join-game";
 import { makeLobbyClient } from "./lobby-tools";
 import { nonJoinedPlayerName } from "../../app-game-support/player-names";
 import { MatchID } from "../../shared/types";
-import { LobbyTypes } from "../../shared/lobby";
+import * as LobbyTypes from "../../shared/lobby-types";
 
 const Names = styled.div`
     display: flex;

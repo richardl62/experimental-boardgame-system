@@ -1,38 +1,4 @@
-// export type PlayerMetadata = {
-//     id: number;
-//     name?: string;
-//     credentials?: string;
-//     data?: any;
-//     isConnected?: boolean;
-// };
-
-// export type PublicPlayerMetadata = Omit<PlayerMetadata, "credentials">;
-
-export type PublicPlayerMetadata = {
-    name?: string;
-    isConnected?: boolean;
-};
-
-// This namespace is a legacy of BGIO (there is was called LobbyAPI)
-export declare namespace LobbyTypes {
-    export type Match = {
-        matchID: string;
-        players: PublicPlayerMetadata[];
-    };
-
-    export interface CreatedMatch {
-        matchID: string;
-    }
-
-    export interface JoinedMatch {
-        playerID: string;
-        playerCredentials: string;
-    }
-
-    export interface MatchList {
-        matches: Match[];
-    }
-}
+import * as LobbyTypes from "./lobby-types";
 
 export interface Lobby {
     createMatch: (

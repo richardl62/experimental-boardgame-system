@@ -1,5 +1,5 @@
 import { WebSocket  } from 'ws'; // Import the ws library
-import { PublicPlayerMetadata } from './shared/lobby';
+import { PublicPlayerMetadata } from './shared/lobby-types';
 
 // Put loosely, a Player represents a seat at the table at which
 // a match is being played. Initially, seats are unallocated. But when someone

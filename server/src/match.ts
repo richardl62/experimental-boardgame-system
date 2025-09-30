@@ -1,7 +1,7 @@
 import { ServerGameDefinition } from "./shared/server-game-definition";
 import { WebSocket } from 'ws';
 import { Player } from "./player";
-import { LobbyTypes } from "./shared/lobby";
+import * as LobbyTypes from "./shared/lobby-types";
 import { MatchData } from "./shared/match-data";
 import { ServerMoveResponse } from "./shared/server-move-response";
 

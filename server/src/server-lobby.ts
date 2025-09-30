@@ -1,6 +1,7 @@
 import { Match } from "./match";
 import { Matches } from "./matches";
-import { Lobby, LobbyTypes } from "./shared/lobby";
+import { Lobby } from "./shared/lobby";
+import * as LobbyTypes from "./shared/lobby-types";
 
 export class ServerLobby implements Lobby {
     constructor(matches: Matches) {
